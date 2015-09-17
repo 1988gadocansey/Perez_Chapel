@@ -1,0 +1,7 @@
+RewriteEngine On
+# htaccess configuration
+# @author: Timothy Simpson
+# Date 24th July 2015
+
+#Prevent directory browsing
+Options All -Indexes
