@@ -11,6 +11,8 @@ return array(
     'Session' => $baseDir . '/_library_/_classes_/Session.class.php',
     'Zend\\Http\\PhpEnvironment\\RemoteAddress' => $baseDir . '/_library_/_classes_/RemoteAddress.php',
     '_classes_\\Boot' => $baseDir . '/_library_/_classes_/boot.class.php',
+    '_classes_\\Generator' => $baseDir . '/_library_/_classes_/class.password.php',
+    '_classes_\\Identify' => $baseDir . '/_library_/_classes_/class.users.php',
     '_classes_\\Login' => $baseDir . '/_library_/_classes_/login.class.php',
     '_classes_\\Notifications' => $baseDir . '/_library_/_classes_/Notifications.class.php',
     '_classes_\\Student' => $baseDir . '/_library_/_classes_/Student.class.php',

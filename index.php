@@ -1,10 +1,10 @@
 <?php
 /**
- * SRMS - Student Records Management System
+ * EagleApp - Church  Management System
  *
  * @package  public
- * @author   TPconnet group - Takoradi Polytechnic
- * @link http://www.tpconnect.com developers
+ * @author   Gad Ocansey
+ * @link http://thegadocansey.com developers
  */
 
 /*
@@ -18,6 +18,7 @@
 | loading of any our classes "manually". Feels great to relax.
 |
 */
+    
     
     require 'vendor/autoload.php';
     require '_ini_.php';

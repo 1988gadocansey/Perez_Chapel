@@ -5781,7 +5781,7 @@ small {
   line-height: 36px;
   outline: 0;
   padding: 0 2rem;
-  text-transform: uppercase;
+  text-transform: capitalize;
   vertical-align: middle;
   -webkit-tap-highlight-color: transparent; }
 
@@ -5803,7 +5803,7 @@ small {
 .btn, .btn-large {
   text-decoration: none;
   color: #FFF;
-  background-color: #ff4081;
+  background-color: #0E2645;
   text-align: center;
   letter-spacing: .5px;
   -webkit-transition: 0.2s ease-out;

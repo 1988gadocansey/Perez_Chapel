@@ -1,4 +1,5 @@
 <?php
+   ini_set('display_errors', 0);
 /* Gad Ocansey
  *---------------------------------------------------------------
  * APPLICATION ENVIRONMENT
@@ -59,9 +60,7 @@ if( ! ini_get('date.timezone') )
  *
  */
 	$system_path = '_library_';
-
-       $application_folder = '_library_/_application_';         
- 
+                
 /*
  * -------------------------------------------------------------------
  *  CUSTOM CONFIG VALUES
@@ -125,5 +124,14 @@ if( ! ini_get('date.timezone') )
 if (($loader = require_once __DIR__ . '/vendor/autoload.php') == null)  {
   die('Vendor directory not found, Please run composer install.');
 }
+
+/*
+ *  Other configurations
+ */
                 
+                
+
+
+                
+
                 

@@ -14,9 +14,9 @@ class JConfig {
 	public $dbtype = 'mysqli';
 	public $server = 'localhost';
 	public $user = 'root';
-	public $database = 'coby_portal_local_db';
+	public $database = 'db_perez_chapel';
 	public $password = "PRINT45dull";
-	public $secret='my_poly_my_gad';
+	public $secret='perez_chapel';
 	public $debug = false;
 	public $autoRollback= true;
 	public $ADODB_COUNTRECS = false;

@@ -32,12 +32,12 @@ class Boot {
   <title>Login Page | Perez Temple</title>
 
   <!-- Favicons-->
-  <link rel="icon" href="images/favicon.png" sizes="32x32">
+  <link rel="icon" href="assets/favicon.png" sizes="32x32">
   <!-- Favicons-->
-  <link rel="apple-touch-icon-precomposed" href="images/favicon.png">
+  <link rel="apple-touch-icon-precomposed" href="assets/favicon.png">
   <!-- For iPhone -->
   <meta name="msapplication-TileColor" content="#00bcd4">
-  <meta name="msapplication-TileImage" content="images/favicon.png">
+  <meta name="msapplication-TileImage" content="assets/favicon.png">
   <!-- For Windows Phone -->
 
 
@@ -68,7 +68,7 @@ class Boot {
 
   <div id="login-page" class="row">
     <div class="col s12 z-depth-4 card-panel">
-      <form class="login-form">
+        <form class="login-form"  method="POST" action="index?action=login">
         <div class="row">
           <div class="input-field col s12 center">
             <img src="login/images/logo.png" alt="" class="Perez Temple">
@@ -78,14 +78,14 @@ class Boot {
         <div class="row margin">
           <div class="input-field col s12">
             <i class="mdi-social-person-outline prefix"></i>
-            <input id="username" type="text">
+            <input id="username" type="text" required="" name="username">
             <label for="username" class="center-align">Username</label>
           </div>
         </div>
         <div class="row margin">
           <div class="input-field col s12">
             <i class="mdi-action-lock-outline prefix"></i>
-            <input id="password" type="password">
+            <input id="password" type="password" required="" name="password">
             <label for="password">Password</label>
           </div>
         </div>

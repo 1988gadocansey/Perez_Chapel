@@ -1,0 +1,21 @@
+{
+     
+   
+
+ 
+ 
+    "require": {
+        "swiftmailer/swiftmailer": "~5.3"
+    },
+    "autoload":{
+        "classmap": [
+			"_library_/_classes_"
+			 
+		]
+    },
+      
+    "require-dev": {
+        "phpdocumentor/phpdocumentor": "2.*"
+    }
+ 
+}

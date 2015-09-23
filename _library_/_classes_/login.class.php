@@ -80,7 +80,7 @@ namespace _classes_;
 				$passwrd = $USER_PASSW_VAR;
 			}
 						
-			$query = "SELECT * FROM tpoly_auth  WHERE USERNAME =".$this->sql->Param('a')." AND PASSWORD=".$this->sql->Param('b')." AND ACTIVE='1'";
+			$query = "SELECT * FROM perez_auth  WHERE USERNAME =".$this->sql->Param('a')." AND PASSWORD=".$this->sql->Param('b')." AND ACTIVE='1'";
 			$stmt = $this->connect->Prepare($query);
 			 $stmt = $this->connect->Execute($stmt,array($USER_LOGIN_VAR,$passwrd));
 			  $this->connect->ErrorMsg();
@@ -103,7 +103,7 @@ namespace _classes_;
 				$this->setLog("Login",$this->session->get("USERNAME") ." has login into the system  ");
                                 $this->session->set("USERNAME", $userid->USERNAME);
                                 $date=  strtotime(NOW);
-                                $stmt=$this->connect->Prepare("UPDATE tbl_auth SET LAST_LOGIN='$date' WHERE ID='$_SESSION[ID]'");
+                                $stmt=$this->connect->Prepare("UPDATE perez_auth SET LAST_LOGIN='$date' WHERE ID='$_SESSION[ID]'");
                                 $this->connect->Execute($stmt);
                                 
                                 if($_SESSION['level']=="administrator"){
@@ -181,13 +181,13 @@ namespace _classes_;
 		
 		  $login = $this->session->get("h20");
 		  $hashkey = $this->session->get('login_hash_pay');
-	
-		if(md5($this->hashkey . $login .$this->remoteip.$this->sessionid.$this->useragent) != $hashkey)
-		{
-			$this->logout();
-		}
+
+                    if(md5($this->hashkey . $login .$this->remoteip.$this->sessionid.$this->useragent) != $hashkey)
+                    {
+                            $this->logout();
+                    }
 		
-	}//end
+                }//end
 	public function getMac(){
 		  $mac          = "";
 		  $cmd_info     = "";
@@ -207,7 +207,7 @@ namespace _classes_;
 	
       public function setLog($event,$activity){
                  $userid=$this->session->get("pyuserid");
-                $stmt = $this->connect->Prepare("INSERT INTO `tpoly_system_log` ( `USERNAME`, `EVENT_TYPE`, `ACTIVITIES`, `HOSTNAME`, `IP`, `BROWSER_VERSION`,MAC_ADDRESS,SESSION_ID) VALUES ('".$userid."', '$event','$activity', '".$this->hashkey."','".$this->remoteip."','".$this->useragent."','".$this->mac_addr."','".$this->session->getSessionID()."')");
+                $stmt = $this->connect->Prepare("INSERT INTO `perez_system_log` ( `USERNAME`, `EVENT_TYPE`, `ACTIVITIES`, `HOSTNAME`, `IP`, `BROWSER_VERSION`,MAC_ADDRESS,SESSION_ID) VALUES ('".$userid."', '$event','$activity', '".$this->hashkey."','".$this->remoteip."','".$this->useragent."','".$this->mac_addr."','".$this->session->getSessionID()."')");
                 $this->connect->Execute($stmt); 
 
        }
@@ -222,7 +222,7 @@ namespace _classes_;
          if(isset($_GET[login])=='error'){
               ?>
 
-               <div class='alert alert-danger' style='margin-top:0%;font-weight:bolder;font-size:15px'>
+               <div class='alert-warning' style='margin-top:0%;font-weight:bolder;font-size:15px;color:red'>
                 <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
                 <strong>Warning!</strong> Invalid Username or Password
          </div>  
@@ -231,7 +231,7 @@ namespace _classes_;
          }
          elseif(isset($_GET[unauthorize_domain]) ){
               ?>
-              <center><div class='alert alert-warning' style='margin-top:0%;font-weight:bolder;font-size:15px'>
+              <center><div class='alert alert-warning' style='color:red;margin-top:0%;font-weight:bolder;font-size:15px'>
                 <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
                 <strong>Warning!</strong> You are not authorized on this device
          </div></center>
@@ -241,7 +241,100 @@ namespace _classes_;
          }
     }
 		
+    
+    public function doLogin($username,$salt){
+        /*
+     * Password generator: class PASSWORD\Generator();
+     * You can have a setted pass, and export the encoded value:
+     * $a="MyPassword";
+     * $password=new PASSWORD\Generator();
+     * $encode_pass=$password->generateEncode($a); //this is the field to INSERT in tbl_users.user_password field
+     *
+     * OR
+     *
+     * $password=new PASSWORD\Generator();
+     * $password->NewPassword(8); //number inside method is the length of password (default 8);
+     * echo $password->Plain; is the user password
+     * echo $password->DB_Encode; is the password to insert in tbl_users.user_password
+     *
+     * IMPORTANT!!!!!
+     * If you change the dbase location, or the position of class.password.php, THE OLD PASSWORD doesn't work!
+     * For security they use a phisical position of the file.
+     *
+     * In table tbl_ipblocked you have the IP that try wrong connection. After 10 try it's blocked.
+     *
+      * */
+        //Verify IP from list.
+         $stmt=$this->connect->Prepare('SELECT ip FROM tbl_ipblocked WHERE ip="'.$_SERVER['REMOTE_ADDR'].'" AND tryConnection >=10;');
+         $stmt=$this->connect->Execute($stmt);
+        if ($stmt->RecordCount()==1){
+            //Ip blocked for many connection
+            header('HTTP/1.0 403 Not Found');
+            echo "<h1>Forbidden</h1>";
+            echo "You don't have permission to access / on this server.";
+            echo "<hr>";
+            echo $_SERVER['REMOTE_ADDR'];
+            exit;
+        }
+        
+        /***************************/
 
+      
+        //we have a post setted for try login
+        $tempDate=new \DateTime();
+
+        $password=new PASSWORD\Generator();
+
+        //generate encoded password with prevent injection
+        $encode_pass=$password->generateEncode($salt);
+
+        $stmt='SELECT id_user
+                FROM tbl_users
+                WHERE user_email="'.$username.'"
+                AND SHA2(concat(user_password,DATE_FORMAT(NOW(),"%Y-%m-%d"),5),512)="'.hash('sha512',$encode_pass.date('Y-m-d').'5').'";';
+
+        $mysql->Execute($Sql);
+        if ($mysql->Rows==1){
+            //set user verified!
+            $userActive->loginVerifiedUser();
+            $Sql='UPDATE tbl_ipblocked SET tryConnection=1 WHERE ip="'.$_SERVER['REMOTE_ADDR'].'";';
+            $mysql->Execute($Sql);
+        } else {
+            //a new session
+            $userActive->unSetUser();
+
+            //block IP counter
+            $Sql='SELECT tryConnection FROM tbl_ipblocked WHERE ip="'.$_SERVER['REMOTE_ADDR'].'";';
+            $mysql->Execute($Sql);
+            if ($mysql->Rows==1){
+                $increment=$mysql->Result[0]['tryConnection'];
+                $increment++;
+                $Sql='UPDATE tbl_ipblocked SET tryConnection='.$increment.' WHERE ip="'.$_SERVER['REMOTE_ADDR'].'";';
+                $mysql->Execute($Sql);
+            } else {
+                $Sql='INSERT tbl_ipblocked (ip) VALUES ("'.$_SERVER['REMOTE_ADDR'].'");';
+                $mysql->Execute($Sql);
+            }
+
+        }
+     
+
+
+    if ($userActive->userIdentified()==1) {
+        //USER NOT AUTORIZED TO SEE ADMIN PAGE
+        header('location: index.php');//redirect
+        exit;
+    }
+
+        
+        
+   
+    }
        
-      }
-?>
+      
+        
+        
+        
+        
+    }
+
