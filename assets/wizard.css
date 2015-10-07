@@ -1,0 +1,283 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Oct 5, 2015, 5:07:30 AM
+    Author     : Senior Software Eng
+*/
+.nav-tabs > li > a {
+  margin-right: 2px;
+  line-height: 1.846153846;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: none;
+  opacity: 0.55;
+  font-weight: 500;
+  text-transform: uppercase;
+}
+.nav-tabs > li > a:hover {
+  border-color: #e5e6e6 #e5e6e6 #dddddd;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  border: none;
+  border-bottom: 2px solid #0aa89e;
+  color: #0aa89e;
+  background-color: transparent;
+  cursor: default;
+  opacity: 1;
+}
+.card-head.nav-tabs,
+.card-head > .nav-tabs {
+  padding: 0 24px;
+}
+.card-head.nav-tabs > li > a,
+.card-head > .nav-tabs > li > a {
+  line-height: 54px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.card-head.card-head-xs.nav-tabs > li > a,
+.card-head.card-head-xs > .nav-tabs > li > a {
+  line-height: 34px;
+}
+.card-head.card-head-sm.nav-tabs > li > a,
+.card-head.card-head-sm > .nav-tabs > li > a {
+  line-height: 46px;
+}
+.card-head.card-head-lg.nav-tabs > li > a,
+.card-head.card-head-lg > .nav-tabs > li > a {
+  line-height: 78px;
+}
+.nav-tabs.nav-justified {
+  padding: 0;
+}
+.nav-tabs.nav-justified > .active > a,
+.nav-tabs.nav-justified > .active > a:hover,
+.nav-tabs.nav-justified > .active > a:focus {
+  border: none;
+  border-bottom: 2px solid #0aa89e;
+}
+.nav-tabs.tabs-center > li {
+  float: none;
+  display: inline-block;
+}
+.nav-tabs.tabs-center {
+  text-align: center;
+}
+.tabs-text-contrast {
+  border-bottom-color: rgba(255, 255, 255, 0.15);
+}
+.tabs-text-contrast > li > a:hover,
+.tabs-text-contrast > li > a:focus {
+  background-color: rgba(255, 255, 255, 0.35);
+}
+.tabs-text-contrast > li.active > a,
+.tabs-text-contrast > li.active > a:hover,
+.tabs-text-contrast > li.active > a:focus {
+  color: inherit !important;
+}
+.card-underline .card-head .nav-tabs {
+  border-bottom: none;
+}
+.nav-tabs a small {
+  color: inherit;
+  text-transform: initial;
+}
+.tabs-below > .nav-tabs,
+.tabs-right > .nav-tabs,
+.tabs-left > .nav-tabs {
+  border: none;
+}
+.tab-content > .tab-pane,
+.pill-content > .pill-pane {
+  display: none;
+}
+.tab-content > .active,
+.pill-content > .active {
+  display: block;
+}
+.tabs-below > .nav-tabs {
+  border-top: 1px solid #dddddd;
+}
+.tabs-below > .nav-tabs > li {
+  margin-bottom: 0;
+}
+.tabs-below > .nav-tabs > li > a {
+  border-bottom: none;
+}
+.tabs-below > .nav-tabs > li > a:hover,
+.tabs-below > .nav-tabs > li > a:focus {
+  border-top-color: #dddddd;
+  border-bottom-color: transparent;
+}
+.tabs-below > .nav-tabs > .active > a,
+.tabs-below > .nav-tabs > .active > a:hover,
+.tabs-below > .nav-tabs > .active > a:focus {
+  border-bottom: none;
+  line-height: 50px;
+  border-top: 2px solid #0aa89e;
+}
+.tabs-left > .tab-content,
+.tabs-right > .tab-content {
+  overflow: auto;
+}
+.tabs-left > .nav-tabs,
+.tabs-right > .nav-tabs {
+  padding-left: 0;
+  padding-right: 0;
+}
+.tabs-left > .nav-tabs > li,
+.tabs-right > .nav-tabs > li {
+  float: none;
+}
+.tabs-left > .nav-tabs > li > a,
+.tabs-right > .nav-tabs > li > a {
+  min-width: 74px;
+  margin-right: 0;
+}
+.tabs-left > .nav-tabs {
+  float: left;
+}
+.tabs-left > .nav-tabs > li > a {
+  border-bottom: none;
+  border-right: 2px solid transparent;
+}
+.tabs-left > .nav-tabs > li > a:hover,
+.tabs-left > .nav-tabs > li > a:focus {
+  border-color: transparent;
+  border-right-color: #dddddd;
+}
+.tabs-left > .nav-tabs .active > a,
+.tabs-left > .nav-tabs .active > a:hover,
+.tabs-left > .nav-tabs .active > a:focus {
+  border-bottom: none;
+  border-right: 2px solid #0aa89e;
+}
+.tabs-right > .nav-tabs {
+  float: right;
+  border-left: 1px solid #ddd;
+}
+.tabs-right > .nav-tabs > li > a {
+  border-bottom: none;
+  border-left: 2px solid transparent;
+}
+.tabs-right > .nav-tabs > li > a:hover,
+.tabs-right > .nav-tabs > li > a:focus {
+  border-color: transparent;
+  border-left-color: #dddddd;
+}
+.tabs-right > .nav-tabs .active > a,
+.tabs-right > .nav-tabs .active > a:hover,
+.tabs-right > .nav-tabs .active > a:focus {
+  border-bottom: none;
+  border-left: 2px solid #0aa89e;
+}
+.nav-tabs.tabs-default-dark > li.active > a,
+.nav-tabs.tabs-default-dark > li.active > a:hover,
+.nav-tabs.tabs-default-dark > li.active > a:focus {
+  border-color: #20252b;
+  color: #20252b;
+}
+.nav-tabs.tabs-default > li.active > a,
+.nav-tabs.tabs-default > li.active > a:hover,
+.nav-tabs.tabs-default > li.active > a:focus {
+  border-color: #e5e6e6;
+  color: #e5e6e6;
+}
+.nav-tabs.tabs-default-light > li.active > a,
+.nav-tabs.tabs-default-light > li.active > a:hover,
+.nav-tabs.tabs-default-light > li.active > a:focus {
+  border-color: #f2f3f3;
+  color: #f2f3f3;
+}
+.nav-tabs.tabs-default-bright > li.active > a,
+.nav-tabs.tabs-default-bright > li.active > a:hover,
+.nav-tabs.tabs-default-bright > li.active > a:focus {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+.nav-tabs.tabs-primary-dark > li.active > a,
+.nav-tabs.tabs-primary-dark > li.active > a:hover,
+.nav-tabs.tabs-primary-dark > li.active > a:focus {
+  border-color: #066265;
+  color: #066265;
+}
+.nav-tabs.tabs-primary > li.active > a,
+.nav-tabs.tabs-primary > li.active > a:hover,
+.nav-tabs.tabs-primary > li.active > a:focus {
+  border-color: #0aa89e;
+  color: #0aa89e;
+}
+.nav-tabs.tabs-primary-light > li.active > a,
+.nav-tabs.tabs-primary-light > li.active > a:hover,
+.nav-tabs.tabs-primary-light > li.active > a:focus {
+  border-color: #7dd8d2;
+  color: #7dd8d2;
+}
+.nav-tabs.tabs-primary-bright > li.active > a,
+.nav-tabs.tabs-primary-bright > li.active > a:hover,
+.nav-tabs.tabs-primary-bright > li.active > a:focus {
+  border-color: #caf0ee;
+  color: #caf0ee;
+}
+.nav-tabs.tabs-accent-dark > li.active > a,
+.nav-tabs.tabs-accent-dark > li.active > a:hover,
+.nav-tabs.tabs-accent-dark > li.active > a:focus {
+  border-color: #681a7f;
+  color: #681a7f;
+}
+.nav-tabs.tabs-accent > li.active > a,
+.nav-tabs.tabs-accent > li.active > a:hover,
+.nav-tabs.tabs-accent > li.active > a:focus {
+  border-color: #9c27b0;
+  color: #9c27b0;
+}
+.nav-tabs.tabs-accent-light > li.active > a,
+.nav-tabs.tabs-accent-light > li.active > a:hover,
+.nav-tabs.tabs-accent-light > li.active > a:focus {
+  border-color: #c77bd4;
+  color: #c77bd4;
+}
+.nav-tabs.tabs-accent-bright > li.active > a,
+.nav-tabs.tabs-accent-bright > li.active > a:hover,
+.nav-tabs.tabs-accent-bright > li.active > a:focus {
+  border-color: #e9c9ef;
+  color: #e9c9ef;
+}
+.nav-tabs.tabs-success > li.active > a,
+.nav-tabs.tabs-success > li.active > a:hover,
+.nav-tabs.tabs-success > li.active > a:focus {
+  border-color: #4caf50;
+  color: #4caf50;
+}
+.nav-tabs.tabs-warning > li.active > a,
+.nav-tabs.tabs-warning > li.active > a:hover,
+.nav-tabs.tabs-warning > li.active > a:focus {
+  border-color: #ff9800;
+  color: #ff9800;
+}
+.nav-tabs.tabs-danger > li.active > a,
+.nav-tabs.tabs-danger > li.active > a:hover,
+.nav-tabs.tabs-danger > li.active > a:focus {
+  border-color: #f44336;
+  color: #f44336;
+}
+.nav-tabs.tabs-info > li.active > a,
+.nav-tabs.tabs-info > li.active > a:hover,
+.nav-tabs.tabs-info > li.active > a:focus {
+  border-color: #2196f3;
+  color: #2196f3;
+}
+
+.tab-nav {
+    list-style: none;
+    padding: 0;
+    white-space: nowrap;
+    margin: 0;
+    overflow: auto;
+    box-shadow: inset 0 -2px 0 0 #eee;
+}

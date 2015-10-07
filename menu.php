@@ -1,7 +1,4 @@
 <?php
-session_start();
-ini_set('display_errors', 0);
-include("_library_/_includes_/config.php");
     
  global $sql;
 $query=$sql->prepare("SELECT * FROM perez_modules AS top JOIN perez_auth AS auth ON top.USER_ID='$_SESSION[ID]' ");

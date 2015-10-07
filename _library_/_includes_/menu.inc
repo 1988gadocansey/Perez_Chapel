@@ -2,8 +2,8 @@
 <div class="nav-head">
 				<!-- site logo -->
                                 <a href="dashboard.php" class="site-logo text-uppercase">
-                                    <img src="login/images/logo.png" style="width: 43px;height:44px;margin-left: -28%"/>
-                                    <span style="font-size: 14px" class="text">Perez Chapel</span>
+                                    <img src="login/images/logo.png" style="width: 43px;height:44px "/>
+                                    <span style="font-size: 14px" class="text">EagleApp</span>
 				</a>
 			</div>
 
@@ -24,5 +24,5 @@
 			</nav>
                         <!-- nav-foot -->
 			<footer class="nav-foot">
-				<p>2015 &copy;<?php echo date("Y"); ?> <span>Perez Chapel | Designed by Gad | 0505284060</span></p>
+                            <p style="font-size: 8px">  &copy;<?php echo date("Y"); ?> <span>Perez Chapel | All rights reserved</span></p>
 			</footer>

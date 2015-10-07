@@ -1,6 +1,124 @@
- <?php include("./_library_/_includes_/header.inc"); ?>
+<?php
+        require '_ini_.php';
+        require 'vendor/autoload.php'; 
+        require '_library_/_includes_/config.php';
+        require '_library_/_includes_/app_config.inc';
+        include('parsecsv.lib.php');
+        $crypt=new _classes_\cryptCls();
+        $member=new _classes_\Members();
+        $help=new _classes_\helpers();
+        $notify=new _classes_\Notifications();
+        $sms=new _classes_\smsgetway();
+         if($_GET[branch]){
+        $_SESSION[branch]=$_GET[branch];
+        }
+        if($_GET[gender]){
+        $_SESSION[gender]=$_GET[gender];
+        }
+         
+        if($_GET[ministry]){
+        $_SESSION[ministry]=$_GET[ministry];
+        }
+        if($_GET[deceased]){
+        $_SESSION[deceased]=$_GET[deceased];
+        }
+        if($_GET[category]){
+        $_SESSION[category]=$_GET[category];
+        }
+        if($_GET[team]){
+        $_SESSION[team]=$_GET[team];
+        }
+        if($_GET[service]){
+        $_SESSION[service]=$_GET[service];
+        }
+        if($_GET[demo]){
+        $_SESSION[demo]=$_GET[demo];
+        }
+        if($_GET[country]){
+        $_SESSION[nation]=$_GET[country];
+        }
+        if(isset($_GET[delete])){
+            $query=$sql->Prepare("DELETE FROM perez_members WHERE MEMBER_CODE='$_GET[delete]'");
+            if($sql->Execute($query)){
+                header("location:members?success=1");
+            }
+        }
+  /////////////////////////////////////////////////////////////////////////////
+        // upload csv
+        if(isset($_POST[go])){
+     
+              	//check if file path is empty
+            $extension= end(explode(".", basename($_FILES['file']['name'])));
+             if($extension== 'csv'){
+
+            
+                    if (!$_FILES["file"]["name"]) {
+                        echo " <font color='red' style='text-decoration:blink'>Please choose a file to upload</font>";
+                        $error = 1;
+                    }
+
+                    elseif (($_FILES["file"]["size"] ) > 25000000) {
+                        echo "Only pictures of size less than 250 kb accepted";
+                        $error = 3;
+                    }
+
+                    $name = $_FILES["file"]["name"];
+                    //$var= $name.$_SESSION[area];
+
+                    if ($error > 0) {
+
+                    } else {
+
+                        $destination = "uploads/$name";
+                        move_uploaded_file($_FILES["file"]["tmp_name"], $destination);
+                        if (move_uploaded_file) {
+
+                            # create new parseCSV object.
+                            $csv = new parseCSV();
+                          # Parse '_books.csv' using automatic delimiter detection...
+                            $csv->auto($destination);
+
+
+                            //print_r($csv->data);
+
+                            foreach ($csv->data as $key => $row) { 
+
+                               // print_r( $row);
+
+
+                                    $query=$sql->Prepare("INSERT INTO  `perez_members` SET   `MEMBER_CODE`='$row[MEMBER_CODE]', `BARCODE`='$row[BARCODE]', `DATE_JOINED`='$row[DATE_JOINED]', `DATE_BAPTISTED`='$row[DATE_BAPTISTED]', `TITLE`='$row[TITLE]', `FIRSTNAME`='$row[FIRSTNAME]', `LASTNAME`='$row[LASTNAME]', `OTHERNAMES`='$row[OTHERNAMES]', `ARCHIVED`='$row[ARCHIVED]', `CONTACT`='$row[CONTACT]', `DECEASED`='$row[DECEASED]', `GENDER`='$row[GENDER]', `DOB`='$row[DOB]', `AGE`='$row[AGE]', `MARITAL_STATUS`='$row[MARITAL_STATUS]', `ANNIVERSARY`='$row[ANNIVERSARY]', `EMAIL`='$row[EMAIL]', `PHONE`='$row[PHONE]', `TELEPHONE`='$row[TELEPHONE]', `VOLUNTEER`='$row[VOLUNTEER]', `RESIDENTIAL_ADDRESS`='$row[RESIDENTIAL_ADDRESS]', `CONTACT_ADDRESS`='$row[CONTACT_ADDRESS]', `HOMETOWN`='$row[HOMETOWN]', `REGION`='$row[RELIGION]', `COUNTRY`='$row[COUNTRY]', `SECURITY_CODE`='$row[SECURITY_CODE]', `RECEIPT`='$row[RECEIPT]', `GIVING_NUMBER`='$row[GIVING_NUMBER]', `FAMILY_RELATIONSHIP`='$row[FAMILY_RELATIONSHIP]', `MUSIC_TEAM`='$row[MUSIC_TEAM]', `DEMOGRAPHICS`='$row[DEMOGRAPHICS]', `SERVICE_TYPE`='$row[SERVICE_TYPE]', `LOCATION`='$row[LOCATION]', `BRANCH`='$row[BRANCH]', `OCCUPATION`='$row[OCCUPATION]', `PLACE_OF_WORK`='$row[PLACE_OF_WORK]', `NAME_OF_SPOUSE`='$row[NAME_OF_SPOUSE]', `OCUPATION_OF_SPOUSE`='$row[OCUPATION_OF_SPOUSE]', `SPOUSE_PHONE`='$row[SPOUSE_PHONE]', `SSNIT`='$row[SSNIT]', `NEXT_OF_KIN`='$row[NEXT_OF_KIN]', `NEXT_OF_KIN_ADDRESS`='$row[NEXT_OF_KIN_ADDRESS]', `NEXT_OF_KIN_PHONE`='$row[NEXT_OF_KIN_PHONE]', `FATHERS_NAME`='$row[FATHERS_NAME]', `FATHERS_DOB`='$row[FATHERS_DOB]', `MOTHERS_NAME`='$row[MOTHERS_NAME]', `MOTHERS_DOB`='$row[MOTHERS_DOB]', `PHONE2`='$row[PHONE2]', `PEOPLE_CATEGORY`='$row[PEOPLE_CATEGORY]', `MINISTRY`='$row[MINISTRY]' ");
+                                    if($sql->Execute($query)){
+                                        header("location:dashboard?success=1");
+                                    }
+
+                                }
+
+
+                }
+
+
+            }
+          }
+        }
+          if(isset($_POST[sms])){
+              $q = $_SESSION[last_query];
+                $query2 = $sql->Prepare($q);
+                $rt = $sql->Execute($query2);
+
+                While ($stmt = $rt->FetchRow()) {
+                    $arrayphone = $stmt[PHONE];
+
+                    if ($a = $sms->sendSMS1($arrayphone, $_POST[message])) {
+                        $_SESSION[last_query] = "";
+
+                        header("location:members?success=1");
+                    }
+                }
+             }
+?>
+<?php include("./_library_/_includes_/header.inc"); ?>
 <body id="app" class="app off-canvas">
-	
+     
 	<!-- header -->
 	<header class="site-head" id="site-head">
 		
@@ -19,418 +137,518 @@
 
 		<!-- content-here -->
 		<div class="content-container" id="content">
-			<!-- dashboard page -->
-			<div class="page page-dashboard">
+                    <div class="modal fade" id="sms" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Send SMS</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                            <form action="members?sms=1" method="POST" class="form-horizontal" role="form" enctype="multipart/form-data">
+                                                 <div class="card-body card-padding">
+                                                     <div class="form-group">
+                                                         <label for="inputPassworsd3" class="col-sm-2 control-label">Message</label>
+                                                         <div class="col-sm-10">
 
-				<div class="page-wrap">
+                                                             <div class="fg-line">
+                                                                  
+                                                                 <textarea required="" class="form-control" name="message" rows="9" ></textarea>                                    
+                                                             </div>
+                                                         </div>
+                                                     </div>
+                                                <div class="modal-footer">
+                                                      
+                                                    <button type="submit" name="sms" class="btn btn-success">Send <i class="fa fa-sm"></i></button>
+                                                          <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+                                                </div>
+                                                  
+                                                 </div>
+                                             </div>  
+                                            </form>
+                                  </div>
+                                </div>
+                        </div>
+                        <div class="modal fade" id="mount" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Import Bulk Members</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                            <form action="dashboard.php" method="POST" class="form-horizontal" role="form" enctype="multipart/form-data">
+                                                 <div class="card-body card-padding">
+                                                     <div class="form-group">
+                                                         <label for="inputPassworsd3" class="col-sm-2 control-label">select csv file</label>
+                                                         <div class="col-sm-10">
 
-					<div class="row">
-						<!-- dashboard header -->
-						<div class="col-md-12">
-							<div class="dash-head clearfix mt15 mb20">
-								<div class="left">
-									<h4 class="mb5 text-light">Welcome to Materia</h4>
-									<p class="small"><strong>AngularJS</strong> admin app</p>
-								</div>
-								<div class="right mt10">
-									<span data-Type="bar" data-BarColor="#4CAF50" class="sparkline">10,8,4,10,7,0,3,4,6,5,9,12,9</span>
-									<h5 class="text-bold mb0 mt5">$1,33,404</h5>
-								</div>
-							</div>
-						</div>
-					</div> <!-- #end row -->
-
-					<!-- mini boxes -->
-					<div class="row">
-						<div class="col-md-3 col-sm-6">
-							<div class="panel panel-default mb20 mini-box panel-hovered">
-								<div class="panel-body">
-									<div class="clearfix">
-										<div class="info left">
-											<h4 class="mt0 text-primary text-bold">$30,200</h4>
-											<h5 class="text-light mb0">All Earnings</h5>
-										</div>
-										<div class="right ion ion-ios-pulse icon"></div>
-									</div>
-								</div>
-								<div class="panel-footer clearfix panel-footer-sm panel-footer-primary">
-									<p class="mt0 mb0 left">% change</p>
-									<span class="sparkline right" data-Type="bar" data-BarColor="#fff" data-Width="1.15em" data-Height="1.15em">10,8,9,3,5,8,5</span>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-md-3 col-sm-6">
-							<div class="panel panel-default mb20 mini-box panel-hovered">
-								<div class="panel-body">
-									<div class="clearfix">
-										<div class="info left">
-											<h4 class="mt0 text-success text-bold">320K+</h4>
-											<h5 class="text-light mb0">Page Views</h5>
-										</div>
-										<div class="right ion ion-ios-people-outline icon"></div>
-									</div>
-								</div>
-								<div class="panel-footer clearfix panel-footer-sm panel-footer-success">
-									<p class="mt0 mb0 left">% change</p>
-									<span class="right sparkline" data-Type="bar" data-BarColor="#fff" data-Width="1.15em" data-Height="1.15em">3,5,9,8,6,10</span>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-md-3 col-sm-6">
-							<div class="panel panel-default mb20 mini-box panel-hovered">
-								<div class="panel-body">
-									<div class="clearfix">
-										<div class="info left">
-											<h4 class="mt0 text-info text-bold">110</h4>
-											<h5 class="text-light mb0">Task Completed</h5>
-										</div>
-										<div class="right ion ion-ios-flask-outline icon"></div>
-									</div>
-								</div>
-								<div class="panel-footer clearfix panel-footer-sm panel-footer-info">
-									<p class="mt0 mb0 left">% change</p>
-									<span class="right sparkline" data-Type="bar" data-BarColor="#fff" data-Width="1.15em" data-Height="1.15em">5,9,9,8,6,6</span>
-								</div>
-							</div>
-						</div>
-
-						<div class="col-md-3 col-sm-6">
-							<div class="panel panel-default mb20 mini-box panel-hovered">
-								<div class="panel-body">
-									<div class="clearfix">
-										<div class="info left">
-											<h4 class="mt0 text-pink text-bold">10K+</h4>
-											<h5 class="text-light mb0">Downloads</h5>
-										</div>
-										<div class="right ion ion-ios-cloud-download-outline icon"></div>
-									</div>
-								</div>
-								<div class="panel-footer clearfix panel-footer-sm panel-footer-pink">
-									<p class="mt0 mb0 left">% change</p>
-									<span class="sparkline right" data-Type="bar" data-BarColor="#fff" data-Width="1.15em" data-Height="1.15em">6,4,9,10,6,2</span>
-								</div>
-							</div>
-						</div>
-						<!-- #end mini boxes -->
-					</div> <!-- #end row -->
-
-					<!-- row -->
-					<div class="row">
-
-						<!-- Analytics -->
-						<div class="col-md-7">
-							<div class="panel panel-default mb20 panel-hovered analytics">
-								<div class="panel-heading">Analytics</div>
-								<div class="panel-body">
-									<div id="c3chartAnalytics"></div>
-									
-									<div class="inline-charts mt30">
-										<ul class="list-unstyled clearfix">
-											<li class="col-md-3 col-xs-6">
-												<span class="sparkline" data-FillColor="#fff" data-LineColor="#3F51B5" data-Width="3em" data-Height="3em">9,3,5,8,6,5,2,0,7,5</span>
-												<p class="mt5"><strong>Downloads</strong></p>
-											</li>
-											<li class="col-md-3 col-xs-6">
-												<span class="sparkline" data-LineColor="#FDD835" data-FillColor="#fff"  data-Width="3em" data-Height="3em">2,3,5,9,8,6,9,10,4</span>
-												<p class="mt5"><strong>Uploads</strong></p>
-											</li>
-											<li class="col-md-3 col-xs-6">
-												<span class="sparkline" data-FillColor="#fff" data-LineColor="#4CAF50" data-Width="3em"  data-Height="3em">3,5,9,8,6,10,2,8,7</span>
-												<p class="mt5"><strong>Page Views</strong></p>
-											</li>
-											<li class="col-md-3 col-xs-6">
-												<span class="sparkline" data-FillColor="#fff" data-LineColor="#E91E63" data-Width="3em" data-Height="3em">3,5,9,8,6,9,7,4,10</span>
-												<p class="mt5"><strong>Unique Visits</strong></p>
-											</li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							
-						</div> <!-- #end analytics -->
-
-
-						<!-- recent activities -->
-						<div class="col-md-5">
-							<div class="panel panel-default mb20 activities">
-								<div class="panel-heading">Activities</div>
-								<div class="panel-body">
-									<ul class="list-unstyled">
-										<li class="primary">
-											<span class="point"></span>
-											<span class="time small text-muted">2 mins ago</span>
-											<p>Jonathan attend a meeting.</p>
-										</li>
-										<li class="success">
-											<span class="point"></span>
-											<span class="time small text-muted">1 hour ago</span>
-											<p>Designed the wordpress theme</p>
-										</li>
-										<li class="warning">
-											<span class="point"></span>
-											<span class="time small text-muted">4:30 p.m</span>
-											<p>Lily created her account.</p>
-										</li>
-										<li class="info">
-											<span class="point"></span>
-											<span class="time small text-muted">2 days ago</span>
-											<p>Your domain will expired in 13 days.</p>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<!-- #end recent activities -->
-						
-
-						<div class="col-md-5">
-							<div class="panel panel-default mb20 panel-hovered">
-								<div class="panel-heading">Usage Stats</div>
-								<div class="panel-body">
-									<ul class="list-unstyled">
-										<li class="col-md-4 col-sm-4">
-											<div data-percent="80" class="easypiechart storageOpts">
-												<div class="data">
-													<strong class="xsmall">80%</strong>
-													<p class="xsmall">Storage</p>
-												</div>
-											</div>
-										</li>
-										<li class="col-md-4 col-sm-4">
-											<div data-percent="35" class="easypiechart serverOpts">
-												<div class="data">
-													<strong class="xsmall">35%</strong>
-													<p class="xsmall">Server</p>
-												</div>
-											</div>
-										</li>
-										<li class="col-md-4 col-sm-4">
-											<div data-percent="54" class="easypiechart clientOpts">
-												<div class="data">
-													<strong class="xsmall">54%</strong>
-													<p class="xsmall">Client</p>
-												</div>
-											</div>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div> <!-- #end row -->
-
-							<!-- row -->
-					<div class="row">
-
-						<!-- profile -->
-						<div class="col-md-4 col-sm-6">
-							<div class="panel panel-default mb20 panel-hovered profile-widget">
-								<div class="panel-body">
-									<div class="clearfix mb15 top-info">
-										<div class="left-side">
-											<h3 class="text-light mt0">Robert Smith</h3>
-											<p><strong>About:&nbsp;</strong>WebDesigner</p>
-											<p><strong>Hobbies:&nbsp;</strong>Listening Music, learn new things and playing guitar.</p>
-											<p>
-												<strong>Skills: </strong> 
-												<label class="label label-pink">html5</label>
-												<label class="label label-pink">css3</label>
-												<label class="label label-pink">jquery</label>
-											</p>
-										</div>
-										<div class="right-side">
-											<img src="images/admin.jpg" alt="user">
-											<div class="rating text-warning">
-												<input type="hidden" class="rating-control" value="4" data-filled="fa fa-star" data-empty="fa fa-star-o" />
-											</div>
-										</div>
-									</div>
-									<ul class="user-badges list-unstyled row">
-										<li class="col-xs-4">
-											<i class="ion ion-ios-chatboxes-outline text-success"></i>
-											<strong>192</strong>
-											<button class="btn btn-success btn-xs mt15">View</button>
-										</li>
-										<li class="col-xs-4">
-											<i class="ion ion-ios-heart-outline text-primary"></i>
-											<strong>5K+</strong>
-											<button class="btn btn-info btn-xs mt15">Follow</button>
-										</li>
-										<li class="col-xs-4">
-											<i class="ion ion-ios-body text-danger"></i>
-											<strong>32</strong>
-											<button class="btn btn-primary btn-xs mt15">Profile</button>
-										</li>
-									</ul>
-								</div> <!-- #end panel-body -->
-							</div>
-						</div>
-
-						<!-- browser share -->
-						<div class="col-md-4 col-sm-6">
-							<div class="panel panel-default mb20 panel-hovered">
-								<div class="panel-heading">Browser Share</div>
-								<div class="panel-body text-center">
-									<div id="c3chartbrowsershare"></div>
-								</div>
-							</div>
-						</div>
-
-						
-						<!-- list widgets -->
-						<div class="col-md-4 col-sm-12">
-							<div class="panel panel-default mb20 list-widget">
-								<ul class="list-unstyled clearfix">
-									<li>
-										<i class="fa fa-file-o"></i>
-										<span class="text">File List</span>
-										<span class="badge badge-xs badge-primary right">100</span>
-									</li>
-									<li>
-										<i class="fa fa-comments-o"></i>
-										<span class="text">Messages</span>
-										<span class="badge badge-xs badge-info right">40+</span>
-									</li>
-									<li>
-										<i class="fa fa-bullhorn"></i>
-										<span class="text">Notifications</span>
-										<span class="badge badge-xs badge-success right">22</span>
-									</li>
-									<li>
-										<i class="fa fa-hdd-o"></i>
-										<span class="text">Bandwidth usage</span>
-										<span class="badge badge-xs badge-danger right">80%</span>
-									</li>
-									<li>
-										<i class="fa fa-microphone"></i>
-										<span class="text">Calls Attended</span>
-										<span class="badge badge-xs badge-info circle right">5</span>
-									</li>
-									<li>
-										<i class="fa fa-bookmark-o"></i>
-										<span class="text">Bookmarks Today</span>
-										<span class="badge badge-xs circle badge-warning right">2</span>
-									</li>
-									<li>
-										<i class="fa fa-bug"></i>
-										<span class="text">Bug Fix Today</span>
-										<span class="badge badge-xs circle badge-danger right">8</span>
-									</li>
-								</ul>
-							</div>
-						</div>
+                                                             <div class="fg-line">
+                                                                  
+                                                                          <input type="file" required="" class="form-control" name="file"  >                                     
+                                                             </div>
+                                                         </div>
+                                                     </div>
+                                                <div class="modal-footer">
+                                                      
+                                                        <button type="submit" name="go" class="btn btn-success">Save</button>
+                                                          <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+                                                </div>
+                                                  
+                                                 </div>
+                                             </div>  
+                                            </form>
+                                  </div>
+                                </div>
+                        </div>
+			<div class="page page-ui-tables">
+				<ol class="breadcrumb breadcrumb-small">
+					<li>Church Administration</li>
+					<li class="active"><a href="#">Members</a></li>
+				</ol>
+                            
+                            <div class="page-wrap">
+                                <div class="note note-success note-bordered">
+						 
+                                                <div style="margin-top:-2.5%;float:right">
+                                                     
+                                                     <button  style="margin-top: -59px" name="mail"  class="btn btn-success waves-effect">Mail<i class="md md-email"></i></button>
+                                                        <button  style="margin-top: -59px"  data-target="#mount" data-toggle="modal"  class="btn btn-success waves-effect">Import csv<i class="md md-cloud-upload"></i></button>
+                                                          <button  style="margin-top: -59px"   class="btn btn-pink waves-effect" data-target="#sms"  data-toggle="modal">Send SMS<i class="md md-sms"></i></button>
+                                                        <button   class="btn btn-primary  waves-effect waves-button dropdown-toggle" style="margin-top: -59px" data-toggle="dropdown"><i class="md md-save"></i> Export Data</button>
+                                                        <ul class="dropdown-menu">
+                                            
+                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'csv',escape:'false'});"><img src='assets/icons/csv.png' width="24"/> CSV</a></li>
+                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'txt',escape:'false'});"><img src='assets/icons/txt.png' width="24"/> TXT</a></li>
+                                                            <li class="divider"></li>
+                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'excel',escape:'false'});"><img src='assets/icons/xls.png' width="24"/> XLS</a></li>
+                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'doc',escape:'false'});"><img src='assets/icons/word.png' width="24"/> Word</a></li>
+                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'powerpoint',escape:'false'});"><img src='assets/icons/ppt.png' width="24"/> PowerPoint</a></li>
+                                                            <li class="divider"></li>
+                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'png',escape:'false'});"><img src='assets/icons/png.png' width="24"/> PNG</a></li>
+                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'pdf',escape:'false'});"><img src='assets/icons/pdf.png' width="24"/> PDF</a></li>
+                                                         </ul>
+                                              </div>
+                             <div><?php $notify->Message(); ?></div>
 					</div>
-					<!-- #end row -->
-
-					<!-- row -->
-					<div class="row">
-						
-						<!-- todo list -->
-						<div class="col-md-5">
-							<div class="panel panel-default panel-hovered mb20 todo" id="todoApp">
-							    <div class="panel-heading">
-							    	<span>Todo List</span>
-							    </div>
-							    <div class="panel-body">
-							    	<ul class="list-unstyled todo-list">
-							    		<!-- this will be add via jquery, as we don't have ngrepeat in jquery like angular -->
-							    		<!-- <li>
-							    			<div class="ui-checkbox ui-checkbox-pink">
-							    				<label>
-							    					<input type="checkbox" class="toggle"/>
-							    					<span></span>
-							    				</label>
-							    			</div>
-
-							    			<div class="todo-title">
-							    				{{todo.title}}
-							    				<form class="todo-edit">
-							    					<input type="text"/>
-							    				</form>
-							    			</div>
-							    			<span class="destroy ion ion-close right"></span>
-							    		</li> -->
-							    	</ul>
-							    	<!-- Add todo input -->
-							    	<form id="input-todo" class="input-todo">
-							    		<input placeholder="Write some todo task here..." type="text">
-							    	</form>
-							    </div> <!-- #end panel-body -->
-							    <div class="panel-footer todo-foot clearfix" id="todo-filters">
-							    	<div class="left">
-							    		<button class="btn btn-pink btn-xs right toggle-all">Toggle All</button>
-							    	</div>
-							    	<div class="right">
-							    		<span class="remaining btn btn-xs btn-default">left</span>
-							    		<button class="btn btn-pink btn-xs clear-completed">Clear Completed</button>
-							    	</div>
-							    </div>
-							</div> <!-- #end panel -->
-						</div>
-						<!-- #end todo-list -->
+                                <div class="row">
+                                    <!-- Basic Table -->
+                                    <div class="col-md-12">
+                                        <div class="panel panel-lined panel-hovered mb20 table-responsive basic-table">
+                                            <div class="panel-heading panel-info">
+                                                <a href="addMember.php?new=1"  style="margin-top: -19px;margin-left: -25px"  title="Add new member"  class="btn btn-success waves-effect">Add Member<i class="fa fa-plus-circle"></i></a> 
+                                                <div class="btn-group btn-group-sm right">
+                                                    <button type="button" class="btn btn-default btable-bordered" data-table-class="table-bordered">Bordered</button>
+                                                    <button type="button" class="btn btn-default btable-striped" data-table-class="table-stiped">Striped</button>
+                                                    <button type="button" class="btn btn-default btable-condensed" data-table-class="table-condensed">Condensed</button>
+                                                    <button type="button" class="btn btn-default btable-hover" data-table-class="table-hover">Hover</button>
+                                                </div>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="table-responsive">
+                                                        <table  width=" " border="0">
+                                        <tr>
 
 
-						<!-- Project stats -->
-						<div class="col-md-7">
-							<div class="panel panel-default mb20 panel-hovered project-stats table-responsive">
-								<div class="panel-heading">Project Stats</div>
-								<div class="panel-body">	
-									<table class="table">
-										<thead>
-											<tr>
-												<th>Id</th>
-												<th class="col-sm-5">Project</th>
-												<th class="col-sm-1">Progress</th>
-												<th>Date</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td>101</td>
-												<td>Designing Wordpress Theme</td>
-												<td class="text-center">
-													<span class="sparkline" data-Type="pie" data-SliceColors="[#4CAF50,#eee]" data-Width="2em" data-Height="2em">2,8</span>
-												</td>
-												<td>20<sup>th</sup> Jan 2015</td>
-											</tr>
+                                     <td width="20%">
 
-											<tr>
-												<td>220</td>
-												<td>Convert to SASS</td>
-												<td class="text-center">
-													<span class="sparkline" data-Type="pie" data-SliceColors="[#4CAF50,#eee]" data-Width="2em" data-Height="2em">4,6</span>
-												</td>
-												<td>28<sup>th</sup> Jan 2015</td>
-											</tr>
+                                    <select class='form-control select2_sample1'     style="margin-left:-3%; width:75% " onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?branch='+escape(this.value);" >
+                                <option value=''>Filter by branch</option>
+                                        <option value='All branch'>All Branches</option>
+                                    <?php 
+                                      global $sql;
 
-											<tr>
-												<td>310</td>
-												<td>Adding animations to template</td>
-												<td class="text-center">
-													<span class="sparkline" data-Type="pie" data-SliceColors="[#4CAF50,#eee]" data-Width="2em" data-Height="2em">7,3</span>
-												</td>
-												<td>02<sup>nd</sup> Feb 2015</td>
-											</tr>
+                                          $query2=$sql->Prepare("SELECT * FROM perez_branches");
 
-											<tr>
-												<td>405</td>
-												<td>Lorem ipsum dolar sit amet</td>
-												<td class="text-center">
-													<span class="sparkline" data-Type="pie" data-SliceColors="[#4CAF50,#eee]" data-Width="2em" data-Height="2em">4,6</span>
-												</td>
-												<td>28<sup>th</sup> Mar 2015</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div> 
-					</div> <!-- #end row -->
 
-				</div> <!-- #end page-wrap -->
+                                          $query=$sql->Execute( $query2);
+
+
+                                       while( $row = $query->FetchRow())
+                                         {
+
+                                         ?>
+                                         <option <?php if($_SESSION[branch]==$row['CODE']){echo 'selected="selected"'; }?> value="<?php echo $row['CODE']; ?>"        ><?php echo $row['NAME']; ?></option>
+
+                                  <?php }?>
+                                      </select>
+
+                            </td>
+                             
+				 
+                               <td>&nbsp;</td>
+                                <td width="25%">
+                                     <select class='form-control'      style="margin-left:-14%;  width:48% " onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?gender='+escape(this.value);" >
+                                         <option value=''>by gender</option>
+                                        <option value='All gender'>All gender</option>
+                                        <option value='Male'<?php if($_SESSION[gender]=='Male'){echo 'selected="selected"'; }?>>Male</option>
+                                        <option value='Female'<?php if($_SESSION[gender]=='Female'){echo 'selected="selected"'; }?>>Female</option>
+                                         
+                                    </select>
+
+                                </td>
+                              <td width="25%">
+                                   <select class='form-control' style="margin-left:-60%;  width:69% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?ministry='+escape(this.value);"     >
+                                       <option value=''>Filter by Ministries</option>
+                                        <option value='All ministry'>All Ministries</option>
+                                                          
+                                                      <?php 
+                                                      global $sql;
+
+                                                      $query2=$sql->Prepare("SELECT * FROM perez_ministries");
+
+
+                                                        $query=$sql->Execute( $query2);
+
+
+                                                     while( $row = $query->FetchRow())
+                                                       {
+
+                                                       ?>
+                                                       <option value="<?php echo $row['ID']; ?>"   <?php if($_SESSION[ministry]==$row['ID']){echo "selected='selected'";} ?>      ><?php echo $row['NAME']; ?></option>
+
+                                                    <?php }?>
+                                                       
+                                                   </select>
+
+                                                </td>     
+                                         <td>&nbsp;</td>
+                                         <td width="25%">
+                                   <select class='form-control' style="margin-left:-87%;  width:80% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?category='+escape(this.value);"     >
+                                       <option value=''>Filter by member category</option>
+                                        <option value='All category'>All Categories</option>
+                                                          
+                                                      <?php 
+                                                      global $sql;
+
+                                                      $query2=$sql->Prepare("SELECT * FROM perez_member_category");
+
+
+                                                        $query=$sql->Execute( $query2);
+
+
+                                                     while( $row = $query->FetchRow())
+                                                       {
+
+                                                       ?>
+                                                       <option value="<?php echo $row['ID']; ?>"   <?php if($_SESSION[category]==$row['ID']){echo "selected='selected'";} ?>      ><?php echo $row['CATEGORY']; ?></option>
+
+                                                    <?php }?>
+                                                       
+                                                   </select>
+
+                                                </td>     
+                                         <td>&nbsp;</td>
+                                          <td width="25%">
+                                            <select class='form-control' style="margin-left:-503%;  width:358% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?service='+escape(this.value);"     >
+                                            <option value=''>Filter by Service category</option>
+                                            <option value='All service'>All Service</option>
+                                                          
+                                                      <?php 
+                                                      global $sql;
+
+                                                      $query2=$sql->Prepare("SELECT * FROM perez_service_type");
+
+
+                                                        $query=$sql->Execute( $query2);
+
+
+                                                     while( $row = $query->FetchRow())
+                                                       {
+
+                                                       ?>
+                                                       <option value="<?php echo $row['ID']; ?>"   <?php if($_SESSION[service]==$row['ID']){echo "selected='selected'";} ?>      ><?php echo $row['SERVICE']; ?></option>
+
+                                                    <?php }?>
+                                                       
+                                                   </select>
+
+                                                </td>     
+                                         <td>&nbsp;</td>
+                                          
+                                          <td width="25%">
+                                            <select class='form-control' style="margin-left:-392%;  width:565% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?demo='+escape(this.value);"     >
+                                            <option value=''>by demographics</option>
+                                            <option value='All demographics'>All Demographics</option>
+                                                          
+                                                      <?php 
+                                                      global $sql;
+
+                                                      $query2=$sql->Prepare("SELECT * FROM perez_demographics");
+
+
+                                                        $query=$sql->Execute( $query2);
+
+
+                                                     while( $row = $query->FetchRow())
+                                                       {
+
+                                                       ?>
+                                                       <option value="<?php echo $row['ID']; ?>"   <?php if($_SESSION[demographics]==$row['ID']){echo "selected='selected'";} ?>      ><?php echo $row['NAME']; ?></option>
+
+                                                    <?php }?>
+                                                       
+                                                   </select>
+
+                                                </td>   
+                                                
+                                                    <td>&nbsp;</td>
+                                          
+                                           <td width="25%">
+                                            <select class='form-control' style="margin-left:-51%;  width:565% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?team='+escape(this.value);"     >
+                                            <option value=''>filter by team</option>
+                                            <option value='All team'>All Teams</option>
+                                                          
+                                                      <?php 
+                                                      global $sql;
+
+                                                      $query2=$sql->Prepare("SELECT * FROM perez_team");
+
+
+                                                        $query=$sql->Execute( $query2);
+
+
+                                                     while( $row = $query->FetchRow())
+                                                       {
+
+                                                       ?>
+                                                       <option value="<?php echo $row['ID']; ?>"   <?php if($_SESSION[team]==$row['ID']){echo "selected='selected'";} ?>      ><?php echo $row['NAME']; ?></option>
+
+                                                    <?php }?>
+                                                       
+                                                   </select>
+
+                                                </td> 
+                                                     <td>&nbsp;</td>
+                                          
+                                           <td width="25%">
+                                            <select class='form-control' style="margin-left:256%;  width:565% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?country='+escape(this.value);"     >
+                                            <option value=''>filter by country</option>
+                                            <option value='All country'>All Countries</option>
+                                                          
+                                                      <?php 
+                                                      global $sql;
+
+                                                      $query2=$sql->Prepare("SELECT * FROM perez_country");
+
+
+                                                        $query=$sql->Execute( $query2);
+
+
+                                                     while( $row = $query->FetchRow())
+                                                       {
+
+                                                       ?>
+                                                       <option value="<?php echo $row['Code']; ?>"   <?php if($_SESSION[nation]==$row['Code']){echo "selected='selected'";} ?>      ><?php echo $row['Name']; ?></option>
+
+                                                    <?php }?>
+                                                       
+                                                   </select>
+
+                                                </td>
+                                        </tr>
+                                       </table>
+                                                </div>
+                                                <!-- end filters   -->
+                                                <div class="row">
+                                                    <div class="panel panel-collapse">
+                                                        <div class="panel-heading" role="tab" id="headingTwo">
+                                                            <h4 class="panel-title">
+                                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                                    <center>Click to Send SMS</center>
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                            <div class="panel-body">
+                                                                <form id="form2" name="form2" method="post" action="dashboard?send=1">
+                                                                    <label></label>
+                                                                    <table width="640" border="0" align="center">
+                                                                        <tr>
+                                                                            <td colspan="2" bgcolor="#91B7D9">Select members to send sms</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td colspan="2" bgcolor="#2D5982">
+                                                                                autocomplete goes here
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td bgcolor="#91B7D9"><div align="center"><strong>Text Message</strong></div></td>
+                                                                            <td valign="top" bgcolor="#91B7D9"><div align="center"><strong>Fields Available</strong></div></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td width="419" height="110" bgcolor="#2D5983"><div align="center">
+                                                                                    <textarea name="sms" id="sms" cols="45" rows="5" required=""></textarea>
+                                                                                </div></td>
+                                                                            <td width="211" valign="top" bgcolor="#2D5983"><div align="center">
+                                                                                    <script>
+                                                                                                        function inse(inco){
+                                                                                                        var curr=document.getElementById('sms');
+                                                                                                        curr.value=curr.value+"["+inco+"]"
+                                                                                                        }
+                                                                                    </script>
+                                                                                    <select name="select"  ondblclick="inse(this.value)" size="6" id="select" required="">
+                                                                                        <option value="MEMBER_CODE"> Student ID</option>
+                                                                                        <option value="SURNAME">Surname</option>
+                                                                                        <option value="OTHERNAMES">Other Names</option>
+                                                                                        <option value="CLASS">Class</option>
+                                                                                        <option value="BILLS">Total Bills</option>
+                                                                                        <option value="PTA_OWING">PTA</option>
+                                                                                        <option value="BILLS_PAID">Bills paid</option>
+                                                                                        <option value="ACADEMIC_OWING">Academic Owing</option>
+                                                                                        <option value="OTHERS_OWING">Other Bills</option>
+
+                                                                                    </select>
+                                                                                </div></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td colspan="" style="text-align: center"> 
+                                                                                <div align="center" style="margin-left: 32%">
+                                                                                    <p></p>
+                                                                                        <center>   <button type="submit" class="btn btn-success waves-effect" name="send"   />Send SMS <i class="md md-sms"></i></button></center>
+                                                                                    </div>
+                                                                                 </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                    <label> </label>
+                                                                    <label></label>
+                                                                </form>
+
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                 <hr>
+                                                <div class="table-responsive">
+                                                    <?php
+                                                                                               
+                                                            $branch=$_SESSION[branch];
+                                                            $gender=$_SESSION[gender];
+                                                            $ministry=$_SESSION[ministry];
+                                                            $status=$_SESSION[deceased];
+                                                            $nation=$_SESSION[nation];
+                                                            $team=$_SESSION[team];
+                                                            $demo=$_SESSION[demo];
+                                                            $service=$_SESSION[service];
+                                                            $category=$_SESSION[category];
+                                                            $search=$_POST[search];
+                                                            $content=$_POST[content];
+                                            
+
+                                                            if($branch=="All branch" or $branch==""){ $branch=""; }else {$branch_=" and  BRANCH = '$branch' "  ;}
+                                                            if($ministry=="All ministry" or $ministry==""){ $ministry=""; }else {$ministry_="and MINISTRY = '$ministry' "  ;}
+                                                            if($gender=="All gender" or $gender=="" ){ $gender=""; }else {$gender_=" and GENDER = '$gender' "  ;}
+                                                            if($status=="All status" or $status=="" ){ $status=""; }else {$status_=" and DECEASED = '$status' "  ;}
+                                                            if($nation=="All country" or $nation=="" ){ $nation=""; }else {$nation_=" and COUNTRY = '$nation' "  ;}
+                                                             if($team=="All team" or $team=="" ){ $team=""; }else {$team_=" and MUSIC_TEAM = '$team' "  ;}
+                                                           if($demo=="All demographics" or $demo=="" ){ $demo=""; }else {$demo_=" and DEMOGRAPHICS = '$demo' "  ;}
+                                                           if($service=="All service" or $service=="" ){ $service=""; }else {$service_=" and SERVICE_TYPE = '$service' "  ;}
+                                                            if($category=="All category" or $category=="" ){ $category=""; }else {$category_=" and PEOPLE_CATEGORY = '$category' "  ;}
+                                                            if($search=="" ){ $search=""; }else {$search_="AND $content LIKE '$search' "  ;}
+
+                                                            $query="SELECT  * FROM  perez_members  where 1 $branch_  $ministry_  $search_ $gender_ $nation_ $status_ $team_ $category_ $demo_ $service_" ;
+                                                            $_SESSION[last_query]=$query; 
+
+                                                            $rs = $sql->PageExecute($query,RECORDS_BY_PAGE,CURRENT_PAGE);
+                                                            $recordsFound = $rs->_maxRecordCount;    // total record found
+                                                           if (!$rs->EOF) 
+
+                                                           {
+                                               
+                                                    ?>
+                                                <table id="gad" class="table   display" >
+                                                    <thead>
+                                                        <tr>
+                                                             <th>#</th>
+                                                            <th class="col-lg-1"><button type="button"  onclick="return confirm('Are you sure you want to delete this members??')" class="btn btn-default btn-sm md md-delete"></th>
+                                                            <th>Photo</th>
+                                                            <th>Member Code</th>
+                                                            <th>Name</th>
+                                                            <th>Gender</th>
+                                                            <th>Date Joined</th>
+                                                            <th>Date Baptised</th>
+                                                             
+                                                            <th>Phone</th>
+                                                            <th>Location</th>
+                                                            <th>Ministry</th>
+                                                            <th>Demographic</th>
+                                                            <th>Occupation</th>
+                                                            <th>Category</th>
+                                                            <th colspan="5" style="text-align: center">Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <p align="center"style="color:red">  <?php echo $recordsFound ?> Records </p>
+                                                    <tbody>
+                                                        <?php
+
+                                                          $count=0;
+                                                           while($rtmt=$rs->FetchRow()){
+                                                                                   $count++;
+
+
+                                                              ?>
+                                                           <tr>
+                                                               <td><?php echo $count ?></td>
+                                                               <td>
+                                                                       <div class="ui-checkbox ui-checkbox-primary ml5">
+                                                                               <label><input type="checkbox"><span></span>
+                                                                               </label>
+                                                                       </div>
+                                                                </td>
+                                                             <td><a href="addMember.php?member=<?php echo  $rtmt[MEMBER_CODE] ?>&&update"><img  width="80" height="60"<?php   $pic=  $help->pictureid($rtmt[MEMBER_CODE]);  $help->picture("photos/members/$pic.JPG")  ?>   src="<?php echo file_exists("photos/members/$pic.JPG") ? "photos/members/$pic.JPG":"photos/members/user.jpg";?>" alt=" Picture of Student Here"    /></a></td>
+                                                             <td style="text-align:"><?php echo $rtmt[MEMBER_CODE] ?></td>
+                                                             <td style="text-align:"><?php echo $rtmt[TITLE]." ". $rtmt[LASTNAME]." ,".$rtmt[FIRSTNAME]." ".$rtmt[OTHERNAMES] ?></td>
+                                                             <td style="text-align:"><?php echo $rtmt[GENDER] ?></td>
+                                                             <td style="text-align:"><?php echo date("d/m/Y",$rtmt[DATE_JOINED]); ?></td>
+                                                             <td style="text-align:"><?php echo date("d/m/Y",$rtmt[DATE_BAPTISTED]); ?></td>
+                                                              
+                                                             <td style="text-align:"><?php echo $rtmt[PHONE] ?></td>
+                                                             <td style="text-align:"><?php echo $rtmt[LOCATION] ?></td>
+                                                             <td style="text-align:"><?php echo $member->getMinistry($rtmt[MINISTRY]) ?></td>
+                                                             <td style="text-align:"><?php echo $rtmt[DEMOGRAPHICS] ?></td>
+                                                             <td style="text-align:"><?php echo $rtmt[OCCUPATION] ?></td>
+                                                             <td style="text-align:"><?php echo $rtmt[PEOPLE_CATEGORY] ?></td>
+                                                             <td><a href="addMember?member=<?php echo  $rtmt[MEMBER_CODE] ?>&&update">Edit <i class="md md-edit" title="click to edit info"></i></a></td>
+                                                             <td>Mail<i class="md md-email" title="click to send email"></i> </td>
+                                                             <td>SMS<i class="md md-sms" title="click to send  sms"></i> </td>
+                                                             <td>vcard<i class="md md-contacts" title="click to view vcard"></i> </td>
+                                                             <td>Print<i class="md md-print" title="click to print"></i> </td>
+                                                             <td><a onclick="return confirm('Are you sure you want to delete this person??')" href="members?delete=<?php echo  $rtmt[MEMBER_CODE] ?>"Delete<i class="md md-delete" title="click to delete"></i> </a></td>
+                                                            
+                                                        </tr>
+                                                         <?php }?>
+                                                    </tbody>
+                                                </table>
+                                                    <br/>
+                                                <center><?php
+                                                    $GenericEasyPagination->setTotalRecords($recordsFound);
+
+                                                   echo $GenericEasyPagination->getNavigation();
+                                                   echo "<br>";
+                                                   echo $GenericEasyPagination->getCurrentPages();
+                                                 ?></center>
+                                         <?php }else{
+                                                            echo "<div class='alert alert-danger alert-dismissible' role='alert'>
+                                                                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+                                                                  Oh snap! Something went wrong. No record to display 
+                                                              </div>";
+                                               }?>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+                                <!-- #end row -->
+                            </div> <!-- #end page-wrap -->
 			</div>
-			<!-- #end dashboard page -->
+			
+
 		</div>
 
 	</div> <!-- #end main-container -->
@@ -438,6 +656,17 @@
 	<?php include("./_library_/_includes_/theme.inc"); ?>
 
  <?php include("./_library_/_includes_/scripts.inc") ?>
+ <?php include("_library_/_includes_/export.php");  ?>
+        <script>
+            $(document).ready(function() {
+                $('#gad').DataTable( {
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'colvis'
+                    ]
+                } );
+            } );
+        </script>
 </body>
 
 </html>

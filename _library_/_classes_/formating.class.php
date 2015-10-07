@@ -9,6 +9,7 @@
  *
  * @author Gad Ocansey
  */
+namespace _classes_;
 class formatingclass {
     //put your code here
     public function validateEmail($email){
@@ -52,7 +53,7 @@ class formatingclass {
     }// end of validateInput
     
     
-    public function autopassword($len = 6){
+    public function autopassword($len = 8){
     	return substr(md5(rand().rand()), 0, $len);
     }//end
 

@@ -111,12 +111,12 @@ namespace _classes_;
 				
                                 }
                                 else{
-                                    header("Location:dashboard.php");
+                                    header("Location:dashboard");
                                 }
                                 }	
 				
                                 elseif ($this->remoteip!=$userid->NET_ADD) {
-                                    header( 'refresh: 2000; url=index.php?unauthorize_domain' );
+                                    header( 'refresh: 2000; url=index?unauthorize_domain' );
                                 }
 				
 			       }else{ 
@@ -166,9 +166,9 @@ namespace _classes_;
 			header('Location: ' . $this->redirect.'&attempt_in=0');	
 			}else if($direction == 'wrong'){
                             
-			header('Location:index.php?login=error ' );	
+			header('Location:index?login=error ' );	
 			}else if($direction=="out"){
-			header("Location:index.php?logout=1");	
+			header("Location:index?logout=1");	
 			}else if ( $direction =='captchax'){
 					header('Location: ' .$this->redirect.'&attempt_in=11');
 					}else{

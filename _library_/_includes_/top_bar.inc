@@ -1,3 +1,8 @@
+<style>
+    .error{
+        color:red;
+    }
+</style>
 <ul class="list-unstyled left-elems">
 			<!-- nav trigger/collapse -->
 			<li>
@@ -19,21 +24,21 @@
 			<li>
 				<div class="site-logo visible-xs">
 					<a href="javascript:;" class="text-uppercase h3">
-						<span class="text">Materia</span>
+						<span class="text">Perez Chapel</span>
 					</a>
 				</div>
 			</li> <!-- #end site-logo -->
 
 			<!-- fullscreen -->
 			<li class="fullscreen hidden-xs">
-				<a href="javascript:;"><i class="ion ion-qr-scanner"></i></a>
+                            <a href="javascript:;"><i title="toggle fullscreen mode" class="ion ion-qr-scanner"></i></a>
 
 			</li>	<!-- #end fullscreen -->
 
 			<!-- notification drop -->
 			<li class="notify-drop hidden-xs dropdown">
 				<a href="javascript:;" data-toggle="dropdown">
-					<i class="ion ion-speakerphone"></i>
+					<i class="ion ion-android-notifications"></i>
 					<span class="badge badge-danger badge-xs circle">3</span>
 				</a>
 
@@ -83,14 +88,14 @@
 			<!-- profile drop -->
 			<li class="profile-drop hidden-xs dropdown">
 				<a href="javascript:;" data-toggle="dropdown">
-                                    <img src="assets/images/admin.jpg" alt="admin-pic">
+                                    <img src="photos/avatars/<?php echo $_SESSION[USERNAME]?>.jpg" alt="profile-pic">
 				</a>
 				<ul class="dropdown-menu dropdown-menu-right">
-					<li><a href="javascript:;"><span class="ion ion-person">&nbsp;&nbsp;</span>Profile</a></li>
-					<li><a href="javascript:;"><span class="ion ion-settings">&nbsp;&nbsp;</span>Settings</a></li>
+					<li><a href="profilr"><span class="ion ion-person">&nbsp;&nbsp;</span>Profile</a></li>
+					<li><a href="settings"><span class="ion ion-settings">&nbsp;&nbsp;</span>Settings</a></li>
 					<li class="divider"></li>
-					<li><a href="javascript:;"><span class="ion ion-lock-combination">&nbsp;&nbsp;</span>Lock Screen</a></li>
-					<li><a href="javascript:;"><span class="ion ion-power">&nbsp;&nbsp;</span>Logout</a></li>
+					<li><a href="lock"><span class="ion ion-lock-combination">&nbsp;&nbsp;</span>Lock Screen</a></li>
+					<li><a href="logout"><span class="ion ion-power">&nbsp;&nbsp;</span>Logout</a></li>
 				</ul>
 			</li>
 			<!-- #end profile-drop -->

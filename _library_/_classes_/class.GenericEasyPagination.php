@@ -9,6 +9,7 @@
 * @ps                Class GenericEasyPagination is tested using Class ADODB (http://php.weblogs.com/adodb#downloads)
 * @dataBaseTested    MySQL version 3.23.56-nt, Microsoft SQL Server 2000 and Microsoft Access 2002 (using Class ADODB)
 */
+namespace _classes_;
 Class GenericEasyPagination
 {
 
@@ -32,18 +33,18 @@ Class GenericEasyPagination
     * Language Default: Brazilian Portuguese
     * @access public
     */
-    function GenericEasyPagination($page,$recordByPage,$language = "default")
+    function __construct($page,$recordByPage,$language = "default")
     {
         $this->_configCurrentPage($page);
         $this->_setRecordByPage($recordByPage);
         if ($language == "default"):
-            $this->msg_initialPage  = "Página Inicial";
-            $this->msg_finalPage    = "Página Final";
+            $this->msg_initialPage  = "P�gina Inicial";
+            $this->msg_finalPage    = "P�gina Final";
             $this->msg_previousPage = "Anterior";
-            $this->msg_nextPage        = "Próxima";
-            $this->msg_next10Results = "Próximas 10 páginas";
-            $this->msg_previous10Results = "10 Páginas anteriores";
-            $this->msg_page            = "Ir para Página";
+            $this->msg_nextPage        = "Pr�xima";
+            $this->msg_next10Results = "Pr�ximas 10 p�ginas";
+            $this->msg_previous10Results = "10 P�ginas anteriores";
+            $this->msg_page            = "Ir para P�gina";
             $this->msg_of             = "De";
             $this->msg_to             = "a";
         else:
@@ -146,7 +147,7 @@ Class GenericEasyPagination
                 $result = "<a href='?page=1&".$this->getsVars."' title='".$this->msg_initialPage."'><img border=\"0\" src=\"images/icons/resultset_first.png\"></a>&nbsp;";
             endif;
             if ($this->currentPage>1):  $result .=  "<a href='?page=".($previous)."&".$this->getsVars."'><img border=\"0\" src=\"images/icons/resultset_previous.png\"></a>&nbsp;&nbsp;";     endif;
-            if (($this->currentPage<$this->PagesFound) && ($this->PagesFound>=1)):    $result .= "<a href='?page=".($next)."&".$this->getsVars."'><img border=\"0\" src=\"images/icons/resultset_next.png\"></a>";				endif;
+            if (($this->currentPage<$this->PagesFound) && ($this->PagesFound>=1)):    $result .= "<a href='?page=".($next)."&".$this->getsVars."'><img border=\"0\" src=\"/images/icons/resultset_next.png\"></a>";				endif;
             if (($this->PagesFound>1)&&($this->currentPage!=$this->PagesFound)):
                 $result .= "&nbsp;<a href='?page=".$this->PagesFound."&".$this->getsVars."'  title='".$this->msg_finalPage."'> >></a>";
             endif;

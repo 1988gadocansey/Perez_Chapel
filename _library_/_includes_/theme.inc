@@ -46,6 +46,7 @@
 					<li data-theme="theme-seven"></li>
 				</ul>
 			</div>
+                        
 		</div>
 	</div>
 	<!-- #end theme settings -->

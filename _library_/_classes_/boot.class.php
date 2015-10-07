@@ -106,7 +106,7 @@ class Boot {
           </div>
         </div>
         <div class="row">
-            <center><small style="font-size: 11px">&copy <?php echo date ("Y"); ?> | Parez Chapel -  Designed By Gad Ocansey +233505284060</small></center>         
+            <center><small style="font-size: 11px">&copy <?php echo date ("Y"); ?> | BethPeniel Solutions Ltd</small></center>         
         </div>
 
       </form>

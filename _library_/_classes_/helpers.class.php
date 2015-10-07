@@ -145,24 +145,23 @@ public function getName($student){
     $a=$output->FetchNextObject();
     return $a->NAME;
 }
-
-public function getProgram($pcode){
-    $query=$this->connect->Prepare("SELECT * FROM tpoly_programme WHERE PROGRAMMECODE='$pcode'");
-    $output= $this->connect->Execute($query);
-     $a=$output->FetchNextObject() ;
-    return $a->PROGRAMME;
+// get config file
+public function getConfig(){
+    $query=$this->connect->Prepare("SELECT * FROM perez_config");
+    $query2=$this->connect->Execute($query);
+    $data=$query2->FetchNextObject();
+    return  $data;
 }
-public function getCourse($code){
-    $query=$this->connect->Prepare("SELECT COURSE_NAME FROM tpoly_courses WHERE COURSE_CODE='$code'");
-    $output= $this->connect->Execute($query);
-     $a=$output->FetchNextObject() ;
-    return $a->COURSE_NAME;
+public function getindexno(){
+    $query=$this->connect->Prepare("SELECT no FROM perez_code_gen");
+    $query2=$this->connect->Execute($query);
+    $data=$query2->FetchNextObject();
+    return $data->NO;
 }
-public function getCourseType($code){
-    $query=$this->connect->Prepare("SELECT COURSE_TYPE FROM tpoly_courses WHERE COURSE_CODE='$code'");
-    $output= $this->connect->Execute($query);
-     $a=$output->FetchNextObject() ;
-    return $a->COURSE_TYPE;
+public function UpdateIndexno(){
+    $query=$this->connect->Prepare("UPDATE perez_code_gen SET no=no + 1");
+     return $this->connect->Execute($query);
+    
 }
 public function getYear($code){
     $query=$this->connect->Prepare("SELECT COURSE_TYPE FROM tpoly_courses WHERE COURSE_CODE='$code'");
@@ -233,6 +232,10 @@ public function getApplicationMode($mode){
                 return $result;
  
      }
+     public function autopassword($len = 8){
+    	return substr(md5(rand().rand()), 0, $len);
+    }//end
+
 /**
 ** required when the applicant finish working on form
 ** send sms and email to applicant upon receiving his or her form
