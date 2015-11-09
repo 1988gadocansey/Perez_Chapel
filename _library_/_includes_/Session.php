@@ -60,7 +60,7 @@ function logOut(){
             session_unset();
             logOut();
             # Redirect to login page to log back in 
-            header("Location:lock?auth=empty&&salt=null"); 
+            header("Location:index?auth=empty&&salt=null"); 
             exit; 
         }else{ 
             # If they have not exceded the time limit of inactivity, keep them logged in 

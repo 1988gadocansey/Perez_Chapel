@@ -3,13 +3,18 @@
 namespace _classes_;
 class smsgetway{
 	private $config;
+         private $connect;
 	private $url;
 	
 	function __construct(){
 		/*global $config;
 		$this->config=$config;
 		$this->url =$this->config->smsurl."?username=".$this->config->smsusername."&password=".$this->config->smspassword;*/
-	}
+	
+            global $sql,$season;
+           $this->connect=$sql;
+          
+        }
 	
 	/**
 	 * 
@@ -59,7 +64,7 @@ class smsgetway{
             $fields = array( 
             'token' => \urlencode('a166902c2f552bfd59de3914bd9864088cd7ac77'), 
             'msg' => \urlencode($message), 
-            'from' => \urlencode("Perez Chapel"), 
+            'from' => \urlencode("Tpoly"), 
             'to' => \urlencode($phone), 
             );
             $fields_string = ""; 
@@ -79,8 +84,16 @@ class smsgetway{
                     $data = \json_decode($result); 
                     if($data->error == "0"){ 
                    $info="Message was successfully sent"; 
+                   $date=time();
+                    $insertor=$this->connect->Prepare("insert into perez_sms_sent set number='$phone',type='$type',name='$_SESSION[ID]',message='$message',dates='$date',status='Delivered'");
+                    $this->connect->Execute($insertor) ;
+	
                   return $info;
                     }else{ 
+                        $date=time();
+                        $insertor=$this->connect->Prepare("insert into perez_sms_sent set number='$phone',type='$type',name='$_SESSION[ID]',message='$message',dates='$date',status='Not Delivered'");
+                        $this->connect->Execute($insertor) ;
+
                     $info="Message failed to send. Error: " . $data->error; 
                     return $info;
                     } 

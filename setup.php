@@ -479,7 +479,7 @@
                                                                                                 Select letterhead to upload (.png) </span>
                                                                                             <span class="fileinput-exists">
                                                                                                 Change </span>
-                                                                                            <input type="file" name="letterhead" required="">
+                                                                                            <input type="file" name="letterhead"  >
                                                                                         </span>
                                                                                         <a href="javascript:;" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">
                                                                                             Remove </a>
@@ -506,7 +506,7 @@
                                                                                                 Select logo to upload (.png) </span>
                                                                                             <span class="fileinput-exists">
                                                                                                 Change </span>
-                                                                                            <input type="file" name="logo" required="">
+                                                                                            <input type="file" name="logo" >
                                                                                         </span>
                                                                                         <a href="javascript:;" class="btn btn-danger fileinput-exists" data-dismiss="fileinput">
                                                                                             Remove </a>

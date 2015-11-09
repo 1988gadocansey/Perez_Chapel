@@ -42,6 +42,9 @@
             if($sql->Execute($query)){
                 header("location:members?success=1");
             }
+            else{
+                  header("location:members?error=1");
+            }
         }
   /////////////////////////////////////////////////////////////////////////////
         

@@ -8,8 +8,14 @@
         $member=new _classes_\Members();
         $help=new _classes_\helpers();
         $notify=new _classes_\Notifications();
+        $config_file=$help->getConfig() ;
+                                    
         $sms=new _classes_\smsgetway();
-         if($_GET[branch]){
+        if($_POST[go]){
+        $_SESSION[search]=$_POST[search];
+        $_SESSION[content]=$_POST[content];
+        }
+        if($_GET[branch]){
         $_SESSION[branch]=$_GET[branch];
         }
         if($_GET[gender]){
@@ -25,14 +31,17 @@
         if($_GET[category]){
         $_SESSION[category]=$_GET[category];
         }
-        if($_GET[team]){
-        $_SESSION[team]=$_GET[team];
+        if($_GET[group]){
+        $_SESSION[group]=$_GET[group];
         }
         if($_GET[service]){
         $_SESSION[service]=$_GET[service];
         }
         if($_GET[demo]){
         $_SESSION[demo]=$_GET[demo];
+        }
+         if($_GET[volunteers]){
+        $_SESSION[volunteers]=$_GET[volunteers];
         }
         if($_GET[country]){
         $_SESSION[nation]=$_GET[country];
@@ -50,70 +59,62 @@
               	//check if file path is empty
             $extension= end(explode(".", basename($_FILES['file']['name'])));
              if($extension== 'csv'){
-
-            
-                    if (!$_FILES["file"]["name"]) {
-                        echo " <font color='red' style='text-decoration:blink'>Please choose a file to upload</font>";
-                        $error = 1;
-                    }
-
-                    elseif (($_FILES["file"]["size"] ) > 25000000) {
-                        echo "Only pictures of size less than 250 kb accepted";
-                        $error = 3;
-                    }
-
-                    $name = $_FILES["file"]["name"];
-                    //$var= $name.$_SESSION[area];
-
-                    if ($error > 0) {
-
-                    } else {
+ 
 
                         $destination = "uploads/$name";
+                       //Import uploaded file to Database
+                        $handle = fopen($_FILES['file']['tmp_name'], "r");
+
                         move_uploaded_file($_FILES["file"]["tmp_name"], $destination);
-                        if (move_uploaded_file) {
+                         if (move_uploaded_file) {
+                        //Import uploaded file to Database
+                         $handle = fopen($_FILES['file']['tmp_name'], "r");
+ 	 
+                    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+                         //print_r($data);
+                                           $member_code=substr(strtoupper($config_file->CHURCH_NAME),0,3).date("Y").$help->getindexno();
+                                           $code=$help->getCode("ACCOUNT");
 
-                            # create new parseCSV object.
-                            $csv = new parseCSV();
-                          # Parse '_books.csv' using automatic delimiter detection...
-                            $csv->auto($destination);
+                                            $query=$sql->Prepare("INSERT INTO perez_members  SET MEMBER_CODE='$member_code', FIRSTNAME='$data[0]', LASTNAME='$data[1]', OTHERNAMES='$data[2]',  TITLE='$data[3]', GENDER='$data[4]',  PHONE='$data[5]', EMAIL='$data[6]' ");
+                                            $query2 =$sql->Prepare("INSERT INTO tbl_accounts(ACCOUNT_NAME,PARENT_ACCOUNT,ACCOUNT_DESCRIPTION,AFFECTS,ACCOUNT_BALANCE,ACCOUNT_CODE,BALANCE_TYPE,BUSINESS_PERSON,BANK_ACCOUNT_NUM)VALUES ('$member_code','2','created ledger account for member','Balance Sheet','0','$code','Debit','$business_person','$account_number')");
 
+                            if($sql->Execute($query)&&$sql->Execute($query2)){
 
-                            //print_r($csv->data);
-
-                            foreach ($csv->data as $key => $row) { 
-
-                               // print_r( $row);
-
-
-                                    $query=$sql->Prepare("INSERT INTO  `perez_members` SET   `MEMBER_CODE`='$row[MEMBER_CODE]', `BARCODE`='$row[BARCODE]', `DATE_JOINED`='$row[DATE_JOINED]', `DATE_BAPTISTED`='$row[DATE_BAPTISTED]', `TITLE`='$row[TITLE]', `FIRSTNAME`='$row[FIRSTNAME]', `LASTNAME`='$row[LASTNAME]', `OTHERNAMES`='$row[OTHERNAMES]', `ARCHIVED`='$row[ARCHIVED]', `CONTACT`='$row[CONTACT]', `DECEASED`='$row[DECEASED]', `GENDER`='$row[GENDER]', `DOB`='$row[DOB]', `AGE`='$row[AGE]', `MARITAL_STATUS`='$row[MARITAL_STATUS]', `ANNIVERSARY`='$row[ANNIVERSARY]', `EMAIL`='$row[EMAIL]', `PHONE`='$row[PHONE]', `TELEPHONE`='$row[TELEPHONE]', `VOLUNTEER`='$row[VOLUNTEER]', `RESIDENTIAL_ADDRESS`='$row[RESIDENTIAL_ADDRESS]', `CONTACT_ADDRESS`='$row[CONTACT_ADDRESS]', `HOMETOWN`='$row[HOMETOWN]', `REGION`='$row[RELIGION]', `COUNTRY`='$row[COUNTRY]', `SECURITY_CODE`='$row[SECURITY_CODE]', `RECEIPT`='$row[RECEIPT]', `GIVING_NUMBER`='$row[GIVING_NUMBER]', `FAMILY_RELATIONSHIP`='$row[FAMILY_RELATIONSHIP]', `MUSIC_TEAM`='$row[MUSIC_TEAM]', `DEMOGRAPHICS`='$row[DEMOGRAPHICS]', `SERVICE_TYPE`='$row[SERVICE_TYPE]', `LOCATION`='$row[LOCATION]', `BRANCH`='$row[BRANCH]', `OCCUPATION`='$row[OCCUPATION]', `PLACE_OF_WORK`='$row[PLACE_OF_WORK]', `NAME_OF_SPOUSE`='$row[NAME_OF_SPOUSE]', `OCUPATION_OF_SPOUSE`='$row[OCUPATION_OF_SPOUSE]', `SPOUSE_PHONE`='$row[SPOUSE_PHONE]', `SSNIT`='$row[SSNIT]', `NEXT_OF_KIN`='$row[NEXT_OF_KIN]', `NEXT_OF_KIN_ADDRESS`='$row[NEXT_OF_KIN_ADDRESS]', `NEXT_OF_KIN_PHONE`='$row[NEXT_OF_KIN_PHONE]', `FATHERS_NAME`='$row[FATHERS_NAME]', `FATHERS_DOB`='$row[FATHERS_DOB]', `MOTHERS_NAME`='$row[MOTHERS_NAME]', `MOTHERS_DOB`='$row[MOTHERS_DOB]', `PHONE2`='$row[PHONE2]', `PEOPLE_CATEGORY`='$row[PEOPLE_CATEGORY]', `MINISTRY`='$row[MINISTRY]' ");
-                                    if($sql->Execute($query)){
-                                        header("location:dashboard?success=1");
-                                    }
+                                                 header("location:members?success=1");
+                                               } 
+                                        $help->UpdateIndexno();
+                                        $help->UpdateCode("ACCOUNT");
 
                                 }
 
-
                 }
 
+                fclose($handle);
 
-            }
+                }
           }
-        }
+        
           if(isset($_POST[sms])){
+             if( $help->ping("www.google.com",80,20)){
               $q = $_SESSION[last_query];
                 $query2 = $sql->Prepare($q);
+                 
                 $rt = $sql->Execute($query2);
-
+                
                 While ($stmt = $rt->FetchRow()) {
-                    $arrayphone = $stmt[PHONE];
-
-                    if ($a = $sms->sendSMS1($arrayphone, $_POST[message])) {
+                            $phone=$stmt[PHONE];
+                          
+                    if ( $sms->sendSMS1($phone, $_POST['message'])) {
                         $_SESSION[last_query] = "";
 
-                        header("location:members?success=1");
+                       header("location:members?success=1");
                     }
                 }
+                
+              }
+              else{
+                  header("location:members?no_internet=1");
+              }
              }
 ?>
 <?php include("./_library_/_includes_/header.inc"); ?>
@@ -144,26 +145,20 @@
                                             <h4 class="modal-title">Send SMS</h4>
                                         </div>
                                         <div class="modal-body">
-                                            
+                                            <div class="table-responsive">
                                             <form action="members?sms=1" method="POST" class="form-horizontal" role="form" enctype="multipart/form-data">
                                                  <div class="card-body card-padding">
-                                                     <div class="form-group">
-                                                         <label for="inputPassworsd3" class="col-sm-2 control-label">Message</label>
-                                                         <div class="col-sm-10">
-
-                                                             <div class="fg-line">
-                                                                  
-                                                                 <textarea required="" class="form-control" name="message" rows="9" ></textarea>                                    
-                                                             </div>
-                                                         </div>
-                                                     </div>
+                                                      
+                                                     <textarea name="message" required="" row="9" class="form-control"></textarea>
+						 
                                                 <div class="modal-footer">
                                                       
-                                                    <button type="submit" name="sms" class="btn btn-success">Send <i class="fa fa-sm"></i></button>
+                                                    <button type="submit" name="sms" class="btn btn-success">Send <i class="md md-sms"></i></button>
                                                           <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
                                                 </div>
-                                                  
+                                                      
                                                  </div>
+                                            </div>
                                              </div>  
                                             </form>
                                   </div>
@@ -177,7 +172,7 @@
                                         </div>
                                         <div class="modal-body">
                                             
-                                            <form action="dashboard.php" method="POST" class="form-horizontal" role="form" enctype="multipart/form-data">
+                                            <form action="members" method="POST" class="form-horizontal" role="form" enctype="multipart/form-data">
                                                  <div class="card-body card-padding">
                                                      <div class="form-group">
                                                          <label for="inputPassworsd3" class="col-sm-2 control-label">select csv file</label>
@@ -215,19 +210,8 @@
                                                      <button  style="margin-top: -59px" name="mail"  class="btn btn-success waves-effect">Mail<i class="md md-email"></i></button>
                                                         <button  style="margin-top: -59px"  data-target="#mount" data-toggle="modal"  class="btn btn-success waves-effect">Import csv<i class="md md-cloud-upload"></i></button>
                                                           <button  style="margin-top: -59px"   class="btn btn-pink waves-effect" data-target="#sms"  data-toggle="modal">Send SMS<i class="md md-sms"></i></button>
-                                                        <button   class="btn btn-primary  waves-effect waves-button dropdown-toggle" style="margin-top: -59px" data-toggle="dropdown"><i class="md md-save"></i> Export Data</button>
-                                                        <ul class="dropdown-menu">
-                                            
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'csv',escape:'false'});"><img src='assets/icons/csv.png' width="24"/> CSV</a></li>
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'txt',escape:'false'});"><img src='assets/icons/txt.png' width="24"/> TXT</a></li>
-                                                            <li class="divider"></li>
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'excel',escape:'false'});"><img src='assets/icons/xls.png' width="24"/> XLS</a></li>
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'doc',escape:'false'});"><img src='assets/icons/word.png' width="24"/> Word</a></li>
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'powerpoint',escape:'false'});"><img src='assets/icons/ppt.png' width="24"/> PowerPoint</a></li>
-                                                            <li class="divider"></li>
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'png',escape:'false'});"><img src='assets/icons/png.png' width="24"/> PNG</a></li>
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'pdf',escape:'false'});"><img src='assets/icons/pdf.png' width="24"/> PDF</a></li>
-                                                         </ul>
+                                                          <button   class="btn btn-primary  waves-effect waves-button dropdown-toggle" style="margin-top: -59px" onClick ="$('#assesment').tableExport({type:'excel',escape:'false'});" title="Export data to excel file"><i class="fa fa-file-excel-o"></i> Export Data</button>
+                                        
                                               </div>
                              <div><?php $notify->Message(); ?></div>
 					</div>
@@ -236,7 +220,9 @@
                                     <div class="col-md-12">
                                         <div class="panel panel-lined panel-hovered mb20 table-responsive basic-table">
                                             <div class="panel-heading panel-info">
-                                                <a href="addMember.php?new=1"  style="margin-top: -19px;margin-left: -25px"  title="Add new member"  class="btn btn-success waves-effect">Add Member<i class="fa fa-plus-circle"></i></a> 
+                                                <a href="addMember?new=1"  style="margin-top: -17px;margin-left: -25px"  title="Add new member"  class="btn btn-pink waves-effect btn-sm">Add Member<i class="fa fa-plus-circle"></i></a>
+                                                 
+                                                <a href="addFamily?new=1"  style="margin-top: -17px;margin-left: 10px"  title="Add new family"    class="btn btn-primary waves-effect btn-sm">Families<i class="fa fa-users"></i></a> 
                                                 <div class="btn-group btn-group-sm right">
                                                     <button type="button" class="btn btn-default btable-bordered" data-table-class="table-bordered">Bordered</button>
                                                     <button type="button" class="btn btn-default btable-striped" data-table-class="table-stiped">Striped</button>
@@ -384,7 +370,7 @@
                                                        {
 
                                                        ?>
-                                                       <option value="<?php echo $row['ID']; ?>"   <?php if($_SESSION[demographics]==$row['ID']){echo "selected='selected'";} ?>      ><?php echo $row['NAME']; ?></option>
+                                                       <option value="<?php echo $row['NAME'] ?>"   <?php if($_SESSION[demographics]==$row['NAME']){echo "selected='selected'";} ?>      ><?php echo $row['NAME']; ?></option>
 
                                                     <?php }?>
                                                        
@@ -395,14 +381,14 @@
                                                     <td>&nbsp;</td>
                                           
                                            <td width="25%">
-                                            <select class='form-control' style="margin-left:-51%;  width:565% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?team='+escape(this.value);"     >
-                                            <option value=''>filter by team</option>
-                                            <option value='All team'>All Teams</option>
+                                            <select class='form-control' style="margin-left:-51%;  width:565% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?group='+escape(this.value);"     >
+                                            <option value=''>filter by group</option>
+                                            <option value='All group'>All Groups</option>
                                                           
                                                       <?php 
                                                       global $sql;
 
-                                                      $query2=$sql->Prepare("SELECT * FROM perez_team");
+                                                      $query2=$sql->Prepare("SELECT * FROM perez_group");
 
 
                                                         $query=$sql->Execute( $query2);
@@ -412,7 +398,7 @@
                                                        {
 
                                                        ?>
-                                                       <option value="<?php echo $row['ID']; ?>"   <?php if($_SESSION[team]==$row['ID']){echo "selected='selected'";} ?>      ><?php echo $row['NAME']; ?></option>
+                                                       <option value="<?php echo $row['ID']; ?>"   <?php if($_SESSION[group]==$row['ID']){echo "selected='selected'";} ?>      ><?php echo $row['NAME']; ?></option>
 
                                                     <?php }?>
                                                        
@@ -446,80 +432,56 @@
                                                    </select>
 
                                                 </td>
+                                                <td>&nbsp;</td>
+                                <td width="25%">
+                                     <select class='form-control'      style="margin-left:14%;  width:48% " onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?volunteers='+escape(this.value);" >
+                                         <option value=''>by volunteers</option>
+                                        <option value='All'>All members</option>
+                                        <option value='yes'<?php if($_SESSION[volunteers]=='yes'){echo 'selected="selected"'; }?>>Volunteers</option>
+                                        <option value='no'<?php if($_SESSION[volunteers]=='no'){echo 'selected="selected"'; }?>>Non Volunteers</option>
+                                         
+                                    </select>
+
+                                </td>
+                      
                                         </tr>
                                        </table>
-                                                </div>
-                                                <!-- end filters   -->
-                                                <div class="row">
-                                                    <div class="panel panel-collapse">
-                                                        <div class="panel-heading" role="tab" id="headingTwo">
-                                                            <h4 class="panel-title">
-                                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                                                    <center>Click to Send SMS</center>
-                                                                </a>
-                                                            </h4>
-                                                        </div>
-                                                        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
-                                                            <div class="panel-body">
-                                                                <form id="form2" name="form2" method="post" action="dashboard?send=1">
-                                                                    <label></label>
-                                                                    <table width="640" border="0" align="center">
-                                                                        <tr>
-                                                                            <td colspan="2" bgcolor="#91B7D9">Select members to send sms</td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td colspan="2" bgcolor="#2D5982">
-                                                                                autocomplete goes here
-                                                                            </td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td bgcolor="#91B7D9"><div align="center"><strong>Text Message</strong></div></td>
-                                                                            <td valign="top" bgcolor="#91B7D9"><div align="center"><strong>Fields Available</strong></div></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td width="419" height="110" bgcolor="#2D5983"><div align="center">
-                                                                                    <textarea name="sms" id="sms" cols="45" rows="5" required=""></textarea>
-                                                                                </div></td>
-                                                                            <td width="211" valign="top" bgcolor="#2D5983"><div align="center">
-                                                                                    <script>
-                                                                                                        function inse(inco){
-                                                                                                        var curr=document.getElementById('sms');
-                                                                                                        curr.value=curr.value+"["+inco+"]"
-                                                                                                        }
-                                                                                    </script>
-                                                                                    <select name="select"  ondblclick="inse(this.value)" size="6" id="select" required="">
-                                                                                        <option value="MEMBER_CODE"> Student ID</option>
-                                                                                        <option value="SURNAME">Surname</option>
-                                                                                        <option value="OTHERNAMES">Other Names</option>
-                                                                                        <option value="CLASS">Class</option>
-                                                                                        <option value="BILLS">Total Bills</option>
-                                                                                        <option value="PTA_OWING">PTA</option>
-                                                                                        <option value="BILLS_PAID">Bills paid</option>
-                                                                                        <option value="ACADEMIC_OWING">Academic Owing</option>
-                                                                                        <option value="OTHERS_OWING">Other Bills</option>
-
-                                                                                    </select>
-                                                                                </div></td>
-                                                                        </tr>
-                                                                        <tr>
-                                                                            <td colspan="" style="text-align: center"> 
-                                                                                <div align="center" style="margin-left: 32%">
-                                                                                    <p></p>
-                                                                                        <center>   <button type="submit" class="btn btn-success waves-effect" name="send"   />Send SMS <i class="md md-sms"></i></button></center>
-                                                                                    </div>
-                                                                                 </td>
-                                                                        </tr>
-                                                                    </table>
-                                                                    <label> </label>
-                                                                    <label></label>
-                                                                </form>
+                                    <br/>
+                                       <table>
+                                           <tr>
+                                           <form action="members?" method="post" >
+                                            <td width="25%">
 
 
-                                                            </div>
-                                                        </div>
+                                                <input type="text" name ="search" placeholder="type search item here..."required="" style="margin-left:2%; width:168%;" class="form-control" id=" "  >
 
-                                                    </div>
-                                                </div>
+                                            </td>
+                                            <td>&nbsp;</td>
+                                             <td width="25%">
+                                            <select class='form-control'  name='content' required="" style="margin-left: 93%; width: 97%;"  >
+                                                <option value=''>search by</option>
+                                                <option value='SURNAME'<?php if($_SESSION[conthhent]=='SURNAME'){echo 'selected="selected"'; }?>>Surname</option>
+                                                <option value='FIRSTNAME'<?php if($_SESSION[status]=='FIRSTNAME'){echo 'selected="selected"'; }?>>First Name</option>
+                                                <option value='OTHERNAMES'<?php if($_SESSION[status]=='INDEXNO'){echo 'selected="selected"'; }?>> Other names</option>
+                                                <option value='MEMBER_CODE'<?php if($_SESSION[status]=='PROGRAMMECODE'){echo 'selected="selected"'; }?>>Member's Code</option>
+
+                                           </select>
+
+                                             </td>
+                                        <td>&nbsp;</td>
+                                        <td width="25%">
+                                              <button type="submit" name="go" style="margin-left: 78%; width: 65px;" class="btn btn-primary">Go</button>
+                                        </td>
+                                            </tr>  
+
+                                        </form>
+                                            
+                                               
+                                       </table>
+                                                   
+                            </div>
+                            <!-- end filters   -->
+
                                                  <hr>
                                                 <div class="table-responsive">
                                                     <?php
@@ -529,28 +491,30 @@
                                                             $ministry=$_SESSION[ministry];
                                                             $status=$_SESSION[deceased];
                                                             $nation=$_SESSION[nation];
-                                                            $team=$_SESSION[team];
+                                                            $group=$_SESSION[group];
                                                             $demo=$_SESSION[demo];
+                                                            $volunteer=$_SESSION[volunteers];
                                                             $service=$_SESSION[service];
                                                             $category=$_SESSION[category];
                                                             $search=$_POST[search];
                                                             $content=$_POST[content];
-                                            
+                                                            if($volunteer=="All" or $volunteer==""){ $volunteer=""; }else {$volunteer_=" and  VOLUNTEER = '$volunteer' "  ;}
+                                                           
 
                                                             if($branch=="All branch" or $branch==""){ $branch=""; }else {$branch_=" and  BRANCH = '$branch' "  ;}
                                                             if($ministry=="All ministry" or $ministry==""){ $ministry=""; }else {$ministry_="and MINISTRY = '$ministry' "  ;}
                                                             if($gender=="All gender" or $gender=="" ){ $gender=""; }else {$gender_=" and GENDER = '$gender' "  ;}
                                                             if($status=="All status" or $status=="" ){ $status=""; }else {$status_=" and DECEASED = '$status' "  ;}
                                                             if($nation=="All country" or $nation=="" ){ $nation=""; }else {$nation_=" and COUNTRY = '$nation' "  ;}
-                                                             if($team=="All team" or $team=="" ){ $team=""; }else {$team_=" and MUSIC_TEAM = '$team' "  ;}
+                                                             if($group=="All group" or $group=="" ){ $group=""; }else {$group_=" and GROUPS LIKE '%$group%' "  ;}
                                                            if($demo=="All demographics" or $demo=="" ){ $demo=""; }else {$demo_=" and DEMOGRAPHICS LIKE '%$demo%' "  ;}
                                                            if($service=="All service" or $service=="" ){ $service=""; }else {$service_=" and SERVICE_TYPE = '$service' "  ;}
                                                             if($category=="All category" or $category=="" ){ $category=""; }else {$category_=" and PEOPLE_CATEGORY = '$category' "  ;}
-                                                            if($search=="" ){ $search=""; }else {$search_="AND $content LIKE '$search' "  ;}
+                                                            if($search=="" ){ $search=""; }else {$search_="AND $content LIKE '%$search%' "  ;}
 
-                                                            $query="SELECT  * FROM  perez_members  where 1 $branch_  $ministry_  $search_ $gender_ $nation_ $status_ $team_ $category_ $demo_ $service_" ;
+                                                            $query="SELECT  * FROM  perez_members  where 1 $branch_  $ministry_  $search_ $gender_ $nation_ $status_ $group_ $category_ $demo_ $service_ $volunteer_" ;
                                                             $_SESSION[last_query]=$query; 
-
+                                                            print_r($query);
                                                             $rs = $sql->PageExecute($query,RECORDS_BY_PAGE,CURRENT_PAGE);
                                                             $recordsFound = $rs->_maxRecordCount;    // total record found
                                                            if (!$rs->EOF) 
@@ -558,7 +522,7 @@
                                                            {
                                                
                                                     ?>
-                                                <table id="gad" class="table   display" >
+                                                <table id="assesment" class="table   display" >
                                                     <thead>
                                                         <tr>
                                                              <th>#</th>
@@ -571,7 +535,7 @@
                                                             <th>Date Baptised</th>
                                                              
                                                             <th>Phone</th>
-                                                            <th>Location</th>
+                                                            <th>Branch</th>
                                                             <th>Ministry</th>
                                                             <th>Demographic</th>
                                                             <th>Occupation</th>
@@ -597,7 +561,7 @@
                                                                                </label>
                                                                        </div>
                                                                 </td>
-                                                             <td><a href="addMember.php?member=<?php echo  $rtmt[MEMBER_CODE] ?>&&update"><img   <?php   $pic=  $help->pictureid($rtmt[MEMBER_CODE]); echo $help->picture("photos/members/$pic.JPG",90)  ?>   src="<?php echo file_exists("photos/members/$pic.JPG") ? "photos/members/$pic.JPG":"photos/members/user.jpg";?>" alt=" Picture of Student Here"    /></a></td>
+                                                             <td><a href="addMember.php?member=<?php echo  $rtmt[MEMBER_CODE] ?>&&update"><img   <?php   $pic=  $help->pictureid($rtmt[MEMBER_CODE]); echo $help->picture("photos/members/$pic.jpg",90)  ?>   src="<?php echo file_exists("photos/members/$pic.jpg") ? "photos/members/$pic.jpg":"photos/members/user.jpg";?>" alt=" Picture of Student Here"    /></a></td>
                                                              <td style="text-align:"><?php echo $rtmt[MEMBER_CODE] ?></td>
                                                              <td style="text-align:"><?php echo $rtmt[TITLE]." ". $rtmt[LASTNAME]." ,".$rtmt[FIRSTNAME]." ".$rtmt[OTHERNAMES] ?></td>
                                                              <td style="text-align:"><?php echo $rtmt[GENDER] ?></td>
@@ -605,17 +569,17 @@
                                                              <td style="text-align:"><?php echo date("d/m/Y",$rtmt[DATE_BAPTISTED]); ?></td>
                                                               
                                                              <td style="text-align:"><?php echo $rtmt[PHONE] ?></td>
-                                                             <td style="text-align:"><?php echo $rtmt[LOCATION] ?></td>
+                                                             <td style="text-align:"><?php echo $member->getBranch($rtmt[LOCATION]) ?></td>
                                                              <td style="text-align:"><?php echo $member->getMinistry($rtmt[MINISTRY]) ?></td>
                                                              <td style="text-align:"><?php echo $rtmt[DEMOGRAPHICS] ?></td>
                                                              <td style="text-align:"><?php echo $rtmt[OCCUPATION] ?></td>
                                                              <td style="text-align:"><?php echo $rtmt[PEOPLE_CATEGORY] ?></td>
                                                              <td><a href="addMember?member=<?php echo  $rtmt[MEMBER_CODE] ?>&&update">Edit <i class="md md-edit" title="click to edit info"></i></a></td>
-                                                             <td>Mail<i class="md md-email" title="click to send email"></i> </td>
+                                                             <!--<td>Mail<i class="md md-email" title="click to send email"></i> </td>-->
                                                              <td>SMS<i class="md md-sms" title="click to send  sms"></i> </td>
                                                              <td>vcard<i class="md md-contacts" title="click to view vcard"></i> </td>
-                                                             <td>Print<i class="md md-print" title="click to print"></i> </td>
-                                                             <td><a onclick="return confirm('Are you sure you want to delete this person??')" href="members?delete=<?php echo  $rtmt[MEMBER_CODE] ?>"Delete<i class="md md-delete" title="click to delete"></i> </a></td>
+                                                            <!-- <td><a style="cursor: pointer" title="click to edit" onclick="return MM_openBrWindow('member_profile?page=<?php //echo $rtmt[MEMBER_CODE] ?>','','menubar=yes,width=800,height=650')">Profile<i class="fa fa-user" title="click to view profile"></i> </a></td>-->
+                                                             <td>Delete<a onclick="return confirm('Are you sure you want to delete this person??')" href="members?delete=<?php echo  $rtmt[MEMBER_CODE] ?>"Delete<i class="md md-delete" title="click to delete"></i> </a></td>
                                                             
                                                         </tr>
                                                          <?php }?>
@@ -655,11 +619,18 @@
 
 	<?php include("./_library_/_includes_/theme.inc"); ?>
 
- <?php include("./_library_/_includes_/scripts.inc") ?>
+	<?php include("./_library_/_includes_/theme.inc"); ?>
+        
+	<?php include("./_library_/_includes_/js.php"); ?>
+        
+        
+        <script src="assets/scripts/plugins/jquery.dataTables.min.js"></script>
+	<script src="assets/scripts/app.js"></script>
+	<script src="assets/scripts/tables.init.js"></script>
  <?php include("_library_/_includes_/export.php");  ?>
         <script>
             $(document).ready(function() {
-                $('#gad').DataTable( {
+                $('#assesment').DataTable( {
                     dom: 'Bfrtip',
                     buttons: [
                         'colvis'

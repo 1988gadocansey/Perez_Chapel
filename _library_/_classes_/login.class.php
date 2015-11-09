@@ -32,7 +32,7 @@ namespace _classes_;
 			global $sql ;
                          $a=new \Session() ;
 			$this->redirect ="index?login=error";
-                        $this->homepage ="dashboard?welcome=1";
+                        $this->homepage ="members?welcome=1";
 			$this->hashkey	=$_SERVER['HTTP_HOST'];
 			$this->md5=true;
 			$this->remoteip = $_SERVER['REMOTE_ADDR'];
@@ -111,7 +111,7 @@ namespace _classes_;
 				
                                 }
                                 else{
-                                    header("Location:dashboard");
+                                    header("Location:members");
                                 }
                                 }	
 				

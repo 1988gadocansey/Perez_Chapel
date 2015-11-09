@@ -35,7 +35,7 @@
         
                 } else {
                     
-                  $destination = "photos/members/$member.JPG";
+                  $destination = "photos/members/$member.jpg";
                    
                     move_uploaded_file($_FILES["images"]["tmp_name"], $destination);
 
@@ -47,6 +47,8 @@
          
     // 
       if(isset($_POST[save])){
+           $code=$help->getCode("ACCOUNT");
+           $member_code=$_POST[member_code];
             $age = $help->age($_POST[member_dob], "us");
             $id=$_POST[check];
             if(empty($_POST[member_password1])&&empty($_POST[member_password2])){
@@ -60,7 +62,11 @@
             $dob = strtotime($_POST[member_dob]);
             $demography = implode(",",$_POST["demographic"]);
             $access_ = implode(",",$_POST["access"]);
-            $data = "MEMBER_CODE='$_POST[member_code]',BARCODE='',DATE_JOINED='$joined',DATE_BAPTISTED='$baptised',TITLE='$_POST[member_title]',FIRSTNAME='$_POST[member_firstname]',LASTNAME='$_POST[member_lastname]',OTHERNAMES='$_POST[member_othernames]',ARCHIVED='',CONTACT='',DECEASED='$_POST[member_deceased]',GENDER='$_POST[member_gender]',DOB='$dob',AGE='$age',MARITAL_STATUS='$_POST[member_marital_status]',ANNIVERSARY='',EMAIL='$_POST[member_email]',PHONE='$_POST[member_phone]',TELEPHONE='$_POST[member_telephone]', RESIDENTIAL_ADDRESS='$_POST[member_residential]',CONTACT_ADDRESS='$_POST[member_address]',HOMETOWN='$_POST[member_hometown]',REGION='$_POST[member_region]',COUNTRY='$_POST[member_country]',SECURITY_CODE='',RECEIPT='$_POST[member_receipt]',GIVING_NUMBER='$_POST[member_giving_number]',FAMILY_RELATIONSHIP='$_POST[member_relationship]',MUSIC_TEAM='$_POST[member_team]',DEMOGRAPHICS='$demography',SERVICE_TYPE='$_POST[member_service]',LOCATION='$_POST[member_location]',OCCUPATION='$_POST[member_occupation]',PLACE_OF_WORK='$_POST[member_workplace]',NEXT_OF_KIN='$_POST[member_kname]',NEXT_OF_KIN_ADDRESS='$_POST[member_kaddress]',NEXT_OF_KIN_PHONE='$_POST[member_kphone]',PEOPLE_CATEGORY='$_POST[member_category]',MINISTRY='$_POST[member_ministry]',LANGUAGES='$_POST[member_language]',ETHNIC='$_POST[member_ethnic]',ACCESS='$access_',DEPARTMENT='$_POST[member_department]',SUNDAY_SCHOOL_GRADE='$_POST[member_school_grade]',REPORT='$_POST[member_report]',VOLUNTEER='$_POST[volunteer]',SMS_SUBSCRIBE_SCHEDULES='$_POST[member_sms_schedule]',SMS_SUBSCRIBE='$_POST[member_sms]',EMAIL_UNSUBSCRIBE_SCHEDULES='$_POST[member_email_unsubscribes_schedule]',EMAIL_UNSUBSCRIBE='$_POST[member_email_unsubscribes]'";
+            $department= implode(",",$_POST["member_department"]);
+            $service= implode(",",$_POST["member_service"]);
+            $language= implode(",",$_POST["member_language"]);
+            $group= implode(",",$_POST["group"]);
+            $data = "MEMBER_CODE='$_POST[member_code]',BARCODE='',DATE_JOINED='$joined',DATE_BAPTISTED='$baptised',TITLE='$_POST[member_title]',FIRSTNAME='$_POST[member_firstname]',LASTNAME='$_POST[member_lastname]',OTHERNAMES='$_POST[member_othernames]',ARCHIVED='',CONTACT='',DECEASED='$_POST[member_deceased]',GENDER='$_POST[member_gender]',DOB='$dob',AGE='$age',MARITAL_STATUS='$_POST[member_marital_status]',ANNIVERSARY='',EMAIL='$_POST[member_email]',PHONE='$_POST[member_phone]',TELEPHONE='$_POST[member_telephone]', RESIDENTIAL_ADDRESS='$_POST[member_residential]',CONTACT_ADDRESS='$_POST[member_address]',HOMETOWN='$_POST[member_hometown]',REGION='$_POST[member_region]',COUNTRY='$_POST[member_country]',SECURITY_CODE='',RECEIPT='$_POST[member_receipt]',GIVING_NUMBER='$_POST[member_giving_number]',FAMILY_RELATIONSHIP='$_POST[member_relationship]',MUSIC_TEAM='$_POST[member_team]',DEMOGRAPHICS='$demography',SERVICE_TYPE='$service',LOCATION='$_POST[member_location]',OCCUPATION='$_POST[member_occupation]',PLACE_OF_WORK='$_POST[member_workplace]',NEXT_OF_KIN='$_POST[member_kname]',NEXT_OF_KIN_ADDRESS='$_POST[member_kaddress]',NEXT_OF_KIN_PHONE='$_POST[member_kphone]',PEOPLE_CATEGORY='$_POST[member_category]',MINISTRY='$_POST[member_ministry]',LANGUAGES='$language',ETHNIC='$_POST[member_ethnic]',ACCESS='$access_',DEPARTMENT='$department',SUNDAY_SCHOOL_GRADE='$_POST[member_school_grade]',REPORT='$_POST[member_report]',VOLUNTEER='$_POST[volunteer]',SMS_SUBSCRIBE_SCHEDULES='$_POST[member_sms_schedule]',SMS_SUBSCRIBE='$_POST[member_sms]',EMAIL_UNSUBSCRIBE_SCHEDULES='$_POST[member_email_unsubscribes_schedule]',EMAIL_UNSUBSCRIBE='$_POST[member_email_unsubscribes]',FAMILY='$_POST[family]',GROUPS='$group'";
             trim($data);
             if($_POST[member_send_login]=="yes"){
                    $message="Here is your member portal login details Username='$_POST[member_username]',Password=$_POST[member_password1]";
@@ -69,6 +75,7 @@
                if (empty($id)) {
                     $query2 = $sql->Prepare("INSERT INTO perez_members  SET $data ");
                     $query = $sql->Prepare("INSERT INTO perez_members_auth(USER,USERNAME,PASSWORD)VALUES('$_POST[member_code]','$_POST[member_username]','$password')");
+                     $query3 =$sql->Prepare("INSERT INTO tbl_accounts(ACCOUNT_NAME,PARENT_ACCOUNT,ACCOUNT_DESCRIPTION,AFFECTS,ACCOUNT_BALANCE,ACCOUNT_CODE,BALANCE_TYPE,BUSINESS_PERSON,BANK_ACCOUNT_NUM)VALUES ('$member_code','2','created ledger account for member','Balance Sheet','0','$code','Debit','$business_person','$account_number')");
 
                     $update = 1;
                 }
@@ -77,9 +84,10 @@
                     $query = $sql->Prepare("UPDATE perez_members_auth SET USER='$_POST[member_code]',USERNAME='$_POST[member_username]',PASSWORD='$password' WHERE USER='$_POST[member_code]'");
                     //print_r($query2);
                 }
-                if ($sql->Execute($query) &&  $sql->Execute($query2)) {
+                if ($sql->Execute($query) &&  $sql->Execute($query2) &&  $sql->Execute($query3)) {
                    if($update==1){
                         $help->UpdateIndexno();
+                          $help->UpdateCode("ACCOUNT");
                    }
 
                      header("location:members?success=1&&member=$_SESSION[member]");
@@ -122,7 +130,8 @@
 				</ol>
                             <div><?php $notify->Message(); ?></div>
                             <?php
-                                    $config_file=$help->getConfig() ;
+                                   
+                                   $config_file=$help->getConfig() ;
                                     
                                 
                                      if(isset($_GET[member])){
@@ -133,6 +142,10 @@
                                     $person= $rtmt->MEMBER_CODE;
                                     $demo_array = explode(",",$rtmt->DEMOGRAPHICS);
                                     $access_array = explode(",",$rtmt->ACCESS);
+                                    $department_array = explode(",",$rtmt->DEPARTMENT);
+                                    $service_array = explode(",",$rtmt->SERVICE_TYPE);
+                                    $language_array = explode(",",$rtmt->LANGUAGES);
+                                     $group_array = explode(",",$rtmt->GROUPS);
 
                                    }
                                      
@@ -203,8 +216,8 @@
                                         <form action="addMember?upload=1" method="POST" enctype="multipart/form-data">
                                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                                 <div class="fileinput-new thumbnail" style="width: 200px; height: 186px;">
-                                                    <img <?php  
-echo $help->picture("photos/members/$person.JPG", 199) ?>  src="<?php echo file_exists("photos/members/$person.JPG") ? "photos/members/$person.JPG" : "photos/members/user.jpg"; ?>" alt=" Picture of Student Here" data-toggle="modal" href="#modalWider"/>
+                                                    <img <?php 
+echo $help->picture("photos/members/$person.jpg", 199) ?>  src="<?php echo file_exists("photos/members/$person.jpg") ? "photos/members/$person.jpg" : "photos/members/user.jpg"; ?>" alt=" Picture of member Here" data-toggle="modal" href="#modalWider"/>
                                                 </div>
                                                 <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;">
                                                 </div>
@@ -352,7 +365,7 @@ echo $help->picture("photos/members/$person.JPG", 199) ?>  src="<?php echo file_
             <div class="form-group">
                 <label class="col-lg-4 control-label">Languages Spoken</label>
                 <div class="col-lg-8">
-                    <select id="multiSelect" data-tags="true" multiple="multiple" name="member_language"      class="form-control">
+                    <select id="multiSelect" data-tags="true" multiple="multiple" name="member_language[]"      class="form-control">
 
                         <option value=''> select languages spoken</option>
    
@@ -368,7 +381,7 @@ echo $help->picture("photos/members/$person.JPG", 199) ?>  src="<?php echo file_
                         while ($row = $query->FetchRow()) {
                             ?>
                             <option value="<?php echo $row['NAME']; ?>" <?php
-                            if ($rtmt->LANGUAGES == $row['NAME']) {
+                            if (in_array($row['NAME'],$language_array)) {
                                 echo "selected='selected'";
                             }
                             ?>        ><?php echo $row['NAME']; ?></option>
@@ -438,6 +451,66 @@ echo $help->picture("photos/members/$person.JPG", 199) ?>  src="<?php echo file_
                           
                     </select>
                     <p  class="text-danger text-right small"><a href="addMinistry?new=1">Add New Ministry</a></p>
+                </div>
+            </div>
+                <div class="form-group">
+                <label class="col-lg-4 control-label">Belongs to Family</label>
+                <div class="col-lg-8">
+             <select id="family" name="family"      class="form-control">
+
+                        <option value=''> families</option>
+   
+                        <?php
+                        global $sql;
+
+                        $query2 = $sql->Prepare("SELECT * FROM  perez_family");
+
+
+                        $query = $sql->Execute($query2);
+
+
+                        while ($row = $query->FetchRow()) {
+                            ?>
+                            <option value="<?php echo $row['ID']; ?>" <?php
+                            if ($rtmt->FAMILY == $row['ID']) {
+                                echo "selected='selected'";
+                            }
+                            ?>        ><?php echo $row['CODE']."/".$row['LASTNAME']."/". $row['ADDRESS']; ?></option>
+
+                        <?php } ?>
+                          
+                    </select>
+                </div>
+            </div>
+           <p>&nbsp;</p>
+            <div class="form-group">
+                <label class="col-lg-4 control-label">Belongs to Group</label>
+                <div class="col-lg-8">
+                    <select id="service" data-tags="true" multiple="multiple" name="group[]"      class="form-control">
+
+                        <option value=''> select group </option>
+   
+                        <?php
+                        global $sql;
+
+                        $query2 = $sql->Prepare("SELECT * FROM perez_group");
+
+
+                        $query = $sql->Execute($query2);
+
+
+                        while ($row = $query->FetchRow()) {
+                            ?>
+                            <option value="<?php echo $row['ID']; ?>" <?php
+                            if (in_array($row['ID'],$group_array)) {
+                                echo "selected='selected'";
+                            }
+                            ?>        ><?php echo $row['NAME']; ?></option>
+
+                        <?php } ?>
+                          
+                    </select>
+                    
                 </div>
             </div>
         </div>
@@ -673,11 +746,16 @@ echo $help->picture("photos/members/$person.JPG", 199) ?>  src="<?php echo file_
                     <input type="text" name="member_kaddress" required=""class="form-control" value="<?PHP echo $rtmt->NEXT_OF_KIN_ADDRESS ?>" autocomplete="off">
                 </div>
             </div>
-           
+           <p>&nbsp;</p>
+             
+             
+            
+             
+        
             <div class="form-group">
                 <label class="col-lg-4 control-label">Service Type</label>
                 <div class="col-lg-8">
-                    <select id="service" data-tags="true" multiple="multiple" name="member_service"      class="form-control">
+                    <select id="service" data-tags="true" multiple="multiple" name="member_service[]"      class="form-control">
 
                         <option value=''> select services </option>
    
@@ -693,7 +771,7 @@ echo $help->picture("photos/members/$person.JPG", 199) ?>  src="<?php echo file_
                         while ($row = $query->FetchRow()) {
                             ?>
                             <option value="<?php echo $row['ID']; ?>" <?php
-                            if ($rtmt->SERVICE_TYPE == $row['ID']) {
+                            if (in_array($row['ID'],$service_array)) {
                                 echo "selected='selected'";
                             }
                             ?>        ><?php echo $row['SERVICE']; ?></option>
@@ -710,7 +788,7 @@ echo $help->picture("photos/members/$person.JPG", 199) ?>  src="<?php echo file_
         </div>
         <div class="col-sm-6">
             <div class="form-group">
-                    <label class="col-lg-4 control-label">Country <span class="text-danger">*</span></label>
+                    <label class="col-lg-4 control-label">Country of residence <span class="text-danger">*</span></label>
                 <div class="col-lg-8">
                     <div class="check-duplicates-popover-parent">
                         <select id="country" name="member_country" required=""   data-placeholder="Select nationality" class="form-control">
@@ -803,9 +881,9 @@ echo $help->picture("photos/members/$person.JPG", 199) ?>  src="<?php echo file_
     <p>&nbsp;</p>
     <div class="row">
         <div class="col-sm-6">
-            <h4 class="form-header">Locations</h4>
+            <h4 class="form-header">Branch</h4>
             <hr>
-            <p class="form-description">Choose the locations this person is assigned to.</p>
+            <p class="form-description">Choose the branch this person is assigned to.</p>
             <div class="form-group">
                 <label class="col-lg-4 control-label">Locations <i class="fa fa-question-circle fa-fw" title="The locations this person attends" data-toggle="tooltip"></i></label>
                 <div class="col-lg-8">
@@ -859,6 +937,14 @@ echo $help->picture("photos/members/$person.JPG", 199) ?>  src="<?php echo file_
                             <div class="item checkbox ui-checkbox ui-checkbox-danger">
                                 <label class="">
                                     <input type="checkbox" name="demographic[]" value="Children" <?php if(in_array("Children",  $demo_array)){ echo "checked='checked'";} ?>><span>Children</span></label>
+                            </div>
+                            <div class="item checkbox ui-checkbox ui-checkbox-danger">
+                                <label class="">
+                                    <input type="checkbox" name="demographic[]" value="Old Age" <?php if(in_array("Old Age",  $demo_array)){ echo "checked='checked'";} ?>><span>Old Age</span></label>
+                            </div>
+                            <div class="item checkbox ui-checkbox ui-checkbox-danger">
+                                <label class="">
+                                    <input type="checkbox" name="demographic[]" value="Ophans" <?php if(in_array("Children",  $demo_array)){ echo "checked='checked'";} ?>><span>Orphans</span></label>
                             </div>
                         </div>
                     </div>
@@ -940,7 +1026,7 @@ echo $help->picture("photos/members/$person.JPG", 199) ?>  src="<?php echo file_
                 <label class="col-lg-4 control-label">Departments <i class="fa fa-question-circle fa-fw" title="Departments are the different areas of serving in the church. Choose what departments this person serves within." data-toggle="tooltip"></i>
                 </label>
                 <div class="col-lg-8">		  
-                     <select id="dept" data-tags="true" multiple="multiple" name="member_department"     data-placeholder="Department the person belong" class="form-control">
+                     <select id="dept" data-tags="true" multiple="multiple" name="member_department[]"     data-placeholder="Department the person belong" class="form-control">
 
                         <option value=''>Choose department</option>
 
@@ -956,7 +1042,7 @@ echo $help->picture("photos/members/$person.JPG", 199) ?>  src="<?php echo file_
                         while ($row = $query->FetchRow()) {
                             ?>
                             <option value="<?php echo $row['ID']; ?>" <?php
-                            if ($rtmt->DEPARTMENT == $row['ID']) {
+                            if (in_array($row[ID], $department_array)) {
                                 echo "selected='selected'";
                             }
                             ?>        ><?php echo $row['NAME'] ; ?></option>
@@ -995,21 +1081,9 @@ echo $help->picture("photos/members/$person.JPG", 199) ?>  src="<?php echo file_
 
 	<?php include("./_library_/_includes_/theme.inc"); ?>
         
-        <script src="assets/scripts/vendors.js"></script>
-	<script src="assets/scripts/plugins/screenfull.js"></script>
-	<script src="assets/scripts/plugins/perfect-scrollbar.min.js"></script>
-	<script src="assets/scripts/plugins/waves.min.js"></script>
-	<script src="assets/scripts/plugins/select2.min.js"></script>
-	<script src="assets/scripts/plugins/bootstrap-colorpicker.min.js"></script>
-	<script src="assets/scripts/plugins/bootstrap-slider.min.js"></script>
-	<script src="assets/scripts/plugins/summernote.min.js"></script>
-	<script src="assets/scripts/plugins/bootstrap-datepicker.min.js"></script>
-	<script src="assets/scripts/app.js"></script>
-	<script src="assets/scripts/form-elements.init.js"></script>
-        <script type="text/javascript" src="assets/scripts/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
-        <?php include("_library_/_includes_/export.php"); ?>
+	<?php include("./_library_/_includes_/js.php"); ?>
+        
          
-          
          
 </body>
 

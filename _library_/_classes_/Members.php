@@ -21,7 +21,7 @@ class Members {
     public function getBranch($branch) {
           
        
-        $STM2 = $this->connect->Prepare("SELECT NAME FROM perez_branches  WHERE CODE='$branch' ");
+        $STM2 = $this->connect->Prepare("SELECT NAME FROM perez_branches  WHERE ID='$branch' ");
         $row= $this->connect->Execute($STM2);
         if($row){
         $stmt=$row->FetchNextObject();
@@ -36,6 +36,16 @@ class Members {
         if($row){
         $stmt=$row->FetchNextObject();
         return $stmt->NAME;
+        }
+    }
+    public function getTotalMember_byGroup($group) {
+          
+       
+        $STM2 = $this->connect->Prepare("SELECT COUNT(*) AS TOTAL FROM perez_members  WHERE GROUPS LIKE '%$group%' ");
+        $row= $this->connect->Execute($STM2);
+        if($row){
+        $stmt=$row->FetchNextObject();
+        return $stmt->TOTAL;
         }
     }
 }

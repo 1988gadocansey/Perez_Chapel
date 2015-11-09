@@ -1,7 +1,177 @@
-IndexIgnore *
- RewriteEngine on
+##
+# @version		$Id: htaccess.txt   2014-10-07 15:47:33Z 
+# @package		root
+# @copyright	        Copyright (C) 2014 - 2015 Takoradi Polytechnic. All rights reserved.
+# @license		GNU General Public License version 2 or later; see LICENSE.txt
+##
+
+SetEnv TZ Africa/Accra
+SetEnv SERVER_ADMIN gadocansey@google.com
+IndexIgnore * 
+RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^([^\.]+)$ $1.php [NC,L]
-## Mod_rewrite in use.
+# redirect the site to only https
+ 
+# Block out any script trying to base64_encode data within the URL.
+RewriteCond %{QUERY_STRING} base64_encode[^(]*\([^)]*\) [OR]
+# Block out any script that includes a <script> tag in URL.
+RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
+# Block out any script trying to set a PHP GLOBALS variable via URL.
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+# Block out any script trying to modify a _REQUEST variable via URL.
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+# Return 403 Forbidden header and show the content of the root homepage
+ 
+#Enabling URL open in order to send sms
+php_value allow_url_fopen On
+ # PHP error handling for production servers
+
+# disable display of startup errors
+php_flag display_startup_errors off
+
+# disable display of all other errors
+php_flag display_errors off
+
+# disable html markup of errors
+php_flag html_errors off
+
+# enable logging of errors
+php_flag log_errors on
+
+# disable ignoring of repeat errors
+php_flag ignore_repeated_errors off
+
+# disable ignoring of unique source errors
+php_flag ignore_repeated_source off
+
+# enable logging of php memory leaks
+php_flag report_memleaks on
+
+# preserve most recent error via php_errormsg
+php_flag track_errors on
+
+# disable formatting of error reference links
+php_value docref_root 0
+
+# disable formatting of error reference links
+php_value docref_ext 0
+
+# specify path to php error log
+php_value error_log localhost/flat-accountant/error.txt
+
+# specify recording of all php errors
+# [see footnote 3] # php_value error_reporting 999999999
+php_value error_reporting -1
+
+# disable max error string length
+php_value log_errors_max_len 0
+
+# protect error log by preventing public access
+<Files PHP_errors.log>
+ Order allow,deny
+ Deny from all
+ Satisfy All
+</Files>
+
+
+# to denied an ip use # someone else giving the ruskies a bad name..
+#order allow,deny
+#deny from 83.222.23.219
+#allow from all
+# custom error documents
+ErrorDocument 401  https://localhost/Students_Records_Management_System/404.html
+ErrorDocument 403  https://localhost/Students_Records_Management_System/404.html
+ErrorDocument 404  https://localhost/Students_Records_Management_System/404.htm
+ErrorDocument 500 https://localhost/Students_Records_Management_System505.html
+#Denies any request for static files (images, css, etc) if referrer is not local site or empty.
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{REQUEST_URI} !^/(wp-login.php|wp-admin/|wp-content/plugins/|wp-includes/).* [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.askapache.com.*$ [NC]
+RewriteRule \.(ico|pdf|flv|jpg|jpeg|mp3|mpg|mp4|mov|wav|wmv|png|gif|swf|css|js)$ - [F,NS,L]
+
+ 
+
+ 
+  php_value upload_max_filesize 20M
+php_value post_max_size 20M
+php_value max_execution_time 200
+php_value max_input_time 200
+#Blocking request based on User-Agent Header
+SetEnvIfNoCase ^User-Agent$ .*(craftbot|download|extract|stripper|sucker|ninja|clshttp|webspider|leacher|collector|grabber|webpictures) HTTP_SAFE_BADBOT
+SetEnvIfNoCase ^User-Agent$ .*(libwww-perl|aesop_com_spiderman) HTTP_SAFE_BADBOT
+Deny from env=HTTP_SAFE_BADBOT
+
+#deny acces to .htaccess
+<Files ~ "^\.ht">
+ Order allow,deny
+ Deny from all
+ Satisfy All
+</Files>
+# don't even think about setting this to 'on'
+php_value register_globals off
+
+# no session id's in the URL PULEEZE!
+php_value session.use_trans_sid 0
+
+# should be the same as..
+php_flag session.use_trans_sid off
+AddHandler cgi-script .php .pl .py .jsp .asp .htm .shtml .sh .cgi
+
+Options -ExecCGI
+
+# implementing caching for performance
+
+# MONTH
+
+Header set Cache-Control "max-age=2592000"
+
+# WEEK
+
+Header set Cache-Control "max-age=604800"
+
+# DAY
+
+Header set Cache-Control "max-age=43200"
+
+#
+# A (partial) domain-name
+
+#Allow from 10.1.0.0/255.255.0.0
+
+# Full IP address
+
+#Allow from 10.1.2.3
+
+# More than 1 full IP address
+
+#Allow from 192.168.1.104 192.168.1.205
+
+# Partial IP addresses
+
+# first 1 to 3 bytes of IP, for subnet restriction.
+
+#Allow from 10.1
+
+#Allow from 10 172.20 192.168.2
+
+# network/netmask pair
+
+#Allow from 10.1.0.0/255.255.0.0
+
+# network/nnn CIDR specification
+
+#Allow from 10.1.0.0/16
+
+# IPv6 addresses and subnets
+
+#Allow from 2001:db8::a00:20ff:fea7:ccea
+
+#Allow from 2001:db8::a00:20ff:fea7:ccea/10
+ 
+#block access to files during certain hours of the day
+
+
+# If the hour is 16 (8 PM) Then deny all access
 
  

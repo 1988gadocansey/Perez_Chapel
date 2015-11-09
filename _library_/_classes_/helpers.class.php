@@ -14,6 +14,17 @@ class helpers {
 		   
           
      }
+     public function getMemo(){
+    $query=$this->connect->Prepare("SELECT NO FROM perez_trans_code");
+    $query2=$this->connect->Execute($query);
+    $data=$query2->FetchNextObject();
+    return $data->NO;
+}
+public function UpdateMemo(){
+    $query=$this->connect->Prepare("UPDATE perez_trans_code SET NO=NO + 1");
+     return $this->connect->Execute($query);
+    
+}
    public  function nextyear($currenyear){
         $pp=explode("/",$currenyear);
         //echo $pp[0];
@@ -32,14 +43,30 @@ class helpers {
 	  
           return $dd;
 	}
-	public function getExamType($exam_code){
-		
-    $query= $this->connect->Prepare("SELECT * FROM tbl_waec_exam_type WHERE id='$exam_code'");
-    $output= $this->connect->Execute($query);
-	 $a=$output->FetchNextObject();
-    return $a->EXAM_TYPE;
+	public function getLocation($location){
+
+            $query= $this->connect->Prepare("SELECT * FROM perez_branches WHERE ID='$location'");
+            $output= $this->connect->Execute($query);
+                 $a=$output->FetchNextObject();
+            return $a->NAME." / ".$a->LOCATION;
       
-    }
+        }
+        public function getNotes($person){
+
+            $query= $this->connect->Prepare("SELECT * FROM perez_notes WHERE PERSON='$person'");
+            $output= $this->connect->Execute($query);
+                 $a=$output->FetchNextObject();
+            return $a;
+      
+        }
+        public function getCategory($category_id){
+
+            $query= $this->connect->Prepare("SELECT * FROM perez_member_category WHERE ID='$category_id'");
+            $output= $this->connect->Execute($query);
+                 $a=$output->FetchNextObject();
+            return $a->CATEGORY;
+      
+        }
 	   
     public function age($birthdate, $pattern = 'eu')
         {
@@ -158,23 +185,41 @@ public function getindexno(){
     $data=$query2->FetchNextObject();
     return $data->NO;
 }
+
 public function UpdateIndexno(){
     $query=$this->connect->Prepare("UPDATE perez_code_gen SET no=no + 1");
      return $this->connect->Execute($query);
     
 }
-public function getYear($code){
-    $query=$this->connect->Prepare("SELECT COURSE_TYPE FROM tpoly_courses WHERE COURSE_CODE='$code'");
-    $output= $this->connect->Execute($query);
-     $a=$output->FetchNextObject() ;
-    return $a->COURSE_TYPE;
+public function getGroupCode(){
+    $query=$this->connect->Prepare("SELECT GROUPS FROM perez_codes");
+    $query2=$this->connect->Execute($query);
+    $data=$query2->FetchNextObject();
+    return $data->GROUPS;
 }
-public function getApplicationMode($mode){
-     $query=   $this->connect->Prepare("SELECT * FROM tbl_mode_application WHERE ID='$mode'");
-    $output= $this->connect->Execute($query);
-    $a=$output->FetchNextObject();
-    return $a->MODE;
+public function UpdateGroupCode(){
+    $query=$this->connect->Prepare("UPDATE perez_codes SET GROUPS=GROUPS + 1");
+     return $this->connect->Execute($query);
+    
 }
+public function UpdateServiceCode(){
+    $query=$this->connect->Prepare("UPDATE perez_codes SET SERVICE=SERVICE + 1");
+     return $this->connect->Execute($query);
+    
+}
+public function UpdateCode($item){
+    $query=$this->connect->Prepare("UPDATE perez_codes SET $item=$item + 1");
+     return $this->connect->Execute($query);
+    
+}
+public function getCode($item){
+    $query=$this->connect->Prepare("SELECT    $item FROM perez_codes");
+    $query2=$this->connect->Execute($query);
+    $data=$query2->FetchNextObject();
+    return $data->$item;
+    
+}
+ 
  public function password() {
         $alphabet = "ABCDEFGHJKMNPQRSTUWXYZ23456789";
         
@@ -187,34 +232,7 @@ public function getApplicationMode($mode){
         return implode($pass); //turn the array into a string
     }
      
-        //generating passwords from students table and puting it into the account table
-        public function generateAccount(){
-         global $sql;
-         $query=$this->connect->Prepare("SELECT INDEXNO,LEVEL,`PROGRAMMECODE` FROM tpoly_students ");
-         $query1=$this->connect->Execute($query);
-          $result=$query1->FetchRow();
-         $output=count($result);
-         $query2=$this->connect->Prepare("SELECT INDEXNO,LEVEL,`PROGRAMMECODE` FROM tpoly_students ");
-         $query2_=$this->connect->Execute($query2); 
-         for($y=0;$y<$output;$y++){
-
-              $output1 = $query2_->FetchRow();
-                  foreach ($output1 as $values){
-                    extract($values);
-                      $password= $this->password();
-                      $encrypted_password=md5($password);
-                      $student_index=$INDEXNO;
-                      $level=$LEVEL;
-                      $program2=   $PROGRAMMECODE;
-                      $program=  $this->getProgram($program2);
-                     
-                     $query=$this->connect->Prepare("INSERT INTO tpoly_log_portal (USERNAME,PASSWORD,REAL_PASSWORD,PROGRAMMES,LEVEL) VALUES('$student_index','$encrypted_password','$password','$program','$level')") ;
-                        if( $this->connect->Execute($query)){
-                            header("portal_passwords?success=1");
-                        }
-                }
-         }
-     }
+         
      
      /**
       * @param sync $name CURL libray
