@@ -11,12 +11,7 @@ use _classes_\Login;
 class Boot {
     public function __construct(){
              $app=new \_classes_\Login();
-             if($app->getMac()){
-                 
-             }
-             else{
-                 die("Server misconfigured");
-             }
+              
 	}
     public function __clone(){
              

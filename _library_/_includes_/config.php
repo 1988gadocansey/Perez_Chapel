@@ -15,7 +15,7 @@ class JConfig {
 	public $server = 'localhost';
 	public $user = 'root';
 	public $database = 'db_perez_chapel';
-	public $password = "PRINT45dull";
+	public $password = "";
 	public $secret='perez_chapel';
 	public $debug = false;
 	public $autoRollback= true;
