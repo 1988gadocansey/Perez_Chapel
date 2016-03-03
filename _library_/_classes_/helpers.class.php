@@ -202,6 +202,17 @@ public function UpdateGroupCode(){
      return $this->connect->Execute($query);
     
 }
+public function getServiceType(){
+    $query=$this->connect->Prepare("SELECT SERVICETYPE FROM perez_codes");
+    $query2=$this->connect->Execute($query);
+    $data=$query2->FetchNextObject();
+    return $data->SERVICETYPE;
+}
+public function UpdateServiceType(){
+    $query=$this->connect->Prepare("UPDATE perez_codes SET SERVICETYPE=SERVICETYPE + 1");
+     return $this->connect->Execute($query);
+    
+}
 public function UpdateServiceCode(){
     $query=$this->connect->Prepare("UPDATE perez_codes SET SERVICE=SERVICE + 1");
      return $this->connect->Execute($query);

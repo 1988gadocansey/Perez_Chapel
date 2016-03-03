@@ -119,7 +119,7 @@
 ?>
 <?php include("./_library_/_includes_/header.inc"); ?>
 <body id="app" class="app off-canvas">
-     
+      <link rel="stylesheet" href="assets/styles/plugins/select2.css">
 	<!-- header -->
 	<header class="site-head" id="site-head">
 		
@@ -238,7 +238,7 @@
 
                                      <td width="20%">
 
-                                    <select class='form-control select2_sample1'     style="margin-left:-3%; width:75% " onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?branch='+escape(this.value);" >
+                                    <select class='form-control' id="category" data-placeholder="filter by branch"    style="margin-left:-3%; width:120px " onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?branch='+escape(this.value);" >
                                 <option value=''>Filter by branch</option>
                                         <option value='All branch'>All Branches</option>
                                     <?php 
@@ -264,7 +264,7 @@
 				 
                                <td>&nbsp;</td>
                                 <td width="25%">
-                                     <select class='form-control'      style="margin-left:-14%;  width:48% " onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?gender='+escape(this.value);" >
+                                     <select class='form-control'  id="gender"    style="margin-left:-14%;  width:110px " onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?gender='+escape(this.value);" >
                                          <option value=''>by gender</option>
                                         <option value='All gender'>All gender</option>
                                         <option value='Male'<?php if($_SESSION[gender]=='Male'){echo 'selected="selected"'; }?>>Male</option>
@@ -274,7 +274,7 @@
 
                                 </td>
                               <td width="25%">
-                                   <select class='form-control' style="margin-left:-60%;  width:69% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?ministry='+escape(this.value);"     >
+                                   <select class='form-control' style="margin-left:-60%;  width:150px " id="ministry" onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?ministry='+escape(this.value);"     >
                                        <option value=''>Filter by Ministries</option>
                                         <option value='All ministry'>All Ministries</option>
                                                           
@@ -300,7 +300,7 @@
                                                 </td>     
                                          <td>&nbsp;</td>
                                          <td width="25%">
-                                   <select class='form-control' style="margin-left:-87%;  width:80% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?category='+escape(this.value);"     >
+                                   <select class='form-control' style="margin-left:12px;  width:100px " id="title" onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?category='+escape(this.value);"     >
                                        <option value=''>Filter by member category</option>
                                         <option value='All category'>All Categories</option>
                                                           
@@ -326,7 +326,7 @@
                                                 </td>     
                                          <td>&nbsp;</td>
                                           <td width="25%">
-                                            <select class='form-control' style="margin-left:-503%;  width:358% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?service='+escape(this.value);"     >
+                                            <select class='form-control' style="margin-left:;  width:150px " id="service"  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?service='+escape(this.value);"     >
                                             <option value=''>Filter by Service category</option>
                                             <option value='All service'>All Service</option>
                                                           
@@ -353,7 +353,7 @@
                                          <td>&nbsp;</td>
                                           
                                           <td width="25%">
-                                            <select class='form-control' style="margin-left:-392%;  width:565% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?demo='+escape(this.value);"     >
+                                            <select class='form-control' style="margin-left:-39px;  width:175px " id="marital" onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?demo='+escape(this.value);"     >
                                             <option value=''>by demographics</option>
                                             <option value='All demographics'>All Demographics</option>
                                                           
@@ -381,7 +381,7 @@
                                                     <td>&nbsp;</td>
                                           
                                            <td width="25%">
-                                            <select class='form-control' style="margin-left:-51%;  width:565% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?group='+escape(this.value);"     >
+                                            <select class='form-control' style="margin-left:-51%;  width:170px " id="country"  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?group='+escape(this.value);"     >
                                             <option value=''>filter by group</option>
                                             <option value='All group'>All Groups</option>
                                                           
@@ -408,7 +408,7 @@
                                                      <td>&nbsp;</td>
                                           
                                            <td width="25%">
-                                            <select class='form-control' style="margin-left:256%;  width:565% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?country='+escape(this.value);"     >
+                                            <select class='form-control' style="margin-left:256%;  width:165px " id="region" onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?country='+escape(this.value);"     >
                                             <option value=''>filter by country</option>
                                             <option value='All country'>All Countries</option>
                                                           
@@ -434,7 +434,7 @@
                                                 </td>
                                                 <td>&nbsp;</td>
                                 <td width="25%">
-                                     <select class='form-control'      style="margin-left:14%;  width:48% " onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?volunteers='+escape(this.value);" >
+                                     <select class='form-control'      style="margin-left:14%;  width:140px "id="ethnic"  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?volunteers='+escape(this.value);" >
                                          <option value=''>by volunteers</option>
                                         <option value='All'>All members</option>
                                         <option value='yes'<?php if($_SESSION[volunteers]=='yes'){echo 'selected="selected"'; }?>>Volunteers</option>
@@ -447,18 +447,18 @@
                                         </tr>
                                        </table>
                                     <br/>
-                                       <table>
+                                       <table align="center">
                                            <tr>
                                            <form action="members?" method="post" >
                                             <td width="25%">
 
 
-                                                <input type="text" name ="search" placeholder="type search item here..."required="" style="margin-left:2%; width:168%;" class="form-control" id=" "  >
+                                                <input type="text" name ="search" placeholder="type search item here..."required="" style="margin-left:50%; width:263px;" class="form-control" id=" "  >
 
                                             </td>
                                             <td>&nbsp;</td>
                                              <td width="25%">
-                                            <select class='form-control'  name='content' required="" style="margin-left: 93%; width: 97%;"  >
+                                            <select class='form-control'  name='content'id="family" required="" style="margin-left: 93; width: 200px;"  >
                                                 <option value=''>search by</option>
                                                 <option value='SURNAME'<?php if($_SESSION[conthhent]=='SURNAME'){echo 'selected="selected"'; }?>>Surname</option>
                                                 <option value='FIRSTNAME'<?php if($_SESSION[status]=='FIRSTNAME'){echo 'selected="selected"'; }?>>First Name</option>
@@ -522,8 +522,8 @@
                                                            {
                                                
                                                     ?>
-                                                <table id="assesment" class="table   display" >
-                                                    <thead>
+                                                <table id="assesment" class="table table-striped " >
+                                                    <thead style="background:rgb(225, 131, 72) none repeat scroll 0% 0%;color:#fff">
                                                         <tr>
                                                              <th>#</th>
                                                             <th class="col-lg-1"><button type="button"  onclick="return confirm('Are you sure you want to delete this members??')" class="btn btn-default btn-sm md md-delete"></th>
@@ -618,8 +618,7 @@
 	</div> <!-- #end main-container -->
 
 	<?php include("./_library_/_includes_/theme.inc"); ?>
-
-	<?php include("./_library_/_includes_/theme.inc"); ?>
+ 
         
 	<?php include("./_library_/_includes_/js.php"); ?>
         

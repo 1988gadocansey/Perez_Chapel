@@ -26,8 +26,19 @@
 	<link rel="stylesheet" href="assets/styles/bootstrap.min.css">
 	<link rel="stylesheet" href="assets/styles/main.min.css">
         <!--<link rel="stylesheet" href="assets/styles/materialadminb0e2.css"> -->
-
-	 <style>
+  <link rel="stylesheet" href="assets/styles/plugins/bootstrap-datepicker.css">
+                    <link rel="stylesheet" href="assets/scripts/plugins/datetimepicker/bootstrap-datetimepicker.css">
+                  <link rel="stylesheet" href="assets/styles/plugins/select2.css">
+                    <link rel="stylesheet" type="text/css" href="assets/scripts/plugins/bootstrap-fileinput/bootstrap-fileinput.css"/>
+                    <link rel="stylesheet" href="assets/styles/plugins/bootstrap-datepicker.css">
+                    <link rel="stylesheet" href="assets/scripts/plugins/datetimepicker/bootstrap-datetimepicker.css">
+                    <link rel="stylesheet" href="assets/styles/dataTables.bootstrap.min.css">
+	 
+                 <link rel="stylesheet" href="assets/styles/jquery.dataTables.min.css">
+	   <link rel="stylesheet" href="assets/styles/jquery.dataTables.min.css">
+	   
+                    
+                    <style>
     #data-table-command  tr:hover{
         
         background-color: #FFFCBE;
@@ -40,6 +51,11 @@
         
         background-color: #FFFCBE;
     }
+    .form-header {
+    margin: 16px 0px 8px;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #777;
+}
 </style>
 	<script type="text/javascript">
 <!--
