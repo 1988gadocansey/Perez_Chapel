@@ -11,7 +11,8 @@
 	<!-- <base href="/"> -->
 
 	<title>EagleApp | Dashboard</title>
-	
+	<link rel="stylesheet" href="assets/styles/bootstrap.min.css">
+	<link rel="stylesheet" href="assets/styles/main.min.css">
 	<!-- Icons -->
         <link rel="stylesheet" href="assets/fonts/ionicons/css/ionicons.min.css">
         <link rel="stylesheet" href="assets/fonts/font-awesome/fonts/font-awesome.min.css">
@@ -23,8 +24,7 @@
 
 	<link rel="stylesheet" href="assets/scripts/buttons.dataTables.min.css">
 	<!-- Css/Less Stylesheets -->
-	<link rel="stylesheet" href="assets/styles/bootstrap.min.css">
-	<link rel="stylesheet" href="assets/styles/main.min.css">
+	
         <!--<link rel="stylesheet" href="assets/styles/materialadminb0e2.css"> -->
   <link rel="stylesheet" href="assets/styles/plugins/bootstrap-datepicker.css">
                     <link rel="stylesheet" href="assets/scripts/plugins/datetimepicker/bootstrap-datetimepicker.css">

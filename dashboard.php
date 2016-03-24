@@ -129,10 +129,7 @@
 	<!-- main-container -->
 	<div class="main-container clearfix">
 		<!-- main-navigation -->
-		<aside class="nav-wrap" id="site-nav" data-perfect-scrollbar>
-			
-                    <?php include("./_library_/_includes_/menu.inc"); ?>
-		</aside>
+		 
 		<!-- #end main-navigation -->
 
 		<!-- content-here -->

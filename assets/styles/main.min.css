@@ -3720,6 +3720,8 @@ fieldset[disabled] .btn-youtube.active {
   position: fixed;
   left: 0;
   right: 0;
+  width: 1055px;
+  margin-left: -1px;
 }
 @media (max-width: 767px) {
   .site-head,

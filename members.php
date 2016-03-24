@@ -523,7 +523,7 @@
                                                
                                                     ?>
                                                 <table id="assesment" class="table table-striped " >
-                                                    <thead style="background:rgb(225, 131, 72) none repeat scroll 0% 0%;color:#fff">
+                                                    <thead style="">
                                                         <tr>
                                                              <th>#</th>
                                                             <th class="col-lg-1"><button type="button"  onclick="return confirm('Are you sure you want to delete this members??')" class="btn btn-default btn-sm md md-delete"></th>

@@ -3,11 +3,9 @@
         color:red;
     }
 </style>
-<ul class="list-unstyled left-elems">
+<ul class="list-unstyled left-elems" style="width:100px">
 			<!-- nav trigger/collapse -->
-			<li>
-				<a href="javascript:;" class="nav-trigger ion ion-drag"></a>
-			</li>
+			 
 			<!-- #end nav-trigger -->
 
 			<!-- Search box -->

@@ -30,7 +30,7 @@ namespace _classes_;
 
                 public function __construct( ){
 			global $sql ;
-                         $a=new \Session() ;
+                         $a=new Session() ;
 			$this->redirect ="index?login=error";
                         $this->homepage ="members?welcome=1";
 			$this->hashkey	=$_SERVER['HTTP_HOST'];
@@ -107,11 +107,15 @@ namespace _classes_;
                                 $this->connect->Execute($stmt);
                                 
                                 if($_SESSION['level']=="administrator"){
-				header('Location: ' . $this->homepage);	
+				header('Location: main.php');
+                                echo '<script>Window.location.href="' .'../main.php " </script>';
+                                exit;
 				
                                 }
                                 else{
-                                    header("Location:members");
+                                   header('Location: main.php');
+                                echo '<script>Window.location.href="' . '../main.php " </script>';
+                                exit;
                                 }
                                 }	
 				
