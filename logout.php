@@ -7,6 +7,12 @@
      $date=  strtotime(NOW);
      $stmt=$sql->Prepare("UPDATE perez_auth SET LAST_LOGOUT='$date' WHERE ID='$_SESSION[ID]'");
      $sql->Execute($stmt);
+     header('Location: index.php');
+    echo "<script>Window.location.href='index.php ' </script>";
+    @session_destroy();
+    $_SESSION=array();
+    exit;
+
      logOut();
      
       

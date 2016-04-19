@@ -28,16 +28,17 @@
         <!--<link rel="stylesheet" href="assets/styles/materialadminb0e2.css"> -->
   <link rel="stylesheet" href="assets/styles/plugins/bootstrap-datepicker.css">
                     <link rel="stylesheet" href="assets/scripts/plugins/datetimepicker/bootstrap-datetimepicker.css">
-                  <link rel="stylesheet" href="assets/styles/plugins/select2.css">
+                    <link rel="stylesheet" href="assets/select2.min.css">
                     <link rel="stylesheet" type="text/css" href="assets/scripts/plugins/bootstrap-fileinput/bootstrap-fileinput.css"/>
                     <link rel="stylesheet" href="assets/styles/plugins/bootstrap-datepicker.css">
                     <link rel="stylesheet" href="assets/scripts/plugins/datetimepicker/bootstrap-datetimepicker.css">
                     <link rel="stylesheet" href="assets/styles/dataTables.bootstrap.min.css">
-	 
-                 <link rel="stylesheet" href="assets/styles/jquery.dataTables.min.css">
-	   <link rel="stylesheet" href="assets/styles/jquery.dataTables.min.css">
-	   
-                    
+                    <link rel="stylesheet" href="assets/styles/keyTable.foundation.min.css">
+  <link rel="stylesheet" href="assets/styles/dataTables.material.css">
+        
+                    <link rel="stylesheet" href="assets/styles/jquery.dataTables.min.css">
+
+
                     <style>
     #data-table-command  tr:hover{
         

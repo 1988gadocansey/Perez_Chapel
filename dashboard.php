@@ -37,6 +37,10 @@
         if($_GET[country]){
         $_SESSION[nation]=$_GET[country];
         }
+         if($_POST[go]){
+        $_SESSION[search]=$_POST[search];
+        $_SESSION[content]=$_POST[content];
+        }
         if(isset($_GET[delete])){
             $query=$sql->Prepare("DELETE FROM perez_members WHERE MEMBER_CODE='$_GET[delete]'");
             if($sql->Execute($query)){
@@ -125,7 +129,7 @@
             <?php include("./_library_/_includes_/top_bar.inc"); ?>
 	</header>
 	<!-- #end header -->
-
+        
 	<!-- main-container -->
 	<div class="main-container clearfix">
 		<!-- main-navigation -->
@@ -199,20 +203,16 @@
                                 </div>
                         </div>
 			<div class="page page-ui-tables">
-				<ol class="breadcrumb breadcrumb-small">
-					<li>Church Administration</li>
-					<li class="active"><a href="#">Members</a></li>
-				</ol>
-                            
+				 
                             <div class="page-wrap">
                                 <div class="note note-success note-bordered">
 						 
-                                                <div style="margin-top:-2.5%;float:right">
+                                                <div style="margin-top:31px;float:right">
                                                      
-                                                     <button  style="margin-top: -59px" name="mail"  class="btn btn-success waves-effect">Mail<i class="md md-email"></i></button>
-                                                        <button  style="margin-top: -59px"  data-target="#mount" data-toggle="modal"  class="btn btn-success waves-effect">Import csv<i class="md md-cloud-upload"></i></button>
-                                                          <button  style="margin-top: -59px"   class="btn btn-pink waves-effect" data-target="#sms"  data-toggle="modal">Send SMS<i class="md md-sms"></i></button>
-                                                        <button   class="btn btn-primary  waves-effect waves-button dropdown-toggle" style="margin-top: -59px" data-toggle="dropdown"><i class="md md-save"></i> Export Data</button>
+                                                     <button  style="margin-top: -59px" name="mail"  class="btn btn-success waves-effect">Mail<i class="fa fa-mail-forward"></i></button>
+                                                        <button  style="margin-top: -59px"  data-target="#mount" data-toggle="modal"  class="btn btn-success waves-effect">Import csv<i class="fa fa-upload"></i></button>
+                                                          <button  style="margin-top: -59px"   class="btn btn-pink waves-effect" data-target="#sms"  data-toggle="modal">Send SMS<i class="fa fa-phone"></i></button>
+                                                        <button   class="btn btn-primary  waves-effect waves-button dropdown-toggle" style="margin-top: -59px" data-toggle="dropdown"><i class="fa fa-save"></i> Export Data</button>
                                                         <ul class="dropdown-menu">
                                             
                                                             <li><a href="#" onClick ="$('#gad').tableExport({type:'csv',escape:'false'});"><img src='assets/icons/csv.png' width="24"/> CSV</a></li>
@@ -230,7 +230,7 @@
 					</div>
                                 <div class="row">
                                     <!-- Basic Table -->
-                                    <div class="col-md-12">
+                                    <div class="col-md-12" style="width:1200px;margin-left: -95px">
                                         <div class="panel panel-lined panel-hovered mb20 table-responsive basic-table">
                                             <div class="panel-heading panel-info">
                                                 <a href="addMember.php?new=1"  style="margin-top: -19px;margin-left: -25px"  title="Add new member"  class="btn btn-success waves-effect">Add Member<i class="fa fa-plus-circle"></i></a> 
@@ -249,7 +249,7 @@
 
                                      <td width="20%">
 
-                                    <select class='form-control select2_sample1'     style="margin-left:-3%; width:75% " onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?branch='+escape(this.value);" >
+                                    <select class='form-control select2_sample1'  id="title"   style="margin-left:-3px; width:165px " onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?branch='+escape(this.value);" >
                                 <option value=''>Filter by branch</option>
                                         <option value='All branch'>All Branches</option>
                                     <?php 
@@ -275,7 +275,7 @@
 				 
                                <td>&nbsp;</td>
                                 <td width="25%">
-                                     <select class='form-control'      style="margin-left:-14%;  width:48% " onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?gender='+escape(this.value);" >
+                                    <select class='form-control'       style="margin-left:12px;  width:133px " onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?gender='+escape(this.value);" >
                                          <option value=''>by gender</option>
                                         <option value='All gender'>All gender</option>
                                         <option value='Male'<?php if($_SESSION[gender]=='Male'){echo 'selected="selected"'; }?>>Male</option>
@@ -285,7 +285,7 @@
 
                                 </td>
                               <td width="25%">
-                                   <select class='form-control' style="margin-left:-60%;  width:69% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?ministry='+escape(this.value);"     >
+                                   <select class='form-control' style="margin-left:-53px;  width:auto" id="ministry" onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?ministry='+escape(this.value);"     >
                                        <option value=''>Filter by Ministries</option>
                                         <option value='All ministry'>All Ministries</option>
                                                           
@@ -311,7 +311,7 @@
                                                 </td>     
                                          <td>&nbsp;</td>
                                          <td width="25%">
-                                   <select class='form-control' style="margin-left:-87%;  width:80% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?category='+escape(this.value);"     >
+                                   <select class='form-control' style=" width:auto " id="category" onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?category='+escape(this.value);"     >
                                        <option value=''>Filter by member category</option>
                                         <option value='All category'>All Categories</option>
                                                           
@@ -336,8 +336,8 @@
 
                                                 </td>     
                                          <td>&nbsp;</td>
-                                          <td width="25%">
-                                            <select class='form-control' style="margin-left:-503%;  width:358% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?service='+escape(this.value);"     >
+                                             <td width="25%">
+                                            <select class='form-control' style="  width:auto " id="service" onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?service='+escape(this.value);"     >
                                             <option value=''>Filter by Service category</option>
                                             <option value='All service'>All Service</option>
                                                           
@@ -360,11 +360,20 @@
                                                        
                                                    </select>
 
-                                                </td>     
+                                                </td>   
+                                        </tr>
+                                       </table>
+                                                    <p>&nbsp;</p>
+                                
+                                        </div>
+                                            <div>
+                                                    <table>
+                                                        <tr>
+
                                          <td>&nbsp;</td>
                                           
                                           <td width="25%">
-                                            <select class='form-control' style="margin-left:-392%;  width:565% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?demo='+escape(this.value);"     >
+                                            <select class='form-control'  id="familsy" style=" margin-left: -3px; width:182px"  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?demo='+escape(this.value);"     >
                                             <option value=''>by demographics</option>
                                             <option value='All demographics'>All Demographics</option>
                                                           
@@ -392,7 +401,7 @@
                                                     <td>&nbsp;</td>
                                           
                                            <td width="25%">
-                                            <select class='form-control' style="margin-left:-51%;  width:565% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?team='+escape(this.value);"     >
+                                            <select class='form-control gad' id="marital"  style="margin-left:  px;  width:149px"  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?team='+escape(this.value);"     >
                                             <option value=''>filter by team</option>
                                             <option value='All team'>All Teams</option>
                                                           
@@ -419,7 +428,7 @@
                                                      <td>&nbsp;</td>
                                           
                                            <td width="25%">
-                                            <select class='form-control' style="margin-left:256%;  width:565% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?country='+escape(this.value);"     >
+                                            <select class='form-control' style="margin-left: 2px;   width:149px " id="country"  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?country='+escape(this.value);"     >
                                             <option value=''>filter by country</option>
                                             <option value='All country'>All Countries</option>
                                                           
@@ -443,8 +452,30 @@
                                                    </select>
 
                                                 </td>
-                                        </tr>
-                                       </table>
+                                           <form action="dashboard.php" method="post">
+                                                <td>
+                                                      
+                                                    <input style="margin-left: -47px;width:131px" type="search" placeholder="Search here" name="search" id="member_" class="form-control check-duplicates" >
+
+                                                        
+                                                </td>
+                                                        <td>
+                                                             <select class='form-control'  name='content' id="family" required="" style=" margin-left: 10px;width:114px"  >
+                                                                    <option value=''>search by</option>
+
+                                                                   <option value='LASTNAME'<?php if($_SESSION[contents]=='SURNAME'){echo 'selected="selected"'; }?>>Surname</option>
+                                                                   <option value='FIRSTNAME'<?php if($_SESSION[statuss]=='OTHERNAMES'){echo 'selected="selected"'; }?>>First Name</option>
+                                                                   <option value='MEMBER_CODE'<?php if($_SESSION[statuss]=='INDEXNO'){echo 'selected="selected"'; }?>>Member code</option>
+
+                                                               </select>
+                                                        </td>
+                                                        <td width="25%">
+                            <button type="submit" name="go" style="margin-left: 22px;width:   " class="btn btn-primary   btn-search">Search</button>
+                                                        </td> 
+                                                       
+                                                        </tr>
+                                                    </table>
+                                                 </form>
                                                 </div>
                                                 <!-- end filters   -->
                                                 <div class="row">
@@ -638,7 +669,7 @@
                                     </div>
 
 
-
+                                     
 
                                 </div>
                                 <!-- #end row -->
@@ -652,9 +683,9 @@
 
 	<?php include("./_library_/_includes_/theme.inc"); ?>
 
- <?php include("./_library_/_includes_/scripts.inc") ?>
- <?php include("_library_/_includes_/export.php");  ?>
-        <script>
+ <?php include("./_library_/_includes_/js.php"); ?>
+        
+         <script>
             $(document).ready(function() {
                 $('#gad').DataTable( {
                     dom: 'Bfrtip',

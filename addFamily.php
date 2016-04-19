@@ -109,39 +109,25 @@
                                     }
   
 ?>  
-<?php include("./_library_/_includes_/header.inc"); ?>
 
- 
- 
+<?php include("./_library_/_includes_/header.inc"); ?>
 <body id="app" class="app off-canvas">
      
 	<!-- header -->
 	<header class="site-head" id="site-head">
-            <script>
-                window.onload = function() {
-                var c = document.getElementById('platypus');
-                c.onclick = function() {
-                  if (c.checked == true) {document.getElementById('answer').style.display = 'inline';}
-                  else {document.getElementById('answer').style.display = '';
-                  }
-                }
-              }
-            
-            </script>
+		
             <?php include("./_library_/_includes_/top_bar.inc"); ?>
 	</header>
 	<!-- #end header -->
-
+        
 	<!-- main-container -->
 	<div class="main-container clearfix">
-		<!-- main-navigation -->
-		<aside class="nav-wrap" id="site-nav" data-perfect-scrollbar>
-			
-                    <?php include("./_library_/_includes_/menu.inc"); ?>
+	
+	 	 
                     <link rel="stylesheet" href="assets/styles/plugins/select2.css">
                     <link rel="stylesheet" type="text/css" href="assets/scripts/plugins/bootstrap-fileinput/bootstrap-fileinput.css"/>
                     <link rel="stylesheet" href="assets/styles/plugins/bootstrap-datepicker.css">
-		</aside>
+		 
 		<!-- #end main-navigation -->
 
 		<!-- content-here -->
@@ -306,7 +292,7 @@
                                 <div class="note note-success note-bordered">
 					<!-- row -->
                                         <div class="row">
-                                            <div class="col-md-12">
+                                            <div class="col-md-12" style="width:1200px;margin-left: -95px">
                                                 <div class="alert alert-info">
                                                     <button type="button" class="close" data-dismiss="alert">
                                                         <span aria-hidden="true">×</span>
@@ -325,7 +311,7 @@
                                         </div>
                                 <div class="row">
                                    
-                                    <div class="col-md-12">
+                                    <div class="col-md-12" style="width:1200px;margin-left: -95px">
                                         <div class="panel panel-lined panel-hovered mb20 table-responsive basic-table">
                                             <div class="panel-heading panel-info">
                                                <button data-target="#sms"  data-toggle="modal"  style="margin-top: -17px;margin-left: -25px"  title="Add new family"    class="btn btn-primary waves-effect btn-sm">Add a Family<i class="fa fa-users"></i></button> 
@@ -572,18 +558,18 @@
 
 	</div> <!-- #end main-container -->
 
-	<?php include("./_library_/_includes_/theme.inc"); ?>
+	<?php include("./_library_/_includes_/js.php"); ?>
         
-        <script src="assets/scripts/vendors.js"></script>
-	<script src="assets/scripts/plugins/screenfull.js"></script>
-	<script src="assets/scripts/plugins/perfect-scrollbar.min.js"></script>
-	<script src="assets/scripts/plugins/waves.min.js"></script>
-         <script src="assets/scripts/plugins/select2.min.js"></script>
-	<script src="assets/scripts/app.js"></script>
-	<script src="assets/scripts/form-elements.init.js"></script>
-         
-        <?php include("_library_/_includes_/export.php"); ?>
-         
+         <script>
+            $(document).ready(function() {
+                $('#gad').DataTable( {
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'colvis'
+                    ]
+                } );
+            } );
+        </script>
           
          
 </body>

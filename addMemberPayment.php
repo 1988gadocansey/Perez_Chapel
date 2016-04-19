@@ -35,28 +35,25 @@ if (isset($_GET[id])) {
 <?php include("./_library_/_includes_/header.inc"); ?>
 <script src="assets/scripts/vendors.js"></script>
 	<script src="assets/scripts/plugins/screenfull.js"></script>
-	  
+        
 <script src="assets/scripts/jquery.js"> </script>
 <script src="assets/scripts/jquery.validate.min.js"></script>
         <script src="assets/scripts/jquery.form.js"></script>
           
   <body id="app" class="app off-canvas">
 
-    <!-- header -->
-    <header class="site-head" id="site-head">
-        <link rel="stylesheet" type="text/css" href="autocompletion/jquery.autocomplete.css"  /> 
+   <!-- header -->
+	<header class="site-head" id="site-head">
+		
+            <?php include("./_library_/_includes_/top_bar.inc"); ?>
+	</header>
+	<!-- #end header -->
 
-        <?php include("./_library_/_includes_/top_bar.inc"); ?>
-    </header>
-    <!-- #end header -->
 
     <!-- main-container -->
     <div class="main-container clearfix">
         <!-- main-navigation -->
-        <aside class="nav-wrap" id="site-nav" data-perfect-scrollbar>
-
-            <?php include("./_library_/_includes_/menu.inc"); ?>
-        </aside>
+       
         <!-- #end main-navigation -->
 
         <!-- content-here -->
@@ -67,10 +64,7 @@ if (isset($_GET[id])) {
 
 
             <div class="page page-ui-tables">
-                <ol class="breadcrumb breadcrumb-small">
-                    <li>Finance</li>
-                    <li class="active"><a href="#">  Member Payments</a></li>
-                </ol>
+                
 
                 <div class="page-wrap">
                     <div class="note note-success note-bordered">
@@ -80,7 +74,8 @@ if (isset($_GET[id])) {
                     </div>
                     <div class="row">
                         <!-- Basic Table -->
-                        <div class="col-md-12">
+                        <div class="col-md-12" style="width:1200px;margin-left: -95px">
+                                  
                             <div class="panel panel-lined panel-hovered mb20 table-responsive basic-table">
 
                                 <div class="panel-body">
@@ -97,12 +92,12 @@ if (isset($_GET[id])) {
                                     <div class="block-header alert-success">
 
 
-                                        <table width="100px"  border="0" align="left" class="table   table-condensed" style="border:1px solid #fff">
+                                        <table   border="0" align="left" class="table   table-condensed"  >
                                             <tr>
                                                 <td width="210" class="uppercase" align="right"><strong>Church N<u>O</u></strong></td>
                                                 <td width="408" class="capitalize"><?php echo $row1->MEMBER_CODE ?></td>
-                                                <td width="260" rowspan="8" > <img   <?php $pic = $help->pictureid($row1->MEMBER_CODE);
-                                    echo $help->picture("photos/members/$pic.jpg", 280) ?>   src="<?php echo file_exists("photos/members/$pic.jpg") ? "photos/members/$pic.jpg" : "photos/members/user.jpg"; ?>" alt=" Picture of Member Here"  style="margin-top:-5px;margin-left: 24px"   /></td>
+                                                <td width="260" rowspan="5" > <img   <?php $pic = $help->pictureid($row1->MEMBER_CODE);
+                                    echo $help->picture("photos/members/$pic.jpg", 280) ?>   src="<?php echo file_exists("photos/members/$pic.jpg") ? "photos/members/$pic.jpg" : "photos/members/user.jpg"; ?>" alt=" Picture of Member Here"  style="margin-top:-5px;margin-left: -70px"   /></td>
                                             </tr>
                                             <tr>
                                                 <td class="uppercase" align="right"><strong>Branch:</strong></td>
@@ -246,7 +241,7 @@ if (isset($_GET[id])) {
                                     <div>
                                         <p>&nbsp;</p>
                                         <center><h4 class="text-success">Current Payments</h4></center>
-                                        <table class="table table-striped">
+                                        <table class="table table-striped display" id="mem">
                                             <thead>
                                             <th>No</th>
                                             <th>Payment Type</th>
@@ -256,59 +251,14 @@ if (isset($_GET[id])) {
                                            
                                             <th>Action</th>
                                             </thead>
-                                            <?php
-                                            $year=date(Y);
-                                            
-                                             $query="SELECT  * FROM  perez_member_payments AS payment LEFT JOIN perez_member_payment_type AS type ON type.payment_type_id=payment.payment_type_name where 1  AND payment.entered_by_username='$_SESSION[ID]'AND payment.payment_status='enabled' ORDER BY payment.ID DESC" ;
-                                                             
-                                                            //print_r($query);
-                                                            $rs = $sql->PageExecute($query,RECORDS_BY_PAGE,CURRENT_PAGE);
-                                                            $recordsFound = $rs->_maxRecordCount;    // total record found
-                                                           if (!$rs->EOF) 
-
-                                                           {
-                                            
-                                            ?>
+                                             
                                             <tbody>
                                                 
-                                                <?php
-
-                                                          $count=0;
-                                                           while($rtmt=$rs->FetchRow()){
-                                                                                   $count++;
-
-
-                                                     ?>
-                                                <tr>
-                                                    <td style="text-align:"><?php echo $count ?></td>
-                                                    <td style="text-align:"><?php echo $rtmt[payment_type_name] ?></td>
-                                                    <td style="text-align:"><?php $amount[]=$rtmt[amount];echo $rtmt[amount] ?></td>
-                                                    <td style="text-align:"><?php echo $rtmt[month] ?></td>
-                                                    <td style="text-align:"><?php echo $rtmt[year] ?></td>
-                                                  
-                                                    <td style="text-align:"><a onclick="return confirm('Are you sure you want to delete this payment??');"class="btn btn-pink btn-small" href="addMemberPayment.php?id=<?php echo $rtmt[id] ?>&member=<?php echo $member ?>">Delete Payment</a></td>
-                                                </tr>
-                                             <?php }?>
+                                                
                                                  </tbody>
                                             
                                         </table>
-                                        <div class="text-success text-bold" style="margin-left: 230px">Total Payment GHc <?php  $a= array_sum($amount);echo number_format($a, 2, '.', ',');?></div> 
-                                           
-                                            <br/>
-                                                <center><?php
-                                                    $GenericEasyPagination->setTotalRecords($recordsFound);
-
-                                                   echo $GenericEasyPagination->getNavigation();
-                                                   echo "<br>";
-                                                   echo $GenericEasyPagination->getCurrentPages();
-                                                 ?></center>
-                                         <?php }else{
-                                                            echo "<div class='alert alert-danger alert-dismissible' role='alert'>
-                                                                  <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
-                                                                  Oh snap! Something went wrong. No Payment record to display 
-                                         </div>";}?>
                                          
-                                    </div>
                                     
 
 
@@ -492,7 +442,21 @@ var options = {
 
 });
 </script>
- 
+ <script src="assets/scripts/jquery.dataTables.min.js"></script>
+        <!-- <script src="js/dataTables.bootstrap.min.js"></script> -->
+          
+        <script src="assets/scripts/dataTables.keyTable.min.js"></script>
+         
+ <script type="text/javascript">
+            $(document).ready(function() {
+            $('#mem').DataTable( {
+                "processing": true,
+                "serverSide": true,
+                "ajax": "datatables/memPay.php"
+            } );
+        } );
+        
+        </script> 
        
  </body>
  </html>

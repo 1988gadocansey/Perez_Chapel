@@ -40,7 +40,7 @@ if ($get_payment_type_result) {
 $counter=count($payment_type_input);
 
 for($i=0;$i<$counter;$i++){
-  $insert_new_payment_individual=$sql->Prepare("INSERT INTO perez_member_payments(payment_status,system_id,amount,month,year,entered_by_username,entered_by_real_name,payment_type_name,date_of_payment) VALUES('enabled','$s_id','$amt_input[$i]','$month_input[$i]','$year_input[$i]','$entered_by_username','$entered_by_real_name','$payment_type_input[$i]',CURDATE()) ");
+  $insert_new_payment_individual=$sql->Prepare("INSERT INTO perez_member_payments(payment_status,system_id,amount,month,year,entered_by_username,entered_by_real_name,payment_type_name,date_of_payment) VALUES('enabled','$m_id','$amt_input[$i]','$month_input[$i]','$year_input[$i]','$entered_by_username','$entered_by_real_name','$payment_type_input[$i]',CURDATE()) ");
      $insert_new_payment_result= $sql->Execute($insert_new_payment_individual);
      if(!$insert_new_payment_result){
         $insert_new_payment_errors['payment_type'][]=$payment_type_input[$i];

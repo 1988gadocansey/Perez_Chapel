@@ -27,24 +27,20 @@ if (isset($_POST[submit])) {
 }
 ?>
 <?php include("./_library_/_includes_/header.inc"); ?>
-
 <body id="app" class="app off-canvas">
+     
+	<!-- header -->
+	<header class="site-head" id="site-head">
+		
+            <?php include("./_library_/_includes_/top_bar.inc"); ?>
+	</header>
+	<!-- #end header -->
 
-    <!-- header -->
-    <header class="site-head" id="site-head">
-        <link rel="stylesheet" type="text/css" href="autocompletion/jquery.autocomplete.css"  /> 
-
-        <?php include("./_library_/_includes_/top_bar.inc"); ?>
-    </header>
-    <!-- #end header -->
 
     <!-- main-container -->
     <div class="main-container clearfix">
         <!-- main-navigation -->
-        <aside class="nav-wrap" id="site-nav" data-perfect-scrollbar>
-
-            <?php include("./_library_/_includes_/menu.inc"); ?>
-        </aside>
+       
         <!-- #end main-navigation -->
 
         <!-- content-here -->
@@ -55,10 +51,7 @@ if (isset($_POST[submit])) {
 
 
             <div class="page page-ui-tables">
-                <ol class="breadcrumb breadcrumb-small">
-                    <li>Finance</li>
-                    <li class="active"><a href="#">Add Member Payments</a></li>
-                </ol>
+                 
 
                 <div class="page-wrap">
                     <div class="note note-success note-bordered">
@@ -138,7 +131,7 @@ if (isset($_POST[submit])) {
 <?php include("./_library_/_includes_/js.php"); ?>
 
             <script src="assets/scripts/form-elements.init.js"></script>
-
+             
 
             </body>
 

@@ -14,7 +14,23 @@ require '_library_/_includes_/config.php';?>
 	<!-- <base href="/"> -->
 
 	<title>EagleApp | Dashboard</title>
-	
+        <style>
+       [class^="md-"] {
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    font-size-adjust: none;
+    font-stretch: normal;
+    font-feature-settings: normal;
+    font-language-override: normal;
+    font-kerning: auto;
+    font-synthesis: weight style;
+    font-variant: normal;
+    font-size: inherit;
+    text-rendering: auto;
+}
+        </style>
 	<!-- Icons -->
         <link rel="stylesheet" href="assets/fonts/ionicons/css/ionicons.min.css">
         <link rel="stylesheet" href="assets/fonts/font-awesome/fonts/font-awesome.min.css">
@@ -59,6 +75,7 @@ require '_library_/_includes_/config.php';?>
     padding-bottom: 4px;
     border-bottom: 2px solid #777;
 }
+
 </style>
 	<script type="text/javascript">
 <!--
@@ -96,7 +113,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 </script>
 </head>
 
-    <body style="padding:3px!important;">
+    <body>
 
       <!-- Navbar
       ================================================== -->
@@ -108,7 +125,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
   }
   else {
     header('Location: logout.php');
-        echo '<script>Window.location.href="logout.php " </script>';
+        echo '<script>Window.location.href="index.php " </script>';
       exit;
   }
 
@@ -137,31 +154,20 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			 
 
 			<!-- site-logo for mobile nav -->
-			<header class="site-head" id="site-head">
+			<header class="site-head" id="site-head"  style="background: none repeat scroll 0% 0% rgba(177, 116, 25, 0.65);width:255px;margin-left: -4px">
 		
                             <ul class="list-unstyled left-elems">
-			<!-- nav trigger/collapse -->
-			<li>
-				<a href="javascript:;" class="nav-trigger ion ion-drag"></a>
-			</li>
-			<!-- #end nav-trigger -->
-
-			<!-- Search box -->
-			<li>
-				<div class="form-search hidden-xs">
-					<form id="site-search" action="javascript:;">
-						<input type="search" class="form-control" placeholder="Type here for search...">
-						<button type="submit" class="ion ion-ios-search-strong"></button>
-					</form>
-				</div>
-			</li>	<!-- #end search-box -->
+			 
 
 			<!-- site-logo for mobile nav -->
-			<li>
-				<div class="site-logo visible-xs">
-					<a href="javascript:;" class="text-uppercase h3">
-						<span class="text">Perez Chapel</span>
-					</a>
+			<p>
+                            <div class="site-logo visible-xs">
+					 
+						 <a href="" class="site-logo text-uppercase">
+                                    <img src="login/images/logo.png" style="width: 43px;height:44px;margin-left: 8px "/>
+                                    <span style="font-size: 14px;color:white" class="text">Perez Chapel Int</span>
+				</a>
+					 
 				</div>
 			</li> <!-- #end site-logo -->
 
@@ -233,11 +239,11 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                                     <img src="photos/avatars/<?php echo $_SESSION[USERNAME]?>.jpg" alt="profile-pic">
 				</a>
 				<ul class="dropdown-menu dropdown-menu-right">
-					<li><a href="profilr"><span class="ion ion-person">&nbsp;&nbsp;</span>Profile</a></li>
-					<li><a href="settings"><span class="ion ion-settings">&nbsp;&nbsp;</span>Settings</a></li>
+					<p><a href="profilr"><span class="ion ion-person">&nbsp;&nbsp;</span>Profile</a></li>
+					<p><a href="settings"><span class="ion ion-settings">&nbsp;&nbsp;</span>Settings</a></li>
 					<li class="divider"></li>
-					<li><a href="lock"><span class="ion ion-lock-combination">&nbsp;&nbsp;</span>Lock Screen</a></li>
-					<li><a href="logout"><span class="ion ion-power">&nbsp;&nbsp;</span>Logout</a></li>
+					<p><a href="lock"><span class="ion ion-lock-combination">&nbsp;&nbsp;</span>Lock Screen</a></li>
+					<p><a href="logout"><span class="ion ion-power">&nbsp;&nbsp;</span>Logout</a></li>
 				</ul>
 			</li>
 			<!-- #end profile-drop -->
@@ -245,104 +251,238 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			<!-- sidebar contact -->
 			 
 		</ul>
-<body>
+    <body style="font-family: Roboto">
+    <p>&nbsp;</p>
    <aside class="nav-wrap" id="site-nav" data-perfect-scrollbar>
 			
              <div class="md-card-content">
-                <div class=" uk-accordion"  data-uk-accordion>
-                    
-                    <h3 class="uk-accordion-title">
-                       <span class="menu_icon"><i class="material-icons">&#xE871;</i></span>
-                       <span class="menu_title">Start Ups</span>
-                     </h3>                    
-                    <div class="uk-accordion-content">
-
+                 <p>&nbsp;</p>
+                 
+                <div class="panel-success panel">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#collapseThreesm" class="accordion-toggle" data-toggle="collapse" data-parent="#accordionDemo">
+                                    <i class="fa fa-database"></i> System Setup
+                                </a>
+                            </h4>
+                        </div>
+                        <div class="panel-collapse collapse" id="collapseThreesm">
+                              
+                                         <p>
+                                             <i class='fa fa-database'></i><b><a target="content_frame" href="setup.php"> Run Setup</a></b>
+                                        </p>
+                                          <p>
+                                             <i class='fa fa-plus-circle'></i><b><a target="content_frame" href="createDepartment.php"> Add Departments</a></b>
+                                        </p>
+                                         <p>
+                                             <i class='fa fa-folder-open'></i><b><a target="content_frame" href="viewDepartments.php"> View Departments</a></b>
+                                        </p>
+                                         <p>
+                                             <i class='fa fa-plus-circle'></i><b><a target="content_frame" href="addDemographics.php"> Add Demographics</a></b>
+                                        </p>
+                                         <p>
+                                             <i class='fa fa-folder-open'></i><b><a target="content_frame" href="viewDemographics.php"> View Demographics</a></b>
+                                        </p>
+                                         <p>
+                                             <i class='fa fa-plus-circle'></i><b><a target="content_frame" href="addMemberCat.php"> Create Member Categories</a></b>
+                                        </p>
+                                         <p>
+                                             <i class='fa fa-folder-open'></i><b><a target="content_frame" href="viewMemberCat.php"> View Member Categories</a></b>
+                                        </p>
+                                        <p>
+                                             <i class='fa fa-plus-circle'></i><b><a target="content_frame" href="addflow.php"> Add Flows</a></b>
+                                        </p>
+                                         <p>
+                                             <i class='fa fa-folder-open'></i><b><a target="content_frame" href="viewflows.php"> View Flows</a></b>
+                                        </p>
+                                     
+                         </div> <!-- accordion-inner -->
+                     </div> <!-- collapseTen-->
+                  
+            
+  &nbsp; 
+                    <div class="panel-success panel">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#collapseThree" class="accordion-toggle" data-toggle="collapse" data-parent="#accordionDemo">
+                                    <i class="fa fa-user-plus"></i> Members and Guest Manager
+                                </a>
+                            </h4>
+                        </div>
+                        <div class="panel-collapse collapse" id="collapseThree">
+                            <div class="panel-body">
                                 <p class="">
-                                    <span class="md-list-heading"><a target='main'  href="{{ url('setup') }}" > <i class='fa fa-plus-circle'></i> Church Setup </a></span>
+                                    <p><a target='content_frame'  href="addMember.php" > <i class='fa fa-plus-circle'></i> Add New Member </a> 
                                 </p>
                            
                                 <p class="">
-                                    <span class="md-list-heading"><a target='main'  href="{{ url('createDepartment') }}" > <i class='fa fa-folder-open'></i> Create Departments </a></span>
+                                    <p><a target='content_frame'  href="members.php" > <i class='fa fa-folder-open'></i> View Members </a> 
                                 </p>
                                 <p class="">
-                                    <span class="md-list-heading"><a target='main'  href="{{  url('addDemographics') }} " ><i class='fa fa-plus-circle'></i>  Demographics </a></span>
+                                    <p><a target='content_frame'  href="addChild.php" > <i class='fa fa-plus-circle'></i> Add Children </a> 
                                 </p>
+                           
+                                <p class="">
+                                    <p><a target='content_frame'  href="viewChild.php" > <i class='fa fa-folder-open'></i> View Children </a> 
+                                </p>
+                                 
                                <p class="">
-                                    <span class="md-list-heading"><a target='main'  href="{{ url('membersCategories') }}" > <i class='fa fa-folder-open'></i> Member Categories </a></span>
+                                    <p><a target='content_frame'  href="viewVisitors.php" > <i class='fa fa-folder-open'></i> View Visitors </a> 
                                 </p>
                                 <p class="">
-                                    <span class="md-list-heading"><a target='main'  href="{{ url('addBranches') }}" ><i class='fa fa-plus-circle'></i>  Create Flows </a></span>
+                                    <p><a target='content_frame'  href="viewfollow.php" > <i class='fa fa-folder-open'></i> View Follow up </a> 
                                 </p>
                                 <p class="">
-                                    <span class="md-list-heading"><a target='main'  href="{{url('addMinistries') }}" > <i class='fa fa-folder-open'></i> View Flows </a></span>
+                                    <p><a target='content_frame'  href="addFamily.php" ><i class='fa fa-plus-circle'></i>Families </a> 
                                 </p>
-                                
-                                
-                            
-                     </div>
-                  
-                    <h3 class="uk-accordion-title">
-                          <span class="menu_icon"><i class="material-icons">&#xE8F1;</i></span>
-                        <span class="menu_title">Member Management</span>
-                        </h3>
-                        <div class="uk-accordion-content">
-<p class="">
-                                    <span class="md-list-heading"><a target='main'  href="{{ url('addMembers') }}" > <i class='fa fa-plus-circle'></i> Add New Member </a></span>
-                                </p>
-                           
-                                <p class="">
-                                    <span class="md-list-heading"><a target='main'  href="{{ url('viewMembers') }}" > <i class='fa fa-folder-open'></i> View Members </a></span>
-                                </p>
-                                <p class="">
-                                    <span class="md-list-heading"><a target='main'  href="{{ url('addMemberCategory') }}" ><i class='fa fa-plus-circle'></i>  Create Members Categories </a></span>
-                                </p>
-                               <p class="">
-                                    <span class="md-list-heading"><a target='main'  href="{{ url('membersCategories') }}" > <i class='fa fa-folder-open'></i> View Member Categories </a></span>
-                                </p>
-                                <p class="">
-                                    <span class="md-list-heading"><a target='main'  href="{{ url('addFlows') }}" ><i class='fa fa-plus-circle'></i>  Create Flows </a></span>
-                                </p>
-                                <p class="">
-                                    <span class="md-list-heading"><a target='main'  href="{{ url('flows') }}" > <i class='fa fa-folder-open'></i> View Flows </a></span>
-                                </p>
+                                 
                                 
 
                         </div>
-
-                     <h3 class="uk-accordion-title">
-                        <span class="menu_icon"><i class="fa fa-database"></i></span>
-                        <span class="menu_title">Transactions Manager</span>
-                     </h3>                    
-                    <div class="uk-accordion-content">
-
-                                <p class=''><a target='main'  href="{{ url('journal_entry') }}"  ><i class='fa fa-file-text'></i>  Journal Entry </a></p>
-                         <p class=''><a target='main'  href="{{ url('journal_inquiry') }}"  ><i class='fa fa-file-text'></i>  Journal Inquiry </a></p>
-                         
-                           
-                            
                         </div>
-                      
-                    
-                        <h3 class="uk-accordion-title" onclick="">
-                            <span class="menu_icon"><i class="material-icons">&#xE87B;</i></span>
-                            <span class="menu_title">Settings</span>
-                        </h3>
-                        <div class="uk-accordion-content">
-                        <p class=''><a target='main'  href='{{ url('reset') }}' ><i class='fa fa-file-text'></i>  Reset Account </a></p>
-
-                          <p class=''><a target='main'  href='{{ url('system_log') }}' ><i class='fa fa-file-text'></i>  View Log </a></p>
-                       <p class=''><a target='main'  href='{{ url('users') }}' ><i class='fa fa-file-text'></i>  Users </a></p>
-
-
-                        <p class=''><a target='main' onclick="window.parent.location='{!! url("logout")!!}'"  href="{{ url('logout') }}" ><i class='fa fa-file-text'></i>  Logout </a></p>
-                  
-                            
+                    </div>
+  &nbsp;
+                    <div class="panel-success panel">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#collapseThrees" class="accordion-toggle" data-toggle="collapse" data-parent="#accordionDemo">
+                                    <i class="fa fa-money"></i> Funds and Payments
+                                </a>
+                            </h4>
                         </div>
-                  
-                  
-                </div>
+                        <div class="panel-collapse collapse" id="collapseThrees">
+                            <div class="panel-body">
+                                <p class=''><a target="content_frame"  href="create_church_payment.php"  ><i class='fa fa-plus-circle'></i>  Create Church Payments </a></p>
+                                <p class=''><a target="content_frame"  href="view_church_payment_types.php"  ><i class='fa fa-folder-open'></i>  Church payment Types</a></p>
+                              
+                                <p class=''><a target="content_frame"  href="member_payment.php"  ><i class='fa fa-folder-open'></i> Make Church payments </a></p>
+                                <p class="">
+                                    <p><a target='content_frame'  href="create_member_payment.php" ><i class='fa fa-plus-circle'></i>Create Member Payments </a> 
+                                </p>
+                                <p class="">
+                                    <p><a target='content_frame'  href="viewChurchPayments.php" > <i class='fa fa-folder-open'></i> View Church Payments </a> 
+                                </p> 
+                                <p class="">
+                                    <p><a target='content_frame'  href="member_payment.php" > <i class='fa fa-folder-open'></i> Make Member Payments </a> 
+                                </p>
+                                <p class="">
+                                    <p><a target='content_frame'  href="create_member_payment.php" ><i class='fa fa-plus-circle'></i>Create Fund Raising </a> 
+                                </p>
+                                <p class="">
+                                    <p><a target='content_frame'  href="member_payment.php" > <i class='fa fa-folder-open'></i> Make Member Payments </a> 
+                                </p>
+                            
+                                 <p class="">
+                                    <p><a target='content_frame'  href="viewMembersPayment.php" > <i class='fa fa-folder-open'></i> View Member Payments </a> 
+                                </p>
+                                 
+                                 <p class="">
+                                    <p><a target='content_frame'  href="viewFundRaisings.php" > <i class='fa fa-folder-open'></i> View Fund Raising </a> 
+                                </p> 
+                            </div>
+                        </div>
+                    </div>
+  &nbsp;
+                     <div class="panel-success panel">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#collapseT" class="accordion-toggle" data-toggle="collapse" data-parent="#accordionDemo">
+                                    <i class="fa fa-user-plus"></i> Groups Manager
+                                </a>
+                            </h4>
+                        </div>
+                        <div class="panel-collapse collapse" id="collapseT">
+                            <div class="panel-body">
+                                <p class=''><a target="content_frame"  href="addGroup.php"  ><i class='fa fa-plus-circle'></i>  Create Groups </a></p>
+                                <p class=''><a target="content_frame"  href="member_payment.php"  ><i class='fa fa-folder-open'></i> View Groups </a></p>
+                                 
+                            </div>
+                        </div>
+                    </div>
+  &nbsp;
+  <div class="panel-success panel">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#collapseTT" class="accordion-toggle" data-toggle="collapse" data-parent="#accordionDemo">
+                                    <i class="fa fa-paperclip"></i> Service Manager
+                                </a>
+                            </h4>
+                        </div>
+                        <div class="panel-collapse collapse" id="collapseTT">
+                            <div class="panel-body">
+                                <p class=''><a target="content_frame"  href="add_service_type.php"  ><i class='fa fa-plus-circle'></i>  Create Service Categories </a></p>
+                                <p class=''><a target="content_frame"  href="service_types.php"  ><i class='fa fa-folder-open'></i> View Categories </a></p>
+                                <p class=''><a target="content_frame"  href="add_service.php"  ><i class='fa fa-plus-circle'></i>  Add Service </a></p>
+                                 <p class=''><a target="content_frame"  href="Inviteservice.php"  ><i class='fa fa-plus-circle'></i> Invite people to Service </a></p
+                                <p class=''><a target="content_frame"  href="upservice.php"  ><i class='fa fa-folder-open'></i> View Upcoming services </a></p>
+                                  <p class=''><a target="content_frame"  href="pservice.php"  ><i class='fa fa-folder-open'></i> View past services </a></p>
+                                   <p class=''><a target="content_frame"  href="allservice.php"  ><i class='fa fa-folder-open'></i> View all services </a></p>
+                            </div>
+                        </div>
+                    </div>
    
+   &nbsp;
+                     <div class="panel-success panel">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#collapseT2" class="accordion-toggle" data-toggle="collapse" data-parent="#accordionDemo">
+                                    <i class="fa fa-user-plus"></i> Assets Manager
+                                </a>
+                            </h4>
+                        </div>
+                        <div class="panel-collapse collapse" id="collapseT2">
+                            <div class="panel-body">
+                                <p class=''><a target="content_frame"  href="addAssets.php"  ><i class='fa fa-plus-circle'></i>  Add Assets </a></p>
+                                <p class=''><a target="content_frame"  href="viewAssets.php"  ><i class='fa fa-folder-open'></i> View Assets </a></p>
+                                 
+                            </div>
+                        </div>
+                    </div>
+  &nbsp;
    
+                     <div class="panel-success panel">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#collapseT4" class="accordion-toggle" data-toggle="collapse" data-parent="#accordionDemo">
+                                    <i class="fa fa-database"></i> Financial Transactions Manager
+                                </a>
+                            </h4>
+                        </div>
+                        <div class="panel-collapse collapse" id="collapseT4">
+                            <div class="panel-body">
+                                <p class=''><a target="content_frame"  href="chart_account.php"  ><i class='fa fa-plus-circle'></i>  Create Accounts </a></p>
+                                <p class=''><a target="content_frame"  href="chart_account.php"  ><i class='fa fa-folder-open'></i> View Charts of Accounts </a></p>
+                                <p class=''><a target="content_frame"  href="chart_account.php"  ><i class='fa fa-plus-circle'></i> Deposit </a></p>
+                                <p class=''><a target="content_frame"  href="chart_account.php"  ><i class='fa fa-folder-open'></i> Withdrawals </a></p>
+                                <p class=''><a target="content_frame"  href="chart_account.php"  ><i class='fa fa-plus-circle'></i> Ledger Entries </a></p>
+                                <p class=''><a target="content_frame"  href="chart_account.php"  ><i class='fa fa-folder-open'></i> View Transactions Log </a></p>
+                                 <p class=''><a target="content_frame"  href="chart_account.php"  ><i class='fa fa-folder-open'></i> View Cashbooks </a></p>
+                                <p class=''><a target="content_frame"  href="chart_account.php"  ><i class='fa fa-folder-open'></i> Income and Expenditure </a></p>
+                               
+                            </div>
+                        </div>
+                    </div>
+   
+   &nbsp;
+                     <div class="panel-success panel">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#collapseT21" class="accordion-toggle" data-toggle="collapse" data-parent="#accordionDemo">
+                                    <i class="fa fa-users"></i> Systems and Users
+                                </a>
+                            </h4>
+                        </div>
+                        <div class="panel-collapse collapse" id="collapseT21">
+                            <div class="panel-body">
+                                <p class=''><a target="content_frame"  href="addAssets.php"  ><i class='fa fa-plus-circle'></i>  Add Users </a></p>
+                                <p class=''><a target="content_frame"  href="viewAssets.php"  ><i class='fa fa-folder-open'></i> View Users </a></p>
+                                <p class=''><a target="content_frame"  href="viewAssets.php"  ><i class='fa fa-folder-open'></i> Backup Database </a></p>
+                                <p class=''><a target="content_frame"  href="viewAssets.php"  ><i class='fa fa-folder-open'></i> View Systems Log </a></p>
+                                <p class=''><a target="content_frame"  href="logout.php"  ><i class='fa fa-lock'></i> Logout </a></p>
+                                
+                            </div>
+                        </div>
+                    </div>
    </aside>
     
     
@@ -362,34 +502,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
       <script src="assets/js/jquery.printelement.js"></script>
 
 
-            <script>
-  $(document).ready(function(){
-        var originalLeft = parseInt($(".span2").css('left'));
-        var originalRight = parseInt($(".span2").css('right'));
-        var originalSpan10 = parseInt($(".span10").css('left'));
-        $('.span10').css('left', originalRight + 100+"px");
-        console.log(originalSpan10);
-    // $(window).scroll(function(){
-
-    //       //$(' .span2').css('position','absolute');
-    //       $('.span2').css('left', originalLeft - $(this).scrollLeft()+"px");
-    //   });
-
-    $('.accordion-bodyys a ').on('click',function(e){
-      e.preventDefault();
-      var linkURL=$(this).prop('href');
-      //&preventCache="+new Date();
-      var newDate=new Date().getTime();
-      $('#content').empty().load(linkURL+'?_'+newDate);
-
-    });
-
-    // $(' .accordion-heading').on('hover',function(e){
-    //   $(e.target).trigger('click');
-
-    // });
-  });
-  </script>
+            
 
     </body>
   </html>
