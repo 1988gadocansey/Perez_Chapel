@@ -230,6 +230,8 @@ public function getCode($item){
     return $data->$item;
     
 }
+
+
  
  public function password() {
         $alphabet = "ABCDEFGHJKMNPQRSTUWXYZ23456789";

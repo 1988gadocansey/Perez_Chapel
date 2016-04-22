@@ -15,15 +15,9 @@ $login = new _classes_\Login();
 if (isset($_POST[submit])) {
 
     $member = strip_tags($_POST['member']);
-    // check if member exist ...//
-    $query = $sql->Prepare("SELECT * FROM perez_members WHERE ID='$member'");
-    $query = $sql->Execute($query);
-    $numRow = $query->RecordCount();
-    if ($numRow > 0) {
-        header("location:addMemberPayment.php?member=$member");
-    } else {
-        header("location:member_payment.php?error=1");
-    }
+     
+        header("location:add_children.php?member=$member");
+     
 }
 ?>
 <?php include("./_library_/_includes_/header.inc"); ?>
@@ -68,7 +62,7 @@ if (isset($_POST[submit])) {
 
                                     <div>
 
-                                        <form action="member_payment.php?submit=1" method="post"class="person-form form-horizontal form-horizontal-custom" autocomplete="off" role="form">
+                                        <form action="addChild.php?submit=1" method="post"class="person-form form-horizontal form-horizontal-custom" autocomplete="off" role="form">
                                             <p>&nbsp;</p>
 
                                             <div class="form-group">
