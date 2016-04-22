@@ -204,13 +204,13 @@
                                                            <tr>
                                                                <td><?php echo $count ?></td>
                                                                
-                                                             <td><a href="updateChild.php?child=<?php echo  $rtmt[ID] ?>&&update"><img  <?php   $pic=  $help->pictureid($rtmt[CODE]);  $help->picture("photos/children/$pic.JPG",90)  ?>   src="<?php echo file_exists("photos/members/$pic.JPG") ? "photos/members/$pic.JPG":"photos/members/user.jpg";?>" alt=" Picture of Student Here"    /></a></td>
+                                                             <td><a href="updateChild.php?child=<?php echo  $rtmt[ID] ?>&&update"><img  <?php   $pic=  $help->pictureid($rtmt[CODE]); echo $help->picture("photos/children/$pic.jpg",90)  ?>   src="<?php echo 'photos/children/'.$pic.jpg ? "photos/children/$pic.jpg":"photos/members/user.jpg";?>" alt=" Picture of Student Here"    /></a></td>
                                                              <td style="text-align:"><?php echo $rtmt[CODE] ?></td>
                                                              <td style="text-align:"><?php echo $rtmt[NAME] ?></td>
                                                           
                                                              <td style="text-align:"><?php echo $rtmt[DOB] ?></td>
                                                                
-                                                             <td style="text-align: center"><a onclick="return confirm('Are you sure you want to delete this person??')" href="members?delete=<?php echo  $rtmt[MEMBER_CODE] ?>"Delete<i class="fa fa-trash" title="click to delete"></i> </a></td>
+                                                             <td style="text-align: center"><a onclick="return confirm('Are you sure you want to delete this person??')" href="viewChild?delete=<?php echo  $rtmt[ID] ?>"Delete<i class="fa fa-trash" title="click to delete"></i> </a></td>
                                                             
                                                         </tr>
                                                          <?php }?>
@@ -252,16 +252,7 @@
 
  <?php include("./_library_/_includes_/js.php"); ?>
         
-         <script>
-            $(document).ready(function() {
-                $('#gad').DataTable( {
-                    dom: 'Bfrtip',
-                    buttons: [
-                        'colvis'
-                    ]
-                } );
-            } );
-        </script>
+        
 </body>
 
 </html>

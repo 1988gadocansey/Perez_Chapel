@@ -97,8 +97,7 @@
                 }
         }
 ?>  
-        <?php include("./_library_/_includes_/header.inc"); ?>
-<script src= "assets/ajax.googleapis.com_ajax_libs_angularjs_1.3.14_angular.min.js"></script>
+       <?php include("./_library_/_includes_/header.inc"); ?>
 <body id="app" class="app off-canvas">
      
 	<!-- header -->
@@ -106,18 +105,16 @@
 		
             <?php include("./_library_/_includes_/top_bar.inc"); ?>
 	</header>
+
 	<!-- #end header -->
 
 	<!-- main-container -->
 	<div class="main-container clearfix">
 		<!-- main-navigation -->
-		<aside class="nav-wrap" id="site-nav" data-perfect-scrollbar>
-			
-                    <?php include("./_library_/_includes_/menu.inc"); ?>
-                    <link rel="stylesheet" href="assets/styles/plugins/select2.css">
+		      <link rel="stylesheet" href="assets/styles/plugins/select2.css">
                     <link rel="stylesheet" type="text/css" href="assets/scripts/plugins/bootstrap-fileinput/bootstrap-fileinput.css"/>
                     <link rel="stylesheet" href="assets/styles/plugins/bootstrap-datepicker.css">
-		</aside>
+		 
 		<!-- #end main-navigation -->
 
 		<!-- content-here -->
@@ -174,7 +171,7 @@
                                 <div class="note note-success note-bordered">
 					<!-- row -->
                                         <div class="row">
-                                            <div class="col-md-12">
+                                              <div class="col-md-12" style="width:1200px;margin-left: -95px">
                                                 <div class="alert alert-info">
                                                     <button type="button" class="close" data-dismiss="alert">
                                                         <span aria-hidden="true">×</span>
@@ -199,7 +196,7 @@
                                     <!-- Basic Table -->
                                     <!-- inline form -->
 <div class="row">
-<div class="col-sm-12">
+   <div class="col-md-12" style="width:1100px;margin-left: -80px">
 <div class="panel panel-default panel-hovered panel-stacked mb30">
  
 <div class="panel-body">
