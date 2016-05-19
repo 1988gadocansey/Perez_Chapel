@@ -154,6 +154,7 @@ if (isset($_GET[id])) {
           <form method="post" name="new_payment_individual_form" action="new_payment_individual_action.php" id="new_payment_individual_form" class="form-horizontal">
 
           <input type="hidden" name="m_id" id="m_id" value="<?php  echo $row1->ID ?>">
+          <input type="hidden" name="name" id="name" value="<?php  echo $row1->TITLE . ' ' . $row1->FIRSTNAME . ' ' . $row1->LASTNAME . ' ' . $row1->OTHERNAMES ?>">
              
   <table id="paymentTable" class="table"border="0" style="font-weight:bold" style="cellpadding:0;">
 	  <tr id="paymentRow" payment_row="payment_row"><td valign="top"><strong>Payment Type</strong></td>
@@ -174,7 +175,7 @@ if (isset($_GET[id])) {
                        {
 
                        ?>
-                       <option value="<?php echo $row['payment_type_id']; ?>"   <?php  ?>      ><?php echo $row['payment_form_name']; ?></option>
+                       <option value="<?php echo $row['payment_type_id']; ?>"   <?php  ?>      ><?php echo $row['payment_type_name']; ?></option>
 
                     <?php }?>
                         
@@ -238,7 +239,7 @@ if (isset($_GET[id])) {
 </div>
                                     </div>
                                     
-                                    <div>
+                                    <!--<div>
                                         <p>&nbsp;</p>
                                         <center><h4 class="text-success">Current Payments</h4></center>
                                         <table class="table table-striped display" id="mem">
@@ -262,7 +263,7 @@ if (isset($_GET[id])) {
                                     
 
 
-                                </div>
+                                </div>-->
                         <!-- #end row -->
                     </div> <!-- #end page-wrap -->
                 </div>
@@ -428,8 +429,8 @@ var options = {
             requestType : "ajax"
           },
           success : function(msg) {
-
-            window.location.href='addMemberPayment.php?member=<?php echo $member?>';
+              alert('Payment successful')
+           // window.location.href='addMemberPayment.php?member=<?php echo $member?>';
           },
           failure : function() {
             alert('Sorry...failure occurred');

@@ -154,7 +154,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			 
 
 			<!-- site-logo for mobile nav -->
-			<header class="site-head" id="site-head"  style="background: none repeat scroll 0% 0% rgba(177, 116, 25, 0.65);width:255px;margin-left: -4px">
+			<header class="site-head" id="site-head"  style="background: none repeat scroll #607D8B ;width:255px;margin-left: -4px">
 		
                             <ul class="list-unstyled left-elems">
 			 
@@ -444,21 +444,14 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                         <div class="panel-heading">
                             <h4 class="panel-title">
                                 <a href="#collapseT4" class="accordion-toggle" data-toggle="collapse" data-parent="#accordionDemo">
-                                    <i class="fa fa-database"></i> Financial Transactions Manager
+                                    <i class="fa fa-calendar-o"></i> Events Manager
                                 </a>
                             </h4>
                         </div>
                         <div class="panel-collapse collapse" id="collapseT4">
                             <div class="panel-body">
-                                <p class=''><a target="content_frame"  href="chart_account.php"  ><i class='fa fa-plus-circle'></i>  Create Accounts </a></p>
-                                <p class=''><a target="content_frame"  href="chart_account.php"  ><i class='fa fa-folder-open'></i> View Charts of Accounts </a></p>
-                                <p class=''><a target="content_frame"  href="chart_account.php"  ><i class='fa fa-plus-circle'></i> Deposit </a></p>
-                                <p class=''><a target="content_frame"  href="chart_account.php"  ><i class='fa fa-folder-open'></i> Withdrawals </a></p>
-                                <p class=''><a target="content_frame"  href="chart_account.php"  ><i class='fa fa-plus-circle'></i> Ledger Entries </a></p>
-                                <p class=''><a target="content_frame"  href="chart_account.php"  ><i class='fa fa-folder-open'></i> View Transactions Log </a></p>
-                                 <p class=''><a target="content_frame"  href="chart_account.php"  ><i class='fa fa-folder-open'></i> View Cashbooks </a></p>
-                                <p class=''><a target="content_frame"  href="chart_account.php"  ><i class='fa fa-folder-open'></i> Income and Expenditure </a></p>
-                               
+                                <p class=''><a target="content_frame"  href="eventManager/index.php" target="_"><i class='fa fa-calendar'></i>  Events </a></p>
+                                
                             </div>
                         </div>
                     </div>
@@ -474,10 +467,10 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                         </div>
                         <div class="panel-collapse collapse" id="collapseT21">
                             <div class="panel-body">
-                                <p class=''><a target="content_frame"  href="addAssets.php"  ><i class='fa fa-plus-circle'></i>  Add Users </a></p>
-                                <p class=''><a target="content_frame"  href="viewAssets.php"  ><i class='fa fa-folder-open'></i> View Users </a></p>
-                                <p class=''><a target="content_frame"  href="viewAssets.php"  ><i class='fa fa-folder-open'></i> Backup Database </a></p>
-                                <p class=''><a target="content_frame"  href="viewAssets.php"  ><i class='fa fa-folder-open'></i> View Systems Log </a></p>
+                                <p class=''><a target="content_frame"  href="addUsers.php"  ><i class='fa fa-plus-circle'></i>  Add Users </a></p>
+                                <p class=''><a target="content_frame"  href="viewUsers.php"  ><i class='fa fa-folder-open'></i> View Users </a></p>
+                                <p class=''><a target="content_frame"  href="backup.php"  ><i class='fa fa-database'></i> Backup Database </a></p>
+                                <p class=''><a target="content_frame"  href="view_log.php"  ><i class='fa fa-folder-open'></i> View Systems Log </a></p>
                                 <p class=''><a target="content_frame"  href="logout.php"  ><i class='fa fa-lock'></i> Logout </a></p>
                                 
                             </div>
@@ -493,14 +486,10 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 <script src="assets/scripts/jquery.js"></script>
       <script src="assets/js/bootstrap.min.js"></script>
        <script src="assets/js/holder/holder.js"></script>
-      <script src="assets/js/google-code-prettify/prettify.js"></script>
-
+      
       <script src="assets/js/application.js"></script>
 
-   <script src="assets/js/jquery.validate.min.js"></script>
-      <script src="assets/js/jquery.form.js"></script>
-      <script src="assets/js/jquery.printelement.js"></script>
-
+    
 
             
 

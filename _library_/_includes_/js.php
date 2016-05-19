@@ -5,15 +5,14 @@
 	<script src="assets/scripts/plugins/waves.min.js"></script>
 	 <script src="assets/scripts/plugins/bootstrap-colorpicker.min.js"></script>
 	<script src="assets/scripts/plugins/bootstrap-slider.min.js"></script>
-	<script src="assets/scripts/plugins/summernote.min.js"></script>
-	<script src="assets/scripts/plugins/moment.min.js"></script>
+	 <script src="assets/scripts/plugins/moment.min.js"></script>
 
         <script src="assets/scripts/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 
          <script src="assets/scripts/vue.min.js"></script>
         <script src="assets/scripts/vue-form.min.js"></script>
           
-	<script src="assets/scripts/app.js"></script>
+	 
          <script src="assets/scripts/form-elements.init.js"></script>
 	    <script src="assets/scripts/jquery.dataTables.min.js"></script>
         <script src="assets/scripts/dataTables.bootstrap.min.js"></script>

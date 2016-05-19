@@ -1,7 +1,9 @@
 <?php
+error_reporting(1);
 session_start();
+require 'vendor/autoload.php';
  require '_library_/_includes_/config.php';
-
+  $login=new _classes_\Login();
 
 // 	$str = 'ministers_appreciation_retirement_amount';
 // 	$chars = explode('_', $str,-1);
@@ -19,6 +21,10 @@ $m_id=!empty($_POST['m_id']) ? trim($_POST['m_id']) :"";
 
 $entered_by_username=$_SESSION[ID] ;
 $entered_by_real_name=$_SESSION['USERNAME'];
+
+
+
+
 
 if(count($payment_type_input)!=count($amt_input) && count($payment_type_input)!=count($year_input)){
   $payment_request['status']="error";
@@ -40,8 +46,19 @@ if ($get_payment_type_result) {
 $counter=count($payment_type_input);
 
 for($i=0;$i<$counter;$i++){
+    $event="Payments";
+$activity="$_SESSION[USERNAME] has received GHC$amt_input[$i] from $_POST[name]";
+$hashkey = $_SERVER['HTTP_HOST'];
+$remoteip = $_SERVER['REMOTE_ADDR'];
+$useragent = $_SERVER['HTTP_USER_AGENT'];
+$mac = $login->getMac();
+$sessionId = session_id();
+$stmt = $sql->Prepare("INSERT INTO `perez_system_log` ( `USERNAME`, `EVENT_TYPE`, `ACTIVITIES`, `HOSTNAME`, `IP`, `BROWSER_VERSION`,MAC_ADDRESS,SESSION_ID) VALUES ('".$_SESSION[ID]."', '$event','$activity', '".$hashkey."','".$remoteip."','".$useragent."','".$mac."','".$sessionId."')");
+                $sql->Execute($stmt);
+
   $insert_new_payment_individual=$sql->Prepare("INSERT INTO perez_member_payments(payment_status,system_id,amount,month,year,entered_by_username,entered_by_real_name,payment_type_name,date_of_payment) VALUES('enabled','$m_id','$amt_input[$i]','$month_input[$i]','$year_input[$i]','$entered_by_username','$entered_by_real_name','$payment_type_input[$i]',CURDATE()) ");
-     $insert_new_payment_result= $sql->Execute($insert_new_payment_individual);
+  print_r($insert_new_payment_individual);   
+  $insert_new_payment_result= $sql->Execute($insert_new_payment_individual);
      if(!$insert_new_payment_result){
         $insert_new_payment_errors['payment_type'][]=$payment_type_input[$i];
         $insert_new_payment_errors['payment_form_name'][]=$payment_types[$payment_type_input[$i]];

@@ -325,17 +325,16 @@ var options = {
 });
 </script>
   
-       <script src="assets/scripts/plugins/moment.min.js"></script>
-
-        <script src="assets/scripts/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
- <script src="assets/scripts/form-elements.init.js"></script>
-        <script>
-            //Time
-            if ($('.time-picker')[0]) {
-                $('.time-picker').datetimepicker({
-                    format: 'LT'
-                });
-            }
-        </script>
+       <script src="asset/vendors.js"></script>
+	<script src="asset/screenfull.js"></script>
+	<script src="asset/perfect-scrollbar.min.js"></script>
+	<script src="asset/waves.min.js"></script>
+	<script src="asset/select2.min.js"></script>
+	<script src="asset/bootstrap-colorpicker.min.js"></script>
+	<script src="asset/bootstrap-slider.min.js"></script>
+	<script src="asset/summernote.min.js"></script>
+	<script src="asset/bootstrap-datepicker.min.js"></script>
+  <script src="assets/scripts/form-elements.init.js"></script>
+        
  </body>
  </html>

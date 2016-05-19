@@ -18,10 +18,10 @@
  */
  
 // DB table to use
-$table = 'tbl_student';
+$table = 'perez_member_payment_type';
  
 // Table's primary key
-$primaryKey = 'ID';
+$primaryKey = 'payment_type_id';
  
 // Array of database columns which should be read and sent back to DataTables.
 // The `db` parameter represents the column name in the database, while the `dt`
@@ -29,7 +29,7 @@ $primaryKey = 'ID';
 // indexes
 $columns = array(
     array(
-        'db' => 'id',
+        'db' => 'payment_type_id',
         'dt' => 'DT_RowId',
         'formatter' => function( $d, $row ) {
             // Technically a DOM id cannot start with an integer, so we prefix
@@ -38,20 +38,17 @@ $columns = array(
             return 'row_'.$d;
         }
     ),
-    array( 'db' => 'INDEXNO', 'dt' => 0 ),
-    array( 'db' => 'SURNAME',  'dt' => 1 ,),
-    array( 'db' => 'OTHERNAMES',   'dt' => 2 ),
-    array( 'db' => 'GENDER',     'dt' => 3 ),
-   array( 'db' => 'CLASS',     'dt' => 4 ),
-   array( 'db' => 'PROGRAMME',     'dt' => 5 ),
-  array( 'db' => 'DEPARTMENT',     'dt' => 6 ),
+    array( 'db' => 'payment_type_name', 'dt' => 0 ),
+    array( 'db' => 'status',  'dt' => 1 ,),
+   
+   
 );
  
 // SQL server connection information
 $sql_details = array(
     'user' => 'root',
     'pass' => '',
-    'db'   => 'angel_academy',
+    'db'   => 'db_perez_chapel',
     'host' => 'localhost'
 );
  

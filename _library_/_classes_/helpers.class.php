@@ -121,35 +121,40 @@ public function yearsDifference($endDate, $beginDate)
    return $date_parts2[0] - $date_parts1[0];
 }
 
-// send sms
-public  function sendtxt($message,$phone,$type,$name) 
-{ 
+////////BACKUP RESTORE/////////
+    function create_backup() {
+        if (!isset($RootPath)){
+		$RootPath = dirname(htmlspecialchars($_SERVER['PHP_SELF']));
+		if ($RootPath == '/' OR $RootPath == "\\") {
+			$RootPath = '';
+		}
+	}
+        $db="db_perez_chapel";
+        $folder="backup";
+        $DBPassword="";
+        $DBUser="root";
+        $host="localhost";
+        $BackupFile =   $folder.'/' . $db  .'/' . _('Backup') . '_' . Date('Y-m-d-H-i-s') . '.sql.gz';
+	$Command = 'mysqldump --opt -h' . $host . ' -u' . $DBUser . ' -p' . $DBPassword  . '  ' . $db . '| gzip > ' .
+	$_SERVER['DOCUMENT_ROOT'] . $BackupFile;
 
-global $sql;
-set_time_limit  (500);
-if(is_numeric($phone) and $message){
 
-if($_SESSION['connected']>=0 and $_SESSION['connected']!='down') 
-{ 
-$themassage=urlencode($message);
-$url="http://powertxtgh.com/access.php?company=ALOT&ccode=ALT101&sender=Gad&message=$themassage&recipient=$phone";
+	$CommandOutput = array();
+	exec($Command,$CommandOutput, $ReturnValue);
 
-$f=@fopen($url,"r"); 
+	if ($ReturnValue ==0) {
+		print_r('The backup file has now been created. You must now download this to your computer because in case the web-server has a disk failure the backup would then not on the same machine. Use the link below'. '<br /><br /><a href="' . $BackupFile  . '">' .'Download the backup file to your locale machine' . '</a>','success');
+		print_r('Once you have downloaded the database backup file to your local machine you should use the link below to delete it - backup files can consume a lot of space on your hosting account and will accumulate if not deleted - they also contain sensitive information which would otherwise be available for others to download!,info');
+		echo '<br />
+			<br />
+			<a href="'. htmlspecialchars($_SERVER['PHP_SELF'],ENT_QUOTES,'UTF-8') . '?BackupFile=' .$BackupFile  .'">' .'Delete the backup file off the server' . '</a>';
+	} else {
+		print_r('There was some problem producing a backup using mysqldump. Normally this relates to a permissions issue - the web-server user must have permission to write to the companies directory error');
+	}
+  }
+    
 
-$date=time();
-	 $insertor=$this->connect->Prepare("insert into sent set number='$phone',type='$type',name='$name',message='$message',dates='$date',status='Delivered'");
-	 $insertor->Execute($insertor) ;
-	
-fclose($f); 
-return true; 
-} else{
-		$date=time();
-
-	 $insertor=$this->connect->Prepare("insert into sent set number='$phone',type='$type',name='$name',message='$message',dates='$date',status='Not Delivered'");
-	 $insertor->Execute($insertor) ;
-	
-return false; }
-}} 
+    
 
 public function ping($host, $port, $timeout) { 
   $tB = microtime(true); 

@@ -209,10 +209,10 @@
 						 
                                                 <div style="margin-top:31px;float:right">
                                                      
-                                                     <button  style="margin-top: -59px" name="mail"  class="btn btn-success waves-effect">Mail<i class="fa fa-mail-forward"></i></button>
-                                                        <button  style="margin-top: -59px"  data-target="#mount" data-toggle="modal"  class="btn btn-success waves-effect">Import csv<i class="fa fa-upload"></i></button>
-                                                          <button  style="margin-top: -59px"   class="btn btn-pink waves-effect" data-target="#sms"  data-toggle="modal">Send SMS<i class="fa fa-phone"></i></button>
-                                                        <button   class="btn btn-primary  waves-effect waves-button dropdown-toggle" style="margin-top: -59px" data-toggle="dropdown"><i class="fa fa-save"></i> Export Data</button>
+                                                     <button  style="margin-top: -59px" name="mail"  class="btn btn-success waves-effect btn-sm">Mail<i class="fa fa-mail-forward"></i></button>
+                                                        <button  style="margin-top: -59px"  data-target="#mount" data-toggle="modal"  class="btn btn-success waves-effect btn-sm">Import csv<i class="fa fa-upload"></i></button>
+                                                          <button  style="margin-top: -59px"   class="btn btn-pink waves-effect btn-sm" data-target="#sms"  data-toggle="modal">Send SMS<i class="fa fa-phone"></i></button>
+                                                        <button   class="btn btn-primary  waves-effect waves-button dropdown-toggle btn-sm" style="margin-top: -59px" data-toggle="dropdown"><i class="fa fa-save"></i> Export Data</button>
                                                         <ul class="dropdown-menu">
                                             
                                                             <li><a href="#" onClick ="$('#gad').tableExport({type:'csv',escape:'false'});"><img src='assets/icons/csv.png' width="24"/> CSV</a></li>
@@ -233,7 +233,7 @@
                                     <div class="col-md-12" style="width:1200px;margin-left: -95px">
                                         <div class="panel panel-lined panel-hovered mb20 table-responsive basic-table">
                                             <div class="panel-heading panel-info">
-                                                <a href="addMember.php?new=1"  style="margin-top: -19px;margin-left: -25px"  title="Add new member"  class="btn btn-success waves-effect">Add Member<i class="fa fa-plus-circle"></i></a> 
+                                                <a href="addMember.php?new=1"  style="margin-top: -19px;margin-left: -25px"  title="Add new member"  class="btn btn-success waves-effect btn-sm">Add Member<i class="fa fa-plus-circle"></i></a> 
                                                 <div class="btn-group btn-group-sm right">
                                                     <button type="button" class="btn btn-default btable-bordered" data-table-class="table-bordered">Bordered</button>
                                                     <button type="button" class="btn btn-default btable-striped" data-table-class="table-stiped">Striped</button>

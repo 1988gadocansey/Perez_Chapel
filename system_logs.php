@@ -245,8 +245,17 @@
 
 		</div>
 
-	<?php include("./_library_/_includes_/js.php"); ?>
-        
+                    <script src="asset/vendors.js"></script>
+	<script src="asset/screenfull.js"></script>
+	<script src="asset/perfect-scrollbar.min.js"></script>
+	<script src="asset/waves.min.js"></script>
+	<script src="asset/select2.min.js"></script>
+	<script src="asset/bootstrap-colorpicker.min.js"></script>
+	<script src="asset/bootstrap-slider.min.js"></script>
+	<script src="asset/summernote.min.js"></script>
+	<script src="asset/bootstrap-datepicker.min.js"></script>
+        <script src="asset/app.js"></script>
+        <script src="asset/form-elements.init.js"></script>
          
 </body>
 

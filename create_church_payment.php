@@ -155,23 +155,9 @@ var vm = new Vue({
   ready : function() {
   },
  data : {
-  gender:"<?php echo $row->GENDER ?>",
-  religion:"<?php echo $row->RELIGION ?>",
-  disability1:"<?php echo $row->DISABLED_REPONSE ?>",
-  disability:"<?php echo $row->PHYSICALLY_DISABLED ?>",
-  region:"<?php echo $row->REGION ?>",
-  marital:"<?php echo $row->MARITAL_STATUS ?>",
-  nationality:"<?php echo $row->NATIONALITY ?>",
-  title:"<?php echo $row->TITLE ?>",
-  pregion:"<?php echo $row->POSTALREGION ?>",
-  pdistrict:"<?php echo $row->POSTALDISTRICT ?>",
-  ptown:"<?php echo $row->POSTALTOWN ?>",
+  
    
-  rregion:"<?php echo $row->RESIDENTIALREGION ?>",
-  rdistrict:"<?php echo $row->RESIDENTIALDISTRICT ?>",
-  rtown:"<?php echo $row->RESIDENTIALTOWN ?>",
-   
- options: [    ]  
+ options: [    ]  ,
     
   },
   methods : {
