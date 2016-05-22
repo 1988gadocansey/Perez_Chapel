@@ -10,7 +10,7 @@
   }
 
   ?>
-<frameset cols="180px,920px " noresize="noresize" >
+<frameset cols="185px,900px " noresize="noresize" >
 <frame src="top_frame.php" scrolling="yes" />
 <frame src="dashboard.php" name="content_frame"  scrolling="yes" />
 </frameset>

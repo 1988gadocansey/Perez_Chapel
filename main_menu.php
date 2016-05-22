@@ -289,16 +289,49 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                                          <p>
                                              <i class='fa fa-folder-open'></i><b><a target="content_frame" href="viewMemberCat.php"> View Member Categories</a></b>
                                         </p>
-                                        <p>
-                                             <i class='fa fa-plus-circle'></i><b><a target="content_frame" href="addflow.php"> Add Flows</a></b>
-                                        </p>
-                                         <p>
-                                             <i class='fa fa-folder-open'></i><b><a target="content_frame" href="viewflows.php"> View Flows</a></b>
-                                        </p>
-                                     
+                                       
                          </div> <!-- accordion-inner -->
                      </div> <!-- collapseTen-->
-                  
+                     &nbsp;
+                      <div class="panel-success panel">
+                        <div class="panel-heading">
+                            <h4 class="panel-title">
+                                <a href="#collapseThreeSS" class="accordion-toggle" data-toggle="collapse" data-parent="#accordionDemo">
+                                    <i class="fa fa-user-plus"></i> Branch Manager
+                                </a>
+                            </h4>
+                        </div>
+                        <div class="panel-collapse collapse" id="collapseThreeSS">
+                            <div class="panel-body">
+                                <p class="">
+                                    <p><a target='content_frame'  href="addCircuit.php" > <i class='fa fa-plus-circle'></i> Create Circuit </a> 
+                                </p>
+                           
+                                <p class="">
+                                    <p><a target='content_frame'  href="viewCircuits.php" > <i class='fa fa-folder-open'></i> View Circuits </a> 
+                                </p>
+                                <p class="">
+                                    <p><a target='content_frame'  href="addDistrict.php" > <i class='fa fa-plus-circle'></i> Add Districts </a> 
+                                </p>
+                           
+                                <p class="">
+                                    <p><a target='content_frame'  href="viewDistrict.php" > <i class='fa fa-folder-open'></i> View Districts </a> 
+                                </p>
+                                  <p class="">
+                                  <p><a target='content_frame'  href="addBranch.php" > <i class='fa fa-plus-circle'></i> Add Branch </a> 
+                                </p>
+                               <p class="">
+                               <p><a target='content_frame'  href="branch.php" > <i class='fa fa-folder-open'></i> View Branches </a> 
+                                </p>
+                                <p class="">
+                                <p><a target='content_frame'  href="branch_stat.php" > <i class='fa fa-folder-open'></i> Growth Statistics </a> 
+                                </p>
+                                 
+                                
+
+                        </div>
+                        </div>
+                    </div>
             
   &nbsp; 
                     <div class="panel-success panel">

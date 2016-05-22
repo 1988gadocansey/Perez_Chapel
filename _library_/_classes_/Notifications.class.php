@@ -144,6 +144,11 @@ class Notifications {
                 <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
                 <strong>Notification!</strong>   Semester openned successfully.
          </div>";}
+         elseif(isset($_GET['exist'])){
+             echo "<div class='alert alert-warning dismissable'>
+                <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
+                <strong>Notification!</strong>   Item you are deleting contain data.You can edit it name or move the data
+         </div>";}
          elseif(isset($_GET['no_internet'])){
              echo "<div class='alert alert-warning'>
                 <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>

@@ -67,6 +67,34 @@ public function UpdateMemo(){
             return $a->CATEGORY;
       
         }
+        public function getDepartmentName($depart_id){
+
+            $query= $this->connect->Prepare("SELECT NAME FROM perez_departments WHERE ID='$depart_id'");
+            $output= $this->connect->Execute($query);
+            if($output->RecordCount()>0){
+                 $a=$output->FetchNextObject();
+            return $a->NAME;
+            
+            }else{
+                return "No parent department";
+            }
+      
+        }
+        // check if todelete has data if not delete else restrain from
+        // deleting
+         public function confirmDelete($table,$column,$data,$operator){
+             if($operator!='='){
+                  $query= $this->connect->Prepare("SELECT * FROM $table WHERE $column LIKE '%$data%'");
+           
+             }
+             else{
+            $query= $this->connect->Prepare("SELECT * FROM $table WHERE $column $operator '$data'");
+             }
+            $output= $this->connect->Execute($query);
+                 
+            return $output->RecordCount();
+      
+        }
 	   
     public function age($birthdate, $pattern = 'eu')
         {

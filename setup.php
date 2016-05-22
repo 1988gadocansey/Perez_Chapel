@@ -573,7 +573,7 @@
                                                                     $rows = $stmt->FetchNextObject();
                                                                 */
                                                                 ?>
-                                                                <h5 class="mt0">Create your branches here</h5>
+                                                                <h5 class="mt0">Create your some branches here</h5>
                                                                 <form action="setup.php" method="post">
                                                                 <div class="clearfix">
                                                                     <div class="row">
@@ -723,11 +723,7 @@
                                                                      </div>
                                                                 </div>
                                                             </div>
-                                                            <div class="tab-pane" id="tab-vertical-demo">
-
-                                                                <p>coming soon.</p>
-                                                                <button class="btn btn-pink btn-sm">Go to Tab 2</button>
-                                                            </div>
+                                                            
                                                         </div>
                                                     </div>
                                                     <!-- tab style --> 

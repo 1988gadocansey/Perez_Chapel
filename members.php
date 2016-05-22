@@ -230,7 +230,7 @@
 					</div>
                                 <div class="row">
                                     <!-- Basic Table -->
-                                    <div class="col-md-12" style="width:1200px;margin-left: -95px">
+                                    <div class="col-md-12" style="width:1300px;margin-left: -95px">
                                         <div class="panel panel-lined panel-hovered mb20 table-responsive basic-table">
                                             <div class="panel-heading panel-info">
                                                 <a href="addMember.php?new=1"  style="margin-top: -19px;margin-left: -25px"  title="Add new member"  class="btn btn-success waves-effect">Add Member<i class="fa fa-plus-circle"></i></a> 
@@ -402,13 +402,13 @@
                                           
                                            <td width="25%">
                                             <select class='form-control gad' id="marital"  style="margin-left:  px;  width:149px"  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?team='+escape(this.value);"     >
-                                            <option value=''>filter by team</option>
-                                            <option value='All team'>All Teams</option>
+                                            <option value=''>filter by group</option>
+                                            <option value='All team'>All Groups</option>
                                                           
                                                       <?php 
                                                       global $sql;
 
-                                                      $query2=$sql->Prepare("SELECT * FROM perez_team");
+                                                      $query2=$sql->Prepare("SELECT * FROM `perez_group` ");
 
 
                                                         $query=$sql->Execute( $query2);
@@ -570,7 +570,7 @@
                                                             if($gender=="All gender" or $gender=="" ){ $gender=""; }else {$gender_=" and GENDER = '$gender' "  ;}
                                                             if($status=="All status" or $status=="" ){ $status=""; }else {$status_=" and DECEASED = '$status' "  ;}
                                                             if($nation=="All country" or $nation=="" ){ $nation=""; }else {$nation_=" and COUNTRY = '$nation' "  ;}
-                                                             if($team=="All team" or $team=="" ){ $team=""; }else {$team_=" and MUSIC_TEAM = '$team' "  ;}
+                                                             if($team=="All team" or $team=="" ){ $team=""; }else {$team_=" and GROUPS = '$team' "  ;}
                                                            if($demo=="All demographics" or $demo=="" ){ $demo=""; }else {$demo_=" and DEMOGRAPHICS = '$demo' "  ;}
                                                            if($service=="All service" or $service=="" ){ $service=""; }else {$service_=" and SERVICE_TYPE = '$service' "  ;}
                                                             if($category=="All category" or $category=="" ){ $category=""; }else {$category_=" and PEOPLE_CATEGORY = '$category' "  ;}
@@ -639,12 +639,10 @@
                                                              <td style="text-align:"><?php echo $rtmt[DEMOGRAPHICS] ?></td>
                                                              <td style="text-align:"><?php echo $rtmt[OCCUPATION] ?></td>
                                                              <td style="text-align:"><?php echo $rtmt[PEOPLE_CATEGORY] ?></td>
-                                                             <td><a href="addMember?member=<?php echo  $rtmt[MEMBER_CODE] ?>&&update">Edit <i class="md md-edit" title="click to edit info"></i></a></td>
-                                                             <td>Mail<i class="md md-email" title="click to send email"></i> </td>
-                                                             <td>SMS<i class="md md-sms" title="click to send  sms"></i> </td>
-                                                             <td>vcard<i class="md md-contacts" title="click to view vcard"></i> </td>
-                                                             <td>Print<i class="md md-print" title="click to print"></i> </td>
-                                                             <td><a onclick="return confirm('Are you sure you want to delete this person??')" href="members?delete=<?php echo  $rtmt[MEMBER_CODE] ?>"Delete<i class="md md-delete" title="click to delete"></i> </a></td>
+                                                             <td><a href="addMember?member=<?php echo  $rtmt[MEMBER_CODE] ?>&&update">Edit <i class="fa fa-edit" title="click to edit info"></i></a></td>
+                                                             
+                                                             <td>Print<i class="fa fa-print" title="click to print"></i> </td>
+                                                             <td><a onclick="return confirm('Are you sure you want to delete this person??')" href="members?delete=<?php echo  $rtmt[MEMBER_CODE] ?>">Delete<i class="md md-delete" title="click to delete"></i> </a></td>
                                                             
                                                         </tr>
                                                          <?php }?>

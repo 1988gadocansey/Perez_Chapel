@@ -191,7 +191,7 @@ $query ="SELECT * FROM `perez_auth` WHERE 1 $user_ $roles_ $type_ ";
                     {
 
 
-                 echo " <table id='assesment' class='table  table-hover'";//start table
+                 echo " <table id='assesment' class='table  table-hover'>"//start table
 
                           ?> <thead>
                         <tr>
