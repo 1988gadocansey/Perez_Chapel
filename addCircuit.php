@@ -16,14 +16,14 @@ if (isset($_POST[submit])) {
 
     $name = strip_tags($_POST['name']);
     $id = strip_tags($_POST['id']);
-    $parent = strip_tags($_POST['parent']);
+    $department = strip_tags($_POST['parent']);
      if(empty($id)){
-    $query=$sql->Prepare("INSERT INTO perez_circuits (NAME,PARENT) VALUES('$name')");
-        if($sql->Execute()){
+    $query=$sql->Prepare("INSERT INTO perez_circuits (NAME,DISTRICT) VALUES('$name','$department')");
+        if($sql->Execute($query)){
              //logging
-                    $dpat=$help->getDepartmentName($department);
+                    //$circuit=$help->getCircuitName($circuit);
                     $event="Creation";
-                    $activity="$_SESSION[USERNAME] has added $name department";
+                    $activity="$_SESSION[USERNAME] has added $name circuit";
                     $hashkey = $_SERVER['HTTP_HOST'];
                     $remoteip = $_SERVER['REMOTE_ADDR'];
                     $useragent = $_SERVER['HTTP_USER_AGENT'];
@@ -32,19 +32,19 @@ if (isset($_POST[submit])) {
                     $stmt = $sql->Prepare("INSERT INTO `perez_system_log` ( `USERNAME`, `EVENT_TYPE`, `ACTIVITIES`, `HOSTNAME`, `IP`, `BROWSER_VERSION`,MAC_ADDRESS,SESSION_ID) VALUES ('".$_SESSION[ID]."', '$event','$activity', '".$hashkey."','".$remoteip."','".$useragent."','".$mac."','".$sessionId."')");
                     $sql->Execute($stmt);
 
-           // header('location:viewDepartments.php');
+           header('location:viewCircuits.php?success=1');
         }
         else{
-           // header('location:createDepartment.php?error=1');
+            header('location:viewCircuits.php?error=1');
         }
      }
      else{
-          $query=$sql->Prepare("UPDATE perez_departments SET NAME='$name',PARENT='$parent' WHERE ID='$id'");
+          $query=$sql->Prepare("UPDATE perez_circuits SET NAME='$name',DISTRICT='$parent' WHERE ID='$id'");
         if($sql->Execute($query)){
              //logging
-                    $dpat=$help->getDepartmentName($department);
-                    $event="Creation";
-                    $activity="$_SESSION[USERNAME] has updated $name department";
+                     
+                    $event="Update";
+                    $activity="$_SESSION[USERNAME] has updated $name circuit";
                     $hashkey = $_SERVER['HTTP_HOST'];
                     $remoteip = $_SERVER['REMOTE_ADDR'];
                     $useragent = $_SERVER['HTTP_USER_AGENT'];
@@ -104,9 +104,9 @@ if (isset($_POST[submit])) {
                                         <?php
                                         
                                             if(isset($_GET[id])){
-                                                $department=$_GET[id];
+                                                $circuit=$_GET[id];
                                                 
-                                                $query=$sql->Prepare("SELECT * FROM perez_departments WHERE ID ='$department'");
+                                                $query=$sql->Prepare("SELECT * FROM perez_circuits WHERE ID ='$circuit'");
                                                 $query_=$sql->Execute($query);
                                                 $rows=$query_->FetchNextObject();
                                                 //print_r($row);
@@ -127,6 +127,29 @@ if (isset($_POST[submit])) {
                                                     <input type="hidden" class="form-control" required="required" name="id" value="<?php echo $rows->ID;?>" >
                                                  
                                                 </span>
+                                            </div>
+                                               <div class="form-group">
+                                                 
+                                                    <label for="fieldname" class="col-md-3 control-label">District</label>
+                                                    <div class="col-md-6">
+                                                        <select style="width:230px" name='parent' required=""  v-model="parent" v-form-ctrl=""  v-select="parent"  >
+                                                            <option value=''>select district </option>
+                                                            <?php
+                                                            $STM = $sql->Prepare("SELECT * FROM `perez_districts` ");
+                                                            $rowa = $sql->Execute($STM);
+
+                                                            $num = 0;
+                                                            while ($row = $rowa->FetchRow()) {
+                                                                extract($row);
+                                                                ?>
+                                                                <option <?php if($rows->DISTRICT==$ID){echo "selected='selected'";} ?> value="<?php echo $ID; ?>"><?php echo $NAME; ?></option>
+
+                                                            <?php } ?>
+                                                        </select>
+                                                         <p  class=" text-danger text-small  "   v-if="applicationForm.parent.$error.required">district  is required</p>  
+                                               
+                                                    </div>
+                                                 
                                             </div>
                                             
                                            

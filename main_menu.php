@@ -338,7 +338,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                         <div class="panel-heading">
                             <h4 class="panel-title">
                                 <a href="#collapseThree" class="accordion-toggle" data-toggle="collapse" data-parent="#accordionDemo">
-                                    <i class="fa fa-user-plus"></i> Members and Guest Manager
+                                    <i class="fa fa-user-plus"></i> Members
                                 </a>
                             </h4>
                         </div>
@@ -426,8 +426,11 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                         </div>
                         <div class="panel-collapse collapse" id="collapseT">
                             <div class="panel-body">
+                                 
+                                <p class=''><a target="content_frame"  href="group_category.php"  ><i class='fa fa-folder-open'></i> Group Categories </a></p>
+                               
                                 <p class=''><a target="content_frame"  href="addGroup.php"  ><i class='fa fa-plus-circle'></i>  Create Groups </a></p>
-                                <p class=''><a target="content_frame"  href="member_payment.php"  ><i class='fa fa-folder-open'></i> View Groups </a></p>
+                                <p class=''><a target="content_frame"  href="group.php"  ><i class='fa fa-folder-open'></i> View Groups </a></p>
                                  
                             </div>
                         </div>
@@ -502,9 +505,9 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                             <div class="panel-body">
                                 <p class=''><a target="content_frame"  href="addUsers.php"  ><i class='fa fa-plus-circle'></i>  Add Users </a></p>
                                 <p class=''><a target="content_frame"  href="viewUsers.php"  ><i class='fa fa-folder-open'></i> View Users </a></p>
-                                <p class=''><a target="content_frame"  href="backup.php"  ><i class='fa fa-database'></i> Backup Database </a></p>
+                                <p class=''><a target="content_frame"  href="backupDBMysqli.php"  ><i class='fa fa-database'></i> Backup Database </a></p>
                                 <p class=''><a target="content_frame"  href="view_log.php"  ><i class='fa fa-folder-open'></i> View Systems Log </a></p>
-                                <p class=''><a target="content_frame"  href="logout.php"  ><i class='fa fa-lock'></i> Logout </a></p>
+                                <p class=''><a href="javascript://" onclick="self.parent.location='logout.php'" ><i class='fa fa-lock'></i> Logout </a></p>
                                 
                             </div>
                         </div>

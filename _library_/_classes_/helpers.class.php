@@ -43,12 +43,20 @@ public function UpdateMemo(){
 	  
           return $dd;
 	}
-	public function getLocation($location){
+        public function getLocation($location){
 
             $query= $this->connect->Prepare("SELECT * FROM perez_branches WHERE ID='$location'");
             $output= $this->connect->Execute($query);
                  $a=$output->FetchNextObject();
             return $a->NAME." / ".$a->LOCATION;
+      
+        }
+        public function getAssetLocation($location){
+
+            $query= $this->connect->Prepare("SELECT * FROM `perez_departments`  WHERE ID='$location'");
+            $output= $this->connect->Execute($query);
+            $a=$output->FetchNextObject();
+            return $a->NAME;
       
         }
         public function getNotes($person){
@@ -65,6 +73,14 @@ public function UpdateMemo(){
             $output= $this->connect->Execute($query);
                  $a=$output->FetchNextObject();
             return $a->CATEGORY;
+      
+        }
+        public function getCircuitName($circuit){
+
+            $query= $this->connect->Prepare("SELECT * FROM perez_circuits WHERE ID='$circuit'");
+            $output= $this->connect->Execute($query);
+                 $a=$output->FetchNextObject();
+            return $a->NAME;
       
         }
         public function getDepartmentName($depart_id){

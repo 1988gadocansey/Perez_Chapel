@@ -61,18 +61,18 @@
 	</header>
 	<!-- #end header -->
 
-	<!-- main-container -->
-	<div class="main-container clearfix">
-		<!-- main-navigation -->
-		<aside class="nav-wrap" id="site-nav" data-perfect-scrollbar>
-			
-                    <?php include("./_library_/_includes_/menu.inc"); ?>
-		</aside>
-		<!-- #end main-navigation -->
 
-		<!-- content-here -->
-		<div class="content-container" id="content">
-                     
+    <!-- main-container -->
+    <div class="main-container clearfix">
+        <!-- main-navigation -->
+       
+        <!-- #end main-navigation -->
+
+        <!-- content-here -->
+        <div class="content-container" id="content">
+
+                                    
+                 
 			<div class="page page-ui-tables">
 				<ol class="breadcrumb breadcrumb-small">
 					<li>Group Management</li>
@@ -83,7 +83,7 @@
                                 <div class="note note-success note-bordered">
 						 
                                                 <div style="margin-top:-2.5%;float:right">
-                                                    <a href="members"  class="btn btn-success  waves-effect waves-button dropdown-toggle" style="margin-top: -59px"><i class="md md-sms"></i> Contact group by sms</a>
+                                                    <a href="members"  class="btn btn-success  waves-effect waves-button dropdown-toggle" style="margin-top: -59px"><i class="fa fa-phone"></i> Contact group by sms</a>
                                                      
                                                                         <button   class="btn btn-primary  waves-effect waves-button dropdown-toggle" style="margin-top: -59px" onClick ="$('#assesment').tableExport({type:'excel',escape:'false'});"><i class="fa fa-file-excel-o"></i> Export Data</button>
                                               </div>
@@ -91,7 +91,7 @@
 					</div>
                                 <div class="row">
                                     <!-- Basic Table -->
-                                    <div class="col-md-12">
+                                     <div class="col-md-12" style="width:1200px;margin-left: -95px">
                                         <div class="panel panel-lined panel-hovered mb20 table-responsive basic-table">
                                             <div class="panel-heading panel-info">
                                                 <a href="addGroup?new=1"  style="margin-top: -17px;margin-left: -25px"  title="create a new group"  class="btn btn-pink waves-effect btn-sm">Create Groups<i class="fa fa-plus-circle"></i></a>
@@ -139,8 +139,8 @@
                                                                 <td>&nbsp;</td>
                                                                 <td width="25%">
                                                                     <select class='form-control' style="margin-left:-6%;  width:69% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?location='+escape(this.value);"     >
-                                                                        <option value=''>Filter by Location</option>
-                                                                        <option value='All location'>All Location</option>
+                                                                        <option value=''>Filter by Branches</option>
+                                                                        <option value='All location'>All Branches</option>
 
                                                                         <?php
                                                                         global $sql;
@@ -297,7 +297,7 @@
                                              </td>
                                         <td>&nbsp;</td>
                                         <td width="25%">
-                                              <button type="submit" name="go" style="margin-left: 78%; width: 65px;" class="btn btn-primary">Go</button>
+                                            <button type="submit" name="go" style="margin-left: 78px; width: 65px;" class="btn btn-primary"><i class="fa fa-search"></i></button>
                                         </td>
                                             </tr>  
 
@@ -338,7 +338,7 @@
                                                             if($search=="" ){ $search=""; }else {$search_="AND $content LIKE '%$search%' "  ;}
 
                                                             $query="SELECT  * FROM  perez_group  where 1 $department_     $search_ $day_   $location_ $category_ $demo_ $frequency_  $search_" ;
-                                                           print_r( $_SESSION[last_query]=$query); 
+                                                          // print_r( $_SESSION[last_query]=$query); 
 
                                                             $rs = $sql->PageExecute($query,RECORDS_BY_PAGE,CURRENT_PAGE);
                                                             $recordsFound = $rs->_maxRecordCount;    // total record found
@@ -355,7 +355,7 @@
                                                                <th>Logo</th>
                                                             <th>Name</th>
                                                             <th>Category</th>
-                                                            <th>Locations</th>
+                                                            <th>Branch</th>
                                                             <th>Days</th>
                                                              
                                                             <th>Start Time</th>
@@ -402,10 +402,10 @@
                                                              <td style="text-align:center"><?php echo $member->getTotalMember_byGroup($rtmt[ID]); ?></td>
                                                              <td style="text-align:center"><?php if($rtmt[STATUS]==1){echo "Active";}else{echo "Inactive";} ?></td>
                                                               
-                                                             <td><a href="addGroup?group=<?php echo  $rtmt[GROUP_CODE] ?>&&update">Edit <i class="md md-edit" title="click to edit info"></i></a> 
+                                                             <td><a href="addGroup?group=<?php echo  $rtmt[GROUP_CODE] ?>&&update"> <i class="fa fa-edit" title="click to edit info"></i></a> 
                                                                   
                                                              
-                                                             <a onclick="return confirm('Are you sure you want to delete this person??')" href="group?delete=<?php echo  $rtmt[GROUP_CODE] ?>">Delete<i class="md md-delete" title="click to delete"></i> </a></td>
+                                                             <a onclick="return confirm('Are you sure you want to delete this person??')" href="group?delete=<?php echo  $rtmt[GROUP_CODE] ?>"><i class="fa fa-trash-o" title="click to delete"></i> </a></td>
                                                             
                                                         </tr>
                                                          <?php }?>
@@ -443,7 +443,8 @@
 
 	</div> <!-- #end main-container -->
 
-	<?php include("./_library_/_includes_/theme.inc"); ?>
+	<?php include("./_library_/_includes_/js.php"); ?>
+      
 <script src="assets/scripts/vendors.js"></script>
 <script src="assets/scripts/plugins/screenfull.js"></script>
 	<script src="assets/scripts/plugins/perfect-scrollbar.min.js"></script>
@@ -468,6 +469,15 @@
                     ]
                 } );
             } );
+        </script>
+        <script src="assets/scripts/select2.min.js"></script>
+       
+        <script>
+                 $(document).ready(function(){
+                    $('select').select2({ width: "resolve" });
+
+
+                  });
         </script>
 </body>
 

@@ -372,9 +372,9 @@ $("#insertPaymentRow").bind('click',function(){
    $('#removePaymentRow_'+numOrgs).bind("click",function(){
    // $(amountInput).trigger('keyup');
     $('#paymentRow_'+numOrgs).remove();
-    var count=0;
-   $("table#paymentTable tr[payment_row] :text").each(function(){
-          var inputNumber=$(this).val();
+    var count=0;(){
+
+   $("table#paymentTable tr[payment_row] :text").each(function          var inputNumber=$(this).val();
           if(isNaN(inputNumber) || inputNumber==null || inputNumber==""  || inputNumber==0 ) {
             $('#totalSum').html(count.toFixed(2));
           }
@@ -430,7 +430,7 @@ var options = {
           },
           success : function(msg) {
               alert('Payment successful')
-           // window.location.href='addMemberPayment.php?member=<?php echo $member?>';
+            
           },
           failure : function() {
             alert('Sorry...failure occurred');

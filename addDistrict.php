@@ -19,7 +19,7 @@ if (isset($_POST[submit])) {
     $region = strip_tags($_POST['region']);
      if(empty($id)){
     $query=$sql->Prepare("INSERT INTO perez_districts (NAME,REGION) VALUES('$name','$region')");
-        if($sql->Execute()){
+        if($sql->Execute($query)){
              //logging
                     //$dpat=$help->getDepartmentName($department);
                     $event="Creation";
@@ -104,9 +104,9 @@ if (isset($_POST[submit])) {
                                         <?php
                                         
                                             if(isset($_GET[id])){
-                                                $department=$_GET[id];
+                                                $district=$_GET[id];
                                                 
-                                                $query=$sql->Prepare("SELECT * FROM perez_departments WHERE ID ='$department'");
+                                                $query=$sql->Prepare("SELECT * FROM perez_districts WHERE ID ='$district'");
                                                 $query_=$sql->Execute($query);
                                                 $rows=$query_->FetchNextObject();
                                                 //print_r($row);
@@ -134,7 +134,7 @@ if (isset($_POST[submit])) {
                                                  
                                                     <label for="fieldname" class="col-md-3 control-label">Regions</label>
                                                     <div class="col-md-6">
-                                                        <select style="width:230px" name='region' required=""  v-model="region" v-form-ctrl=""  v-select="parent"  >
+                                                        <select style="width:230px" name='region' required=""  v-model="region" v-form-ctrl=""  v-select="region"  >
                                                             <option value=''>select region </option>
                                                             <?php
                                                             $STM = $sql->Prepare("SELECT * FROM `perez_regions` ");
@@ -144,7 +144,7 @@ if (isset($_POST[submit])) {
                                                             while ($row = $rowa->FetchRow()) {
                                                                 extract($row);
                                                                 ?>
-                                                                <option  value="<?php echo $ID; ?>"><?php echo $NAME; ?></option>
+                                                                <option <?php if($rows->REGION==$NAME){echo "selected='selected'";} ?> value="<?php echo $NAME; ?>"><?php echo $NAME; ?></option>
 
                                                             <?php } ?>
                                                         </select>
@@ -225,7 +225,7 @@ var vm = new Vue({
   ready : function() {
   },
  data : {
-   parent:"<?php echo $row->PARENT ?>",
+   region:"<?php echo $rows->REGION ?>",
    
  options: [    ]  ,
     

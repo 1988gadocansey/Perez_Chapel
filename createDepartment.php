@@ -4,7 +4,7 @@ require 'vendor/autoload.php';
 require '_library_/_includes_/config.php';
 require '_library_/_includes_/app_config.inc';
 include('parsecsv.lib.php');
-$crypt = new _classes_\cryptCls();
+//$crypt = new _classes_\cryptCls();
 $member = new _classes_\Members();
 $help = new _classes_\helpers();
 $notify = new _classes_\Notifications();
@@ -16,12 +16,14 @@ if (isset($_POST[submit])) {
 
     $name = strip_tags($_POST['name']);
     $id = strip_tags($_POST['id']);
+    //
     $parent = strip_tags($_POST['parent']);
      if(empty($id)){
     $query=$sql->Prepare("INSERT INTO perez_departments (NAME,PARENT) VALUES('$name','$parent')");
-        if($sql->Execute()){
-             //logging
-                    $dpat=$help->getDepartmentName($department);
+    //print_r($query);    
+    if($sql->Execute($query)){
+             //loggingdie($id);
+                    $dpat=$help->getDepartmentName($name);
                     $event="Creation";
                     $activity="$_SESSION[USERNAME] has added $name department";
                     $hashkey = $_SERVER['HTTP_HOST'];
@@ -32,7 +34,7 @@ if (isset($_POST[submit])) {
                     $stmt = $sql->Prepare("INSERT INTO `perez_system_log` ( `USERNAME`, `EVENT_TYPE`, `ACTIVITIES`, `HOSTNAME`, `IP`, `BROWSER_VERSION`,MAC_ADDRESS,SESSION_ID) VALUES ('".$_SESSION[ID]."', '$event','$activity', '".$hashkey."','".$remoteip."','".$useragent."','".$mac."','".$sessionId."')");
                     $sql->Execute($stmt);
 
-           // header('location:viewDepartments.php');
+           header('location:viewDepartments.php?success=1');
         }
         else{
            // header('location:createDepartment.php?error=1');
@@ -141,13 +143,65 @@ if (isset($_POST[submit])) {
                                                             while ($row = $rowa->FetchRow()) {
                                                                 extract($row);
                                                                 ?>
-                                                                <option  value="<?php echo $ID; ?>"><?php echo $NAME; ?></option>
+                                                                
+                                                           
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                            
+                                                     
+                                                            on <?php if($rows->PARENTtc5==$ID){echo "selected='selected'";}  ?> value="<?php echo $ID; ?>"><?php echo $NAME; ?></option>
 
                                                             <?php } ?>
-                                                        </select>
-                                                         
-                                                    </div>
-                                                 
+                                                                                                                
                                             </div>
 
                                             

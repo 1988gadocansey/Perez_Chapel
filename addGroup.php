@@ -93,18 +93,20 @@
 	</header>
 	<!-- #end header -->
 
-	<!-- main-container -->
-	<div class="main-container clearfix">
-		<!-- main-navigation -->
-		<aside class="nav-wrap" id="site-nav" data-perfect-scrollbar>
-			
-                    <?php include("./_library_/_includes_/menu.inc"); ?>
-                    <link rel="stylesheet" href="assets/styles/plugins/select2.css">
-                    <link rel="stylesheet" type="text/css" href="assets/scripts/plugins/bootstrap-fileinput/bootstrap-fileinput.css"/>
-                    <link rel="stylesheet" href="assets/styles/plugins/bootstrap-datepicker.css">
-                    <link rel="stylesheet" href="assets/scripts/plugins/datetimepicker/bootstrap-datetimepicker.css">
-                   
-                </aside>
+
+    <!-- main-container -->
+    <div class="main-container clearfix">
+        <!-- main-navigation -->
+       
+        <!-- #end main-navigation -->
+
+        <!-- content-here -->
+        <div class="content-container" id="content">
+
+
+
+
+
 		<!-- #end main-navigation -->
 
 		<!-- content-here -->
@@ -112,8 +114,8 @@
                         
 			<div class="page page-ui-tables">
 				<ol class="breadcrumb breadcrumb-small">
-					<li>Members</li>
-					<li class="active"><a href="#">Data</a></li>
+					<li>Groups</li>
+					<li class="active"><a href="#">Add new group</a></li>
 				</ol>
                             <div><?php $notify->Message(); ?></div>
                             <?php
@@ -160,24 +162,7 @@
                                 <div class="note note-success note-bordered">
 					<!-- row -->
                                         <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="alert alert-info">
-                                                    <button type="button" class="close" data-dismiss="alert">
-                                                        <span aria-hidden="true">×</span>
-                                                    </button>
-                                                    <div><strong>System Setup Procedures:</strong>
-                                                        <br/>
-                                                        
-                                                        
-
-                                                        To navigate through the guide, use the buttons in the bottom right-hand corner. Each step will take you to a different area of the system and give a quick explanation of its functions and features. We'll always regroup what step you're up to, so feel free to have a look around before moving forward! You can always come back if you need to clarify.
-
-                                                        If you'd like more information on any of the areas mentioned, you can always visit our 'Getting Started Page' for more information. We also have a How-To area, where you can find full setup instructions for each of the <?php echo $config_file->CHURCH_NAME;  ?> features. If there's anything we miss in this guide, or if you have any further questions, be sure to contact our support team for assistance..
-
-
-                                                    </div>
-                                                </div>
-                                            </div>	 
+                                             
 
 
                                         </div>
@@ -185,7 +170,8 @@
                                     <!-- Basic Table -->
                                     <!-- inline form -->
 <div class="row">
-<div class="col-sm-12">
+ <div class="col-md-12" style="width:900px;margin-left: -95px">
+                                  
 <div class="panel panel-default panel-hovered panel-stacked mb30">
  
 <div class="panel-body">
@@ -236,7 +222,7 @@ echo $help->picture("photos/groups/$person.jpg", 199) ?>  src="<?php echo file_e
                 <label class="col-lg-4 control-label">Select group category <span class="text-danger">*</span></label>
                 <div class="col-lg-8">
                     <div class="check-duplicates-popover-parent">
-                        <select id="title" name="group_category" required="" class="form-control">
+                        <select id="title" name="group_category" required="" class=" ">
                          <?php
                         global $sql;
 
@@ -271,9 +257,9 @@ echo $help->picture("photos/groups/$person.jpg", 199) ?>  src="<?php echo file_e
                 </div>
             </div>
             <div class="form-group">
-                  <label class="col-lg-4 control-label">Locations <i class="fa fa-question-circle fa-fw" title="The locations of this group" data-toggle="tooltip"></i></label>
+                  <label class="col-lg-4 control-label">Branch <i class="fa fa-question-circle fa-fw" title="which branch does this group belongs to" data-toggle="tooltip"></i></label>
                 <div class="col-lg-8">
-                    <select   data-tags="true"  required="" name="group_location"  id="branch"   data-placeholder="This group is in which location" class="form-control">
+                    <select   data-tags="true"  required="" name="group_location"  id="branch"   data-placeholder="This group is in which location" >
 
                         <option value=''>Choose Location</option>
 
@@ -303,7 +289,7 @@ echo $help->picture("photos/groups/$person.jpg", 199) ?>  src="<?php echo file_e
             <div class="form-group">
                 <label class="col-lg-4 control-label">Frequency </label>
                 <div class="col-lg-8">
-                    <select name="group_frequency" class="form-control" id='marital'>
+                    <select name="group_frequency"   id='marital'>
                             <option value="">-- None --</option>
                             <option <?php  if ($rtmt->FREQUENCY == "Daily") {
                                 echo "selected='selected'";
@@ -355,7 +341,7 @@ echo $help->picture("photos/groups/$person.jpg", 199) ?>  src="<?php echo file_e
                 <div class="form-group">
                 <label class="col-lg-4 control-label">Group Leader</label>
                 <div class="col-lg-8">
-                    <select id="category" name="group_leader" required=""   data-placeholder="Select a Member category" class="form-control">
+                    <select id="category" name="group_leader" required=""   data-placeholder="Select a Member category"  >
 
                         <option value=''> Select leader</option>
    
@@ -503,10 +489,10 @@ echo $help->picture("photos/groups/$person.jpg", 199) ?>  src="<?php echo file_e
             <p class="form-description">Choose the department this group is assigned to.</p>
             <div class="col-sm-9">
             <div class="form-group">
-                <label class="col-lg-4 control-label">Departments <i class="fa fa-question-circle fa-fw" title="Departments are the different areas of serving in the church. Choose what departments this person serves within." data-toggle="tooltip"></i>
+                <label class="col-lg-4 control-label">Departments <i class="fa fa-question-circle fa-fw" title="Departments are the different areas of serving in the church. Choose what departments this group belongs." data-toggle="tooltip"></i>
                 </label>
                 <div class="col-lg-8">		  
-                     <select id="dept" data-tags="true" multiple="multiple" name="group_department[]"     data-placeholder="Department the person belong" class="form-control">
+                     <select id="dept" data-tags="true" multiple="multiple" name="group_department[]"     data-placeholder="Department the group belongs" class="form-control">
 
                         <option value=''>Choose department</option>
 
@@ -592,9 +578,19 @@ echo $help->picture("photos/groups/$person.jpg", 199) ?>  src="<?php echo file_e
 	<?php include("./_library_/_includes_/theme.inc"); ?>
         
 	<?php include("./_library_/_includes_/js.php"); ?>
-        <script src="assets/scripts/plugins/moment.min.js"></script>
-
-        <script src="assets/scripts/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+         
+       <script src="assets/scripts/vendors.js"></script>
+<script src="assets/scripts/plugins/screenfull.js"></script>
+	<script src="assets/scripts/plugins/perfect-scrollbar.min.js"></script>
+	<script src="assets/scripts/plugins/waves.min.js"></script>
+	<script src="assets/scripts/plugins/select2.min.js"></script>
+	<script src="assets/scripts/plugins/bootstrap-colorpicker.min.js"></script>
+	<script src="assets/scripts/plugins/bootstrap-slider.min.js"></script>
+	<script src="assets/scripts/plugins/summernote.min.js"></script>
+	<script src="assets/scripts/plugins/bootstrap-datepicker.min.js"></script>
+	<script src="assets/scripts/app.js"></script>
+	<script src="assets/scripts/form-elements.init.js"></script>
+         <script src="assets/scripts/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 
         <script>
             //Time

@@ -27,7 +27,7 @@ if(isset($_REQUEST['submit'])){
 $host=trim($_POST['host']);
 $user=trim($_POST['user']);
 $password=trim($_POST['password']);
-$database="db_perez_chapel";
+$database=trim($_POST['database']);
 //if(!empty($host)&&!empty($user)&&!empty($password)&&!empty($database))
 // Define  Database Credentials
 define('HOST', $host ) ; 
@@ -137,7 +137,8 @@ $fileSize = get_file_size_unit(filesize(BACKUP_DIR . "/". $fileName . '.zip')) ;
             <form name="backup" id="backup" method="post">
                 <div><label>Host:</label><input type="text" name="host" value="localhost" /></div>
                 <div class="cls"></div>
-                 
+                <div><label>Database name:</label><input type="text" name="database" value="" /></div>
+                <div class="cls"></div>
                 <div><label>Database User:</label><input type="text" name="user" value="" /></div>
                 <div class="cls"></div>
                 <div><label>Database Password:</label><input type="text" name="password" value="" /></div>

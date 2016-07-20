@@ -45,23 +45,24 @@
            
 ?>
 <?php include("./_library_/_includes_/header.inc"); ?>
- <link rel="stylesheet" href="assets/styles/plugins/bootstrap-datepicker.css">
+<script src= "assets/ajax.googleapis.com_ajax_libs_angularjs_1.3.14_angular.min.js"></script>
 <body id="app" class="app off-canvas">
      
-	<!-- header -->
+<!-- header -->
 	<header class="site-head" id="site-head">
 		
             <?php include("./_library_/_includes_/top_bar.inc"); ?>
 	</header>
 	<!-- #end header -->
 
-	<!-- main-container -->
-	<div class="main-container clearfix">
-		<!-- main-navigation -->
-		<aside class="nav-wrap" id="site-nav" data-perfect-scrollbar>
-			
-                    <?php include("./_library_/_includes_/menu.inc"); ?>
-		</aside>
+
+    <!-- main-container -->
+    <div class="main-container clearfix">
+        <!-- main-navigation -->
+       
+        <!-- #end main-navigation -->
+
+        <!-- content-here -->
 		<div class="modal fade" id="sms" tabindex="-1" role="dialog" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
@@ -135,7 +136,7 @@
 						 
                                                 <div style="margin-top:-2.5%;float:right">
                                                      
-                                                        <button   class="btn btn-primary  waves-effect waves-button dropdown-toggle" style="margin-top: -59px" data-toggle="dropdown"><i class="md md-save"></i> Export Data</button>
+                                                        <button   class="btn btn-primary  waves-effect waves-button dropdown-toggle" style="margin-top: -59px" data-toggle="dropdown"><i class="fa fa-save"></i> Export Data</button>
                                                         <ul class="dropdown-menu">
                                             
                                                             <li><a href="#" onClick ="$('#gad').tableExport({type:'csv',escape:'false'});"><img src='assets/icons/csv.png' width="24"/> CSV</a></li>
@@ -212,7 +213,7 @@
                                                             if($search=="" ){ $search=""; }else {$search_="AND $content LIKE '$search' "  ;}
 
                                                             $query="SELECT  * FROM  perez_group_category  where 1      $search_ " ;
-                                                           print_r( $_SESSION[last_query]=$query); 
+                                                            $_SESSION[last_query]=$query ; 
 
                                                             $rs = $sql->PageExecute($query,RECORDS_BY_PAGE,CURRENT_PAGE);
                                                             $recordsFound = $rs->_maxRecordCount;    // total record found
@@ -261,10 +262,10 @@
                                                                          
                                                             
                                                                
-                                                                        <td><a style="cursor: pointer" title="click to edit" onclick="return MM_openBrWindow('edit_category.php?item=<?php echo $rtmt[ID] ?>','','menubar=yes,width=700,height=450')"  >Edit <i class="md md-edit" title="click to edit info"></i></a> 
+                                                                        <td><a style="cursor: pointer" title="click to edit" onclick="return MM_openBrWindow('edit_category.php?item=<?php echo $rtmt[ID] ?>','','menubar=yes,width=700,height=450')"  >  <i class="fa fa-edit" title="click to edit info"></i></a> 
                                                                   
                                                              
-                                                             <a onclick="return confirm('Are you sure you want to delete this group category??')" href="group_category?delete=<?php echo  $rtmt[ID] ?>">Delete<i class="md md-delete" title="click to delete"></i> </a></td>
+                                                             <a onclick="return confirm('Are you sure you want to delete this group category??')" href="group_category?delete=<?php echo  $rtmt[ID] ?>"> <i class="fa fa-trash" title="click to delete"></i> </a></td>
                                                             
                                                         </tr>
                                                          <?php } $_POST[search]="";

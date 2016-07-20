@@ -13,10 +13,28 @@ $ledger = new _classes_\Ledger();
 $login = new _classes_\Login();
 
 if (isset($_POST[submit])) {
-
-    $member = strip_tags($_POST['member']);
-     
-        header("location:add_children.php?member=$member");
+    $code=$help->getCode('ASSET_CODE');
+    $name = strip_tags($_POST['name']);
+    $serial = strip_tags($_POST['serial']);
+    $cost = strip_tags($_POST['cost']);
+    $location = strip_tags($_POST['location']);
+    $category = strip_tags($_POST['category']);
+    $description = strip_tags($_POST['description']);
+    $date= strip_tags($_POST['date']);
+    $id=$_POST['id'];
+    if(empty($id)){
+    $query=$sql->Prepare("INSERT INTO tbl_fixed_assets_manager (FIXED_ASSET_CODE,FIXED_ASSET_NAME,FIXED_ASSET_CATEGORY,	FIXED_ASSET_LOCATION,FIXED_ASSET_DESCRIPTION,FIXED_ASSET_COST,FIXED_ASSET_SERIAL_NUMBER,FIXED_ASSETS_DATE_PURCHASE) VALUES('$code','$name','$category','$location','$description','$cost','$serial','$date')");
+     $help->UpdateCode('ASSET_CODE');
+    
+    }
+    else{
+        $query=$sql->Prepare("UPDATE tbl_fixed_assets_manager SET FIXED_ASSET_CODE='$code',FIXED_ASSET_NAME='$name',FIXED_ASSET_CATEGORY='$category',FIXED_ASSET_LOCATION='$location',FIXED_ASSET_DESCRIPTION='$description',FIXED_ASSET_COST='$cost',FIXED_ASSET_SERIAL_NUMBER='$serial',FIXED_ASSETS_DATE_PURCHASE='$date' WHERE ID='$id'");
+   
+    }
+    if($sql->Execute($query)){
+       
+        header("location:viewAssets?success=1");
+    }
      
 }
 ?>
@@ -49,7 +67,17 @@ if (isset($_POST[submit])) {
 
                 <div class="page-wrap">
                     <div class="note note-success note-bordered">
-
+                        <?php
+                        if(isset($_GET['asset'])){
+                            $asset=$_GET['asset'];
+                               $query = $sql->Prepare("SELECT * FROM tbl_fixed_assets_manager WHERE   ID ='$asset'  ");
+                               
+                                   $stmt = $sql->Execute($query);
+                                    $rtmt = $stmt->FetchNextObject();
+                                    
+                        }
+                        
+                        ?>
 
                         <div><?php $notify->Message(); ?></div>
                     </div>
@@ -63,12 +91,12 @@ if (isset($_POST[submit])) {
                                     <div>
 
                                         <form action="" method="post" class="form-horizontal row-border"   id="form" novalidate="" name="applicationForm"  v-form>
-
+                                            <input type="hidden" name="id" value="<?php echo $rtmt->ID ?>"/>
                                             <div class="form-group">
                                                 <span id="item">
                                                     <label class="col-sm-3 control-label">Asset Name</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" required="required" name="name" v-model="name"  v-form-ctrl>
+                                                        <input type="text" class="form-control" required="required" name="name" v-model="name" value="<?php echo $rtmt->FIXED_ASSET_NAME ?>" v-form-ctrl>
                                                     <p  class=" text-danger text-small  "   v-if="applicationForm.name.$error.required">Name  is required</p>  
                                                
                                                     </div>
@@ -79,7 +107,7 @@ if (isset($_POST[submit])) {
                                                 <span id="item">
                                                     <label class="col-sm-3 control-label">Asset Cost</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" required="required" name="cost" v-model="cost" v-form-ctrl>
+                                                        <input type="text" class="form-control" required="required" name="cost" v-model="cost" v-form-ctrl value="<?php echo $rtmt->FIXED_ASSET_COST ?>" >
                                                         <p  class=" text-danger text-small  "   v-if="applicationForm.cost.$error.required">Cost  is required</p>  
                                                
                                                     </div>
@@ -93,7 +121,7 @@ if (isset($_POST[submit])) {
                                                 <span id="item">
                                                     <label class="col-sm-3 control-label">Asset Category</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control" required="required" name="category" v-model="category" v-form-ctrl="">
+                                                        <input type="text" class="form-control" value="<?php echo $rtmt->FIXED_ASSET_CATEGORY ?>" required="required" name="category" v-model="category" v-form-ctrl="">
                                                         <p  class=" text-danger text-small  "   v-if="applicationForm.category.$error.required">Category  is required</p>  
                                                
                                                     </div>
@@ -103,7 +131,7 @@ if (isset($_POST[submit])) {
                                                  
                                                     <label for="fieldname" class="col-md-3 control-label">Asset Location</label>
                                                     <div class="col-md-6">
-                                                        <select class="form-control" name='location'id='type' v-model="location" v-form-ctrl=""  v-select="location" required="required">
+                                                        <select  name='location'id='type' v-model="location" v-form-ctrl=""  v-select="location" required="required">
                                                             <option value=''>select asset location </option>
                                                             <?php
                                                             $STM = $sql->Prepare("SELECT *  FROM perez_departments");
@@ -111,9 +139,12 @@ if (isset($_POST[submit])) {
 
                                                             $num = 0;
                                                             while ($row = $rowa->FetchRow()) {
-                                                                extract($row);
+                                                                 
                                                                 ?>
-                                                                <option value="<?php echo $ID; ?>"><?php echo $NAME; ?></option>
+                                                                <option value="<?php echo $row[ID]; ?>"   <?php
+                                                                            if ($row[ID] == $rtmt->FIXED_ASSET_LOCATION){
+                                                                                echo "selected='selected'";
+                                                                            }?>><?php echo $row[NAME]; ?></option>
 
                                                             <?php } ?>
                                                         </select>
@@ -127,7 +158,7 @@ if (isset($_POST[submit])) {
                                                 <span id="item">
                                                     <label class="col-sm-3 control-label">Asset Serial Number</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" class="form-control"   name="serial">
+                                                        <input type="text" class="form-control"   name="serial"value="<?php echo $rtmt->FIXED_ASSET_SERIAL_NUMBER ?>" >
 
                                                     </div>
                                                 </span>
@@ -139,7 +170,7 @@ if (isset($_POST[submit])) {
                                                 <label class="col-sm-3 control-label">Date Purchased</label>
                                                 <div class="col-sm-6">
                                                     <div class="input-group date" id="datepickerDemo" style="margin-left: 12px">
-                                                        <input type="text" class="form-control" required="" name="date" placeholder="date purchased"    />
+                                                        <input type="text" class="form-control" required="" name="date" placeholder="date purchased"   value="<?php echo $rtmt->FIXED_ASSETS_DATE_PURCHASE ?>" />
                                                         <span class="input-group-addon">
                                                             <i class=" fa fa-calendar"></i>
                                                         </span>
@@ -152,7 +183,7 @@ if (isset($_POST[submit])) {
                                             <div class="form-group">
                                                 <label class="col-sm-3 control-label">Asset Description</label>
                                                 <div class="col-sm-6">
-                                                    <textarea class="form-control fullscreen wysihtml5-toolbar popovers" name="description"   rows="2" data-trigger="hover" data-toggle="popover" data-content="click on the rectangular box at the extreme right to get fullscreen notepad" data-original-title="Notepad"></textarea>
+                                                    <textarea class="form-control fullscreen wysihtml5-toolbar popovers" name="description"   rows="2" data-trigger="hover" data-toggle="popover" data-content="click on the rectangular box at the extreme right to get fullscreen notepad" data-original-title="Notepad"><?php echo $rtmt->FIXED_ASSET_SERIAL_NUMBER   ?></textarea>
                                                 </div>
                                             </div>
 
@@ -225,7 +256,7 @@ var vm = new Vue({
   ready : function() {
   },
  data : {
-  
+   location:"<?php echo $rtmt->FIXED_ASSET_LOCATION ?>",
    
  options: [    ]  ,
     

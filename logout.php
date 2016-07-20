@@ -15,4 +15,9 @@
 
      logOut();
      
-      
+      ?>
+<script type="text/javascript"> 
+    if (self.parent.frames.length != 0){
+        self.parent.location=document.location.href;
+    }
+</script>
