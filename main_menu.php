@@ -145,6 +145,9 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
     .error{
         color:red;
     }
+    p{
+        width: 190px;
+    }
 </style>
 <ul class="list-unstyled left-elems">
 			<!-- nav trigger/collapse -->
@@ -323,9 +326,9 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                                <p class="">
                                <p><a target='content_frame'  href="branch.php" > <i class='fa fa-folder-open'></i> View Branches </a> 
                                 </p>
-                                <p class="">
+                                <!-- <p class="">
                                 <p><a target='content_frame'  href="branch_stat.php" > <i class='fa fa-folder-open'></i> Growth Statistics </a> 
-                                </p>
+                                </p> -->
                                  
                                 
 
@@ -446,14 +449,16 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                         </div>
                         <div class="panel-collapse collapse" id="collapseTT">
                             <div class="panel-body">
-                                <p class=''><a target="content_frame"  href="add_service_type.php"  ><i class='fa fa-plus-circle'></i>  Create Service Categories </a></p>
-                                <p class=''><a target="content_frame"  href="service_types.php"  ><i class='fa fa-folder-open'></i> View Categories </a></p>
-                                <p class=''><a target="content_frame"  href="add_service.php"  ><i class='fa fa-plus-circle'></i>  Add Service </a></p>
-                                 <p class=''><a target="content_frame"  href="Inviteservice.php"  ><i class='fa fa-plus-circle'></i> Invite people to Service </a></p
-                                <p class=''><a target="content_frame"  href="upservice.php"  ><i class='fa fa-folder-open'></i> View Upcoming services </a></p>
-                                  <p class=''><a target="content_frame"  href="pservice.php"  ><i class='fa fa-folder-open'></i> View past services </a></p>
+                                <p class=''><a target="content_frame"  href="add_service_type.php"  ><i class='fa fa-plus-circle'></i>  Add Service Categories </a></p>
+                                <p class=''><a target="content_frame"  href="service_types.php"  ><i class='fa fa-folder-open'></i> Service Categories </a></p>
+                                <p class=''><a target="content_frame"  href="add_service.php"  ><i class='fa fa-plus-circle'></i>  Add Services </a></p>
+                                 <p class=''><a target="content_frame"  href="upservice.php"  ><i class='fa fa-folder-open'></i> View upcoming services </a></p>
+                                <p class=''><a target="content_frame"  href="pservice.php"  ><i class='fa fa-folder-open'></i> View past services </a></p>
                                    <p class=''><a target="content_frame"  href="allservice.php"  ><i class='fa fa-folder-open'></i> View all services </a></p>
-                            </div>
+                         
+                                    <p class=''><a target="content_frame"  href="attendance.php"  ><i class='fa fa-plus-circle'></i> Mark Service Attendance </a></p
+                             
+                                   </div>
                         </div>
                     </div>
    

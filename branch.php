@@ -9,42 +9,22 @@
         $help=new _classes_\helpers();
         $notify=new _classes_\Notifications();
         $sms=new _classes_\smsgetway();
-         if($_GET[branch]){
-        $_SESSION[district]=$_GET[branch];
-        }
-        if($_GET[gender]){
-        $_SESSION[gender]=$_GET[gender];
-        }
-         
-        if($_GET[ministry]){
-        $_SESSION[circuit]=$_GET[ministry];
-        }
-        if($_GET[deceased]){
-        $_SESSION[deceased]=$_GET[deceased];
-        }
-        if($_GET[category]){
-        $_SESSION[category]=$_GET[category];
-        }
-        if($_GET[team]){
-        $_SESSION[team]=$_GET[team];
-        }
-        if($_GET[service]){
-        $_SESSION[service]=$_GET[service];
-        }
-        if($_GET[demo]){
-        $_SESSION[demo]=$_GET[demo];
-        }
-        if($_GET[country]){
-        $_SESSION[nation]=$_GET[country];
-        }
-         if($_POST[go]){
-        $_SESSION[search]=$_POST[search];
-        $_SESSION[content]=$_POST[content];
-        }
+      $login = new _classes_\Login();
+
+        
         if(isset($_GET[delete])){
-            $query=$sql->Prepare("DELETE FROM perez_members WHERE MEMBER_CODE='$_GET[delete]'");
+            $query=$sql->Prepare("DELETE FROM perez_branches WHERE ID='$_GET[delete]'");
             if($sql->Execute($query)){
-                header("location:members?success=1");
+                 $event="Creation of branch";
+                    $activity="$_SESSION[USERNAME] has added $name branch";
+                    $hashkey = $_SERVER['HTTP_HOST'];
+                    $remoteip = $_SERVER['REMOTE_ADDR'];
+                    $useragent = $_SERVER['HTTP_USER_AGENT'];
+                    $mac = $login->getMac();
+                    $sessionId = session_id();
+                    $stmt = $sql->Prepare("INSERT INTO `perez_system_log` ( `USERNAME`, `EVENT_TYPE`, `ACTIVITIES`, `HOSTNAME`, `IP`, `BROWSER_VERSION`,MAC_ADDRESS,SESSION_ID) VALUES ('".$_SESSION[ID]."', '$event','$activity', '".$hashkey."','".$remoteip."','".$useragent."','".$mac."','".$sessionId."')");
+                    $sql->Execute($stmt);
+                header("location:branch?success=1");
             }
         }
   /////////////////////////////////////////////////////////////////////////////
@@ -128,7 +108,8 @@
 		
             <?php include("./_library_/_includes_/top_bar.inc"); ?>
 	</header>
-
+<script src="assets/scripts/vendors.js"></script>
+ 	 
 	<!-- main-container -->
 	<div class="main-container clearfix">
 		 
@@ -138,7 +119,7 @@
 			<div class="page page-ui-tables">
 				<ol class="breadcrumb breadcrumb-small">
 					<li>Church Administration</li>
-					<li class="active"><a href="#">Branches / Locations</a></li>
+					<li class="active"><a href="#">Branches</a></li>
 				</ol>
                             <div class="modal fade" id="sms" tabindex="-1" role="dialog" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
@@ -209,127 +190,28 @@
 						 
                                                 <div style="margin-top:31px;float:right">
                                                      
-                                                     <button  style="margin-top: -59px" name="mail"  class="btn btn-success waves-effect">Mail<i class="fa fa-mail-forward"></i></button>
-                                                        <button  style="margin-top: -59px"  data-target="#mount" data-toggle="modal"  class="btn btn-success waves-effect">Import csv<i class="fa fa-upload"></i></button>
-                                                          <button  style="margin-top: -59px"   class="btn btn-pink waves-effect" data-target="#sms"  data-toggle="modal">Send SMS<i class="fa fa-phone"></i></button>
-                                                        <button   class="btn btn-primary  waves-effect waves-button dropdown-toggle" style="margin-top: -59px" data-toggle="dropdown"><i class="fa fa-save"></i> Export Data</button>
-                                                        <ul class="dropdown-menu">
-                                            
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'csv',escape:'false'});"><img src='assets/icons/csv.png' width="24"/> CSV</a></li>
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'txt',escape:'false'});"><img src='assets/icons/txt.png' width="24"/> TXT</a></li>
-                                                            <li class="divider"></li>
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'excel',escape:'false'});"><img src='assets/icons/xls.png' width="24"/> XLS</a></li>
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'doc',escape:'false'});"><img src='assets/icons/word.png' width="24"/> Word</a></li>
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'powerpoint',escape:'false'});"><img src='assets/icons/ppt.png' width="24"/> PowerPoint</a></li>
-                                                            <li class="divider"></li>
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'png',escape:'false'});"><img src='assets/icons/png.png' width="24"/> PNG</a></li>
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'pdf',escape:'false'});"><img src='assets/icons/pdf.png' width="24"/> PDF</a></li>
-                                                         </ul>
+                                                             <button   class="btn btn-primary  waves-effect waves-button dropdown-toggle" style="margin-top: -59px" onClick ="$('#gad').tableExport({type:'excel',escape:'false'});" title="Export data to excel file"><i class="fa fa-file-excel-o"></i> Export Data</button>
+                                                     
                                               </div>
                              <div><?php $notify->Message(); ?></div>
 					</div>
                                 <div class="row">
                                     <!-- Basic Table -->
-                                    <div class="col-md-12">
+                                    <div class="col-md-12" style="margin-left: -22px">
                                         <div class="panel panel-lined panel-hovered mb20 table-responsive basic-table">
                                              
                                             <div class="panel-body">
-                                                <div class="table-responsive">
-                                                        <table  width=" " border="0">
-                                        <tr>
-
-
-                                     <td width="20%">
-
-                                    <select class='form-control select2_sample1'     style="margin-left:-3px;  " onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?district='+escape(this.value);" >
-                                <option value=''>Filter by districts</option>
-                                        <option value='All district'>All Districts</option>
-                                    <?php 
-                                      global $sql;
-
-                                          $query2=$sql->Prepare("SELECT * FROM perez_districts");
-
-
-                                          $query=$sql->Execute( $query2);
-
-
-                                       while( $row = $query->FetchRow())
-                                         {
-
-                                         ?>
-                                         <option <?php if($_SESSION[district]==$row['ID']){echo 'selected="selected"'; }?> value="<?php echo $row['ID']; ?>"        ><?php echo $row['NAME']; ?></option>
-
-                                  <?php }?>
-                                      </select>
-
-                            </td>
-                             
-				 
-                               <td>&nbsp;</td>
-                         <td width="25%">
-                                   <select class='form-control' style="margin-left:-60px; "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?ministry='+escape(this.value);"     >
-                                       <option value=''>Filter by Circuits</option>
-                                        <option value='All circuits'>All Circuit</option>
-                                                          
-                                                      <?php 
-                                                      global $sql;
-
-                                                      $query2=$sql->Prepare("SELECT * FROM perez_circuits");
-
-
-                                                      $query=$sql->Execute( $query2);
-
-
-                                                     while( $row = $query->FetchRow())
-                                                       {
-
-                                                       ?>
-                                                       <option value="<?php echo $row['ID']; ?>"   <?php if($_SESSION[circuit]==$row['ID']){echo "selected='selected'";} ?>      ><?php echo $row['NAME']; ?></option>
-
-                                                    <?php }?>
-                                                       
-                                                   </select>
-
-                                                </td>     
-                                         <td>&nbsp;</td>
-                                            
-                                         
-                                           
                                                 
-                                                     
-                                           
-                                          
-                                           
-                                        </tr>
-                                       </table>
-                                                </div
                                                
                                                 <!-- end filters   -->
                                                    <div class="table-responsive">
                                                         <hr>
                                                     <?php
                                                                                                
-                                                            $branch=$_SESSION[district];
-                                                            $gender=$_SESSION[gender];
-                                                            $ministry=$_SESSION[circuit];
-                                                            $status=$_SESSION[deceased];
-                                                            $nation=$_SESSION[nation];
-                                                            $team=$_SESSION[team];
-                                                            $demo=$_SESSION[demo];
-                                                            $service=$_SESSION[service];
-                                                            $category=$_SESSION[category];
-                                                            $search=$_POST[search];
-                                                            $content=$_POST[content];
-                                            
-
-                                                            if($branch=="All branch" or $branch==""){ $branch=""; }else {$branch_=" and  BRANCH = '$branch' "  ;}
-                                                            if($ministry=="All ministry" or $ministry==""){ $ministry=""; }else {$ministry_="and MINISTRY = '$ministry' "  ;}
-                                                            if($category=="All category" or $category=="" ){ $category=""; }else {$category_=" and PEOPLE_CATEGORY = '$category' "  ;}
-                                                            if($search=="" ){ $search=""; }else {$search_="AND $content LIKE '$search' "  ;}
-
-                                                            $query="SELECT  * FROM  perez_branches  where 1 $branch_  $ministry_  $search_ $gender_ $nation_ $status_ $team_ $category_ $demo_ $service_" ;
+                                                             
+                                                            $query="SELECT  * FROM  perez_branches  where 1 " ;
                                                             $_SESSION[last_query]=$query; 
-
+                                                           // print_r($query);
                                                             $rs = $sql->PageExecute($query,RECORDS_BY_PAGE,CURRENT_PAGE);
                                                             $recordsFound = $rs->_maxRecordCount;    // total record found
                                                            if (!$rs->EOF) 
@@ -345,12 +227,11 @@
                                                             <th>CODE</th>
                                                             <th>NAME</th>
                                                             <th>HEAD</th>
-                                                            <th>LOCATION</th>
-                                                            <th>CIRCUIT</th>
-                                                            <th>DISTRICT</th>
-                                                             
+                                                            <th>PLACE OF WORSHIP</th>
                                                             <th>ADDRESS</th>
                                                             <th>PHONE</th>
+                                                            <th>CIRCUIT</th>
+                                                            <th>DISTRICT</th>
                                                             <th>REGION</th>
                                                             <th>CAPACITY</th>
                                                              
@@ -371,33 +252,28 @@
                                                                <td><?php echo $count ?></td>
                                                              <td style="text-align:"><?php echo $rtmt[CODE] ?></td>
                                                              <td style="text-align:"><?php echo $rtmt[NAME] ?></td>
-                                                             <td style="text-align:"><?php echo $rtmt[HEAD] ?></td>
+                                                             <td style="text-align:"><?php echo $help->getBranchHead($rtmt[HEAD]) ?></td>
                                                            
-                                                             <td style="text-align:"><?php echo $rtmt[LOCATION] ?></td>
-                                                             <td style="text-align:"><?php echo $rtmt[CIRCUIT] ?></td>
-                                                               
-                                                             <td style="text-align:"><?php echo $rtmt[DISTRICT] ?></td>
+                                                             <td style="text-align:"><?php echo $rtmt[PLACE_WORSHIP] ?></td>
                                                              <td style="text-align:"><?php echo $rtmt[ADDRESS] ?></td>
                                                                <td style="text-align:"><?php echo $rtmt[PHONE] ?></td>
-                                                             <td style="text-align:"><?php echo $rtmt[REGION] ?></td>
-                                                             <td style="text-align:"><?php ECHO "Capacity"; ?></td>
+                                                             <td style="text-align:"><?php echo $help->getCircuitName($rtmt[CIRCUIT] )?></td>
+                                                               
+                                                             <td style="text-align:"><?php print_r( $help->getDistrictName( $rtmt[CIRCUIT])) ?></td>
+                                                             
+                                                             <td style="text-align:"><?php echo $help->getDistrictRegion($rtmt[CIRCUIT]) ?></td>
+                                                             <td style="text-align:center"><?php  echo $help->getBranchStatistics($rtmt[ID]) ?> members</td>
                                                              
                                                              <td  style="text-align:center">
-                                                                 <a href="addBranch?branch=<?php echo  $rtmt[CODE] ?>&&update"> <i class="fa fa-edit" title="click to edit info"></i></a> 
-                                                                 <a onclick="return confirm('Are you sure you want to delete this branch??')" href="branch?delete=<?php echo  $rtmt[MEMBER_CODE] ?>"><i class="fa fa-trash" title="click to delete"></i> </a></td>
+                                                                 <a href="addBranch?branch=<?php echo  $rtmt[ID] ?>&&update"> <i class="fa fa-edit" title="click to edit info"></i></a> 
+                                                                 <a onclick="return confirm('Are you sure you want to delete this <?php echo $rtmt[NAME] ?>branch??')" href="branch?delete=<?php echo  $rtmt[ID] ?>"><i class="fa fa-trash" title="click to delete"></i> </a></td>
                                                             
                                                         </tr>
                                                          <?php }?>
                                                     </tbody>
                                                 </table>
                                                     <br/>
-                                                <center><?php
-                                                    $GenericEasyPagination->setTotalRecords($recordsFound);
-
-                                                   echo $GenericEasyPagination->getNavigation();
-                                                   echo "<br>";
-                                                   echo $GenericEasyPagination->getCurrentPages();
-                                                 ?></center>
+                                                
                                          <?php }else{
                                                             echo "<div class='alert alert-danger alert-dismissible' role='alert'>
                                                                   <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
@@ -421,14 +297,33 @@
 		</div>
 
 	</div> <!-- #end main-container -->
-
-	<?php include("./_library_/_includes_/theme.inc"); ?>
-
- <?php include("./_library_/_includes_/js.php"); ?>
+        <script src="assets/scripts/jquery-2.1.1.min.js"></script>
+       
+	<script src="assets/scripts/jquery.dataTables.min.js"></script>
+        <script src="assets/scripts/dataTables.bootstrap.min.js"></script>
+          
+        <script src="assets/scripts/dataTables.keyTable.min.js"></script>
         
-         <script>
-            
+     
+       <script>
+            $(document).ready(function() {
+                $('#gad').DataTable( {
+                    
+                } );
+            } );
         </script>
+          
+        
+<script src="assets/scripts/select2.min.js"></script>
+       
+        <script>
+                 $(document).ready(function(){
+                    $('select').select2({ width: "resolve" });
+
+
+                  });
+        </script>
+           <?php include("_library_/_includes_/export.php"); ?> 
 </body>
 
 </html>

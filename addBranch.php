@@ -16,14 +16,20 @@ if (isset($_POST[submit])) {
 
     $name = strip_tags($_POST['name']);
     $id = strip_tags($_POST['id']);
-    $region = strip_tags($_POST['region']);
+    $circuit= strip_tags($_POST['circuit']);
+    $head= strip_tags($_POST['head']);
+    $place= strip_tags($_POST['place']);
+    $address= strip_tags($_POST['address']);
+    $phone= strip_tags($_POST['phone']);
+    $code=$help->getCode("BRANCH");
      if(empty($id)){
-    $query=$sql->Prepare("INSERT INTO perez_districts (NAME,REGION) VALUES('$name','$region')");
-        if($sql->Execute($query)){
+    $query=$sql->Prepare("INSERT INTO perez_branches (NAME,HEAD,CODE,PLACE_WORSHIP,CIRCUIT,ADDRESS,PHONE) VALUES('$name','$head','$code','$place','$circuit','$address','$phone')");
+       
+    if($sql->Execute($query)){
              //logging
                     //$dpat=$help->getDepartmentName($department);
-                    $event="Creation";
-                    $activity="$_SESSION[USERNAME] has added $name district";
+                    $event="Creation of branch";
+                    $activity="$_SESSION[USERNAME] has added $name branch";
                     $hashkey = $_SERVER['HTTP_HOST'];
                     $remoteip = $_SERVER['REMOTE_ADDR'];
                     $useragent = $_SERVER['HTTP_USER_AGENT'];
@@ -31,20 +37,21 @@ if (isset($_POST[submit])) {
                     $sessionId = session_id();
                     $stmt = $sql->Prepare("INSERT INTO `perez_system_log` ( `USERNAME`, `EVENT_TYPE`, `ACTIVITIES`, `HOSTNAME`, `IP`, `BROWSER_VERSION`,MAC_ADDRESS,SESSION_ID) VALUES ('".$_SESSION[ID]."', '$event','$activity', '".$hashkey."','".$remoteip."','".$useragent."','".$mac."','".$sessionId."')");
                     $sql->Execute($stmt);
+                    $help->UpdateCode("BRANCH");
 
-            header('location:viewDistrict.php');
+            header('location:branch.php?success=1');
         }
         else{
-           // header('location:createDepartment.php?error=1');
+          header('location:addBranch.php?error=1');
         }
      }
      else{
-          $query=$sql->Prepare("UPDATE perez_districts SET NAME='$name',REGION='$region' WHERE ID='$id'");
+          $query=$sql->Prepare("UPDATE perez_branches SET NAME='$name',CIRCUIT='$circuit',HEAD='$head',ADDRESS='$address',PHONE='$phone',PLACE_WORSHIP='$place' WHERE ID='$id'");
         if($sql->Execute($query)){
              //logging
                    // $dpat=$help->getDepartmentName($department);
-                    $event="Creation";
-                    $activity="$_SESSION[USERNAME] has updated $name district";
+                    $event="update of branch";
+                    $activity="$_SESSION[USERNAME] has updated $name branch";
                     $hashkey = $_SERVER['HTTP_HOST'];
                     $remoteip = $_SERVER['REMOTE_ADDR'];
                     $useragent = $_SERVER['HTTP_USER_AGENT'];
@@ -53,7 +60,7 @@ if (isset($_POST[submit])) {
                     $stmt = $sql->Prepare("INSERT INTO `perez_system_log` ( `USERNAME`, `EVENT_TYPE`, `ACTIVITIES`, `HOSTNAME`, `IP`, `BROWSER_VERSION`,MAC_ADDRESS,SESSION_ID) VALUES ('".$_SESSION[ID]."', '$event','$activity', '".$hashkey."','".$remoteip."','".$useragent."','".$mac."','".$sessionId."')");
                     $sql->Execute($stmt);
 
-            header('location:viewDistrict.php');
+            header('location:branch.php?success=1');
         }
      }
 }
@@ -103,52 +110,109 @@ if (isset($_POST[submit])) {
                                     <div>
                                         <?php
                                         
-                                            if(isset($_GET[id])){
-                                                $district=$_GET[id];
+                                            if(isset($_GET[branch])){
+                                                $branch=$_GET[branch];
                                                 
-                                                $query=$sql->Prepare("SELECT * FROM perez_districts WHERE ID ='$district'");
+                                                $query=$sql->Prepare("SELECT * FROM perez_branches WHERE ID ='$branch'");
+                                                // print_r($query);
                                                 $query_=$sql->Execute($query);
                                                 $rows=$query_->FetchNextObject();
-                                                //print_r($row);
+                                               
                                             }
                                         
                                         
                                         ?>
                                         <form action="" method="post" class="form-horizontal row-border"   id="form" novalidate="" name="applicationForm"  v-form>
-
+                                             <input type="hidden" class="form-control" required="required" name="id" value="<?php echo $rows->ID;?>" >
+                                                 
                                             <div class="form-group">
                                                 <span id="item">
-                                                    <label class="col-sm-3 control-label">District Name</label>
+                                                    <label class="col-sm-3 control-label">Branch Name</label>
                                                     <div class="col-sm-6">
                                                         <input type="text" class="form-control" required="required" name="name" value="<?php echo $rows->NAME;?>" v-model="name"  v-form-ctrl>
                                                     <p  class=" text-danger text-small  "   v-if="applicationForm.name.$error.required">Name  is required</p>  
                                                
                                                     </div>
-                                                    <input type="hidden" class="form-control" required="required" name="id" value="<?php echo $rows->ID;?>" >
-                                                 
+                                                   
                                                 </span>
                                             </div>
-                                            
-                                           
-                                              <div class="form-group">
+                                            <div class="form-group">
+                                                <span id="item">
+                                                    <label class="col-sm-3 control-label">Branch Phone</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="number" class="form-control"  required=""   maxlength="10"   pattern='^[0-9]{10}$' required="required" name="phone" value="<?php echo $rows->PHONE;?>" v-model="phone"  v-form-ctrl>
+                                                    <p  class="text-danger text-small"   v-if="applicationForm.phone.$error.required">valid phone number of 10 digits  is required</p>  
+                                                     <p  class="text-danger text-small"   v-if="applicationForm.phone.$invalid">Please enter a valid phone number of 10 digits</p>
+                                                    </div>
+                                                     
+                                                </span>
+                                            </div>
+                                             <div class="form-group">
+                                                <span id="item">
+                                                    <label class="col-sm-3 control-label">Branch Address</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" required="required" name="address" value="<?php echo $rows->ADDRESS;?>" v-model="address"  v-form-ctrl>
+                                                    <p  class=" text-danger text-small  "   v-if="applicationForm.address.$error.required">Address  is required</p>  
+                                               
+                                                    </div>
+                                                   
+                                                </span>
+                                            </div>
+                                             <div class="form-group">
+                                                <span id="item">
+                                                    <label class="col-sm-3 control-label">Branch place of worship</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" required="required" name="place" value="<?php echo $rows->PLACE_WORSHIP;?>" v-model="place"  v-form-ctrl>
+                                                    <p  class=" text-danger text-small  "   v-if="applicationForm.place.$error.required">Place of worship  is required</p>  
+                                               
+                                                    </div>
+                                                   
+                                                </span>
+                                            </div>
+                                             <div class="form-group">
                                                  
-                                                    <label for="fieldname" class="col-md-3 control-label">Regions</label>
+                                                    <label for="fieldname" class="col-md-3 control-label">Branch Minister / Head</label>
                                                     <div class="col-md-6">
-                                                        <select style="width:230px" name='region' required=""  v-model="region" v-form-ctrl=""  v-select="region"  >
-                                                            <option value=''>select region </option>
+                                                        <select style="width:230px" name='head' required=""  v-model="head" v-form-ctrl=""  v-select="head"  >
+                                                            <option value=''>select branch head </option>
                                                             <?php
-                                                            $STM = $sql->Prepare("SELECT * FROM `perez_regions` ");
+                                                            $STM = $sql->Prepare("SELECT * FROM `perez_members` ");
                                                             $rowa = $sql->Execute($STM);
 
                                                             $num = 0;
                                                             while ($row = $rowa->FetchRow()) {
                                                                 extract($row);
                                                                 ?>
-                                                                <option <?php if($rows->REGION==$NAME){echo "selected='selected'";} ?> value="<?php echo $NAME; ?>"><?php echo $NAME; ?></option>
+                                                                <option <?php if($rows->HEAD==$row[ID]){echo "selected='selected'";} ?> value="<?php echo $ID; ?>"><?php echo $FIRSTNAME; ?></option>
 
                                                             <?php } ?>
                                                         </select>
-                                                         <p  class=" text-danger text-small  "   v-if="applicationForm.region.$error.required">Region  is required</p>  
+                                                         <p  class=" text-danger text-small  "   v-if="applicationForm.head.$error.required">Head of branch  is required</p>  
+                                               
+                                                    </div>
+                                                 
+                                            </div>
+                                            
+                                           
+                                              <div class="form-group">
+                                                 
+                                                    <label for="fieldname" class="col-md-3 control-label">Circuit</label>
+                                                    <div class="col-md-6">
+                                                        <select style="width:230px" name='circuit' required=""  v-model="circuit" v-form-ctrl=""  v-select="circuit"  >
+                                                            <option value=''>select circuit branch belongs to </option>
+                                                            <?php
+                                                            $STM = $sql->Prepare("SELECT * FROM `perez_circuits` ");
+                                                            $rowa = $sql->Execute($STM);
+
+                                                            $num = 0;
+                                                            while ($row = $rowa->FetchRow()) {
+                                                                extract($row);
+                                                                ?>
+                                                                <option <?php if($rows->CIRCUIT==$ID){echo "selected='selected'";} ?> value="<?php echo $ID; ?>"><?php echo $NAME; ?></option>
+
+                                                            <?php } ?>
+                                                        </select>
+                                                         <p  class=" text-danger text-small  "   v-if="applicationForm.circuit.$error.required">Circuit  is required</p>  
                                                
                                                     </div>
                                                  
@@ -225,8 +289,8 @@ var vm = new Vue({
   ready : function() {
   },
  data : {
-   region:"<?php echo $rows->REGION ?>",
-   
+   circuit:"<?php echo $rows->CIRCUIT ?>",
+   head:"<?php echo $rows->HEAD ?>",
  options: [    ]  ,
     
   },

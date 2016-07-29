@@ -51,7 +51,7 @@
             $volunteer=strip_tags($_POST[volunteer]);
             $defaultName = strip_tags($_POST[defaultName]);
             $defaultfrom = strip_tags($_POST[defaultTimeFrom]);
-             $defaultto = strip_tags($_POST[defaultTimeTo]);
+            $defaultto = strip_tags($_POST[defaultTimeTo]);
             $othername=strip_tags($_POST[otherName]);
             $othertimefrom=strip_tags($_POST[otherTimeFrom]);
             $othertimeto=strip_tags($_POST[otherTimeTo]);
@@ -119,32 +119,29 @@
         }
 ?>  
         <?php include("./_library_/_includes_/header.inc"); ?>
- <body id="apps" class="app off-canvas">
-     
-	<!-- header -->
+          
+  <body id="app" class="app off-canvas">
+
+   <!-- header -->
 	<header class="site-head" id="site-head">
 		
             <?php include("./_library_/_includes_/top_bar.inc"); ?>
 	</header>
 	<!-- #end header -->
 
-	<!-- main-container -->
-	<div class="main-container clearfix">
-		<!-- main-navigation -->
-		<aside class="nav-wrap" id="site-nav" data-perfect-scrollbar>
-			
-                    <?php include("./_library_/_includes_/menu.inc"); ?>
-                    
-                </aside>
-		<!-- #end main-navigation -->
 
-		<!-- content-here -->
-		<div class="content-container" id="content">
+    <!-- main-container -->
+    <div class="main-container clearfix">
+        <!-- main-navigation -->
+       
+        <!-- #end main-navigation -->
+
+        <!-- content-here -->		<div class="content-container" id="content">
                         
 			<div class="page page-ui-tables">
 				<ol class="breadcrumb breadcrumb-small">
-					<li>Members</li>
-					<li class="active"><a href="#">Data</a></li>
+					<li>Services</li>
+					<li class="active"><a href="#">Add service categories</a></li>
 				</ol>
                             <div><?php $notify->Message(); ?></div>
                             <?php
@@ -190,28 +187,7 @@
                             <div class="page-wrap">
                                 <div class="note note-success note-bordered">
 					<!-- row -->
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="alert alert-info">
-                                                    <button type="button" class="close" data-dismiss="alert">
-                                                        <span aria-hidden="true">×</span>
-                                                    </button>
-                                                    <div><strong>System Setup Procedures:</strong>
-                                                        <br/>
-                                                        
-                                                        
-
-                                                        To navigate through the guide, use the buttons in the bottom right-hand corner. Each step will take you to a different area of the system and give a quick explanation of its functions and features. We'll always regroup what step you're up to, so feel free to have a look around before moving forward! You can always come back if you need to clarify.
-
-                                                        If you'd like more information on any of the areas mentioned, you can always visit our 'Getting Started Page' for more information. We also have a How-To area, where you can find full setup instructions for each of the <?php echo $config_file->CHURCH_NAME;  ?> features. If there's anything we miss in this guide, or if you have any further questions, be sure to contact our support team for assistance..
-
-
-                                                    </div>
-                                                </div>
-                                            </div>	 
-
-
-                                        </div>
+                                         
                                 <div class="row">
                                     <!-- Basic Table -->
                                     <!-- inline form -->
@@ -233,7 +209,7 @@
 		
                         <h5 class="form-header">Details</h5>
                         <hr>
-			<p class="form-description">Enter a descriptive name for this Service Type in the 'Type Name'. You can also choose a highlight color and enter a name for this type of service which is displayed to your volunteers.</p>
+			<p class="form-description">Enter a descriptive name for this Service Type in the 'Type Name'.  Enter a name for this type of service which is displayed to your volunteers.</p>
 		
 			<div class="row"><div class="col-sm-6">
 
@@ -247,8 +223,7 @@
 				<label class="control-label">Name (volunteers see this)</label>
                                 <input type="text" name="volunteer"  required="" v-model="volunteer"v-form-ctrl  maxlength="255" class="form-control">
 			</div>
-                                   <p class="text-danger uk-text-small "  v-if="serviceType.volunteer.$error.required"  >Please enter a valid email address</p>
-			 
+                                   
 			
 			</div></div>
 		
@@ -343,14 +318,14 @@ echo $help->picture("photos/service/$person.jpg", 199) ?>  src="<?php echo file_
 			</div>
 
 			<h5 class="form-header">Service Plan Departments</h5>
-			<p class="form-description">You might want to highlight certain department positions at the top of your printed Service Plan. For example, you could choose to display the 'Stage Manager' position at the top, so if there is any issue with something on stage, people at the service know who to talk to.</p>
+			<p class="form-description">Departments reponsible for the service</p>
 
 			    <div class="col-sm-6">
             <div class="form-group">
                 <label class="col-lg-4 control-label">Departments <i class="fa fa-question-circle fa-fw" title="Departments are the different areas of serving in the church. Choose what departments this person serves within." data-toggle="tooltip"></i>
                 </label>
                 <div class="col-lg-8">		  
-                     <select id="gender" data-tags="true"  name="department"     data-placeholder="Department responsible for service" class="form-control">
+                    <select id="gender" data-tags="true"  name="department" multiple=""    data-placeholder="Department responsible for service" class="form-control">
 
                         <option value=''>Choose department</option>
 
@@ -403,14 +378,23 @@ echo $help->picture("photos/service/$person.jpg", 199) ?>  src="<?php echo file_
 		</div>
 
 	</div> <!-- #end main-container -->
- }
-	<?php include("./_library_/_includes_/theme.inc"); ?>
-        
-	   <script src="assets/scripts/plugins/moment.min.js"></script>
+  
+	<?php include("./_library_/_includes_/js.php"); ?>
+         
+       <script src="assets/scripts/vendors.js"></script>
+<script src="assets/scripts/plugins/screenfull.js"></script>
+	<script src="assets/scripts/plugins/perfect-scrollbar.min.js"></script>
+	<script src="assets/scripts/plugins/waves.min.js"></script>
+	<script src="assets/scripts/plugins/select2.min.js"></script>
+	<script src="assets/scripts/plugins/bootstrap-colorpicker.min.js"></script>
+	<script src="assets/scripts/plugins/bootstrap-slider.min.js"></script>
+	<script src="assets/scripts/plugins/summernote.min.js"></script>
+	<script src="assets/scripts/plugins/bootstrap-datepicker.min.js"></script>
+	<script src="assets/scripts/app.js"></script>
+	<script src="assets/scripts/form-elements.init.js"></script>
+         <script src="assets/scripts/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 
-        <script src="assets/scripts/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
-
-          <script>
+        <script>
             //Time
             if ($('.time-picker')[0]) {
                 $('.time-picker').datetimepicker({
@@ -418,7 +402,7 @@ echo $help->picture("photos/service/$person.jpg", 199) ?>  src="<?php echo file_
                 });
             }
         </script>
-        <?php include("./_library_/_includes_/js.php"); ?>
+         
      
          <script>
 

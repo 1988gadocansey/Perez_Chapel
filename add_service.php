@@ -9,70 +9,56 @@
         $help=new _classes_\helpers();
         $notify=new _classes_\Notifications();
         $sms=new _classes_\smsgetway();
-        if(isset($_GET[group])){
-             $_SESSION[group]=$_GET[group];
+        if(isset($_GET[service])){
+             $_SESSION[service]=$_GET[service];
         }
           
-        if (isset($_GET['upload'])) {
-           $group=$_SESSION[group];
-
-            if (!$_FILES["images"]["name"]) {
-                echo " <font color='red' style='text-decoration:blink'>Please choose a file to upload</font>";
-                $error = 1;
-            }
-            //check if file type is jpeg 
-            elseif ($_FILES["images"]["type"] != "image/jpeg" and $_FILES["images"]["type"] != "image/pjpeg") {
-               header("location:addGroup?error=1&&group=$_SESSION[group]&&error=Picture format not accepted");
-                $error = 2;
-            } elseif (($_FILES["images"]["size"] ) > 2097152) {
-                 header("location:addGroup?error=1&&group=$_SESSION[group]");
-                $error = 3;
-            }
-
-            
-
-              if ($error > 0) {
-        
-                } else {
-                    
-                  $destination = "photos/groups/$group.jpg";
-                   
-                    move_uploaded_file($_FILES["images"]["tmp_name"], $destination);
-
-                    if (move_uploaded_file) {//echo "<font color='red' style='text-decoration:blink'> Picture uploaded  successfully </font>" ;
-                        header("location:addGroup?success=1&&group=$_SESSION[group]");
-                    }
-                }
-         } // end upload
          
-    // 
       if(isset($_POST[save])){
              
-            $startdate = strtotime($_POST[group_startdate]);
-            $enddate = strtotime($_POST[group_enddate]);
+            $name=$_POST["name"];
+            $type=$_POST["type"];
+            $venue =$_POST["venue"];
+            $theme=$_POST["theme"];
+            $publish=$_POST["publish"];
+            $frequency=$_POST["frequency"];
              
-            $demography = implode(",",$_POST["demographic"]);
+            $members = implode(",",$_POST["attendant"]);
              
-            $department= implode(",",$_POST["group_department"]);
-             $days= implode(",",$_POST["days"]);
+            $guest= implode(",",$_POST["guest"]);
+             
             $id=$_POST[check];
-            //$data = "GROUP_CODE='$_POST[group_code]',LEADER='$_POST[group_leader]',NAME='$_POST[group_name]',DAYS='$days',TITLE='$_POST[group_title]',FIRSTNAME='$_POST[group_firstname]',LASTNAME='$_POST[group_lastname]',OTHERNAMES='$_POST[group_othernames]',ARCHIVED='',CONTACT='',DECEASED='$_POST[group_deceased]',GENDER='$_POST[group_gender]',DOB='$dob',AGE='$age',MARITAL_STATUS='$_POST[group_marital_status]',ANNIVERSARY='',EMAIL='$_POST[group_email]',PHONE='$_POST[group_phone]',TELEPHONE='$_POST[group_telephone]', RESIDENTIAL_ADDRESS='$_POST[group_residential]',CONTACT_ADDRESS='$_POST[group_address]',HOMETOWN='$_POST[group_hometown]',REGION='$_POST[group_region]',COUNTRY='$_POST[group_country]',SECURITY_CODE='',RECEIPT='$_POST[group_receipt]',GIVING_NUMBER='$_POST[group_giving_number]',FAMILY_RELATIONSHIP='$_POST[group_relationship]',MUSIC_TEAM='$_POST[group_team]',DEMOGRAPHICS='$demography',SERVICE_TYPE='$service',LOCATION='$_POST[group_location]',OCCUPATION='$_POST[group_occupation]',PLACE_OF_WORK='$_POST[group_workplace]',NEXT_OF_KIN='$_POST[group_kname]',NEXT_OF_KIN_ADDRESS='$_POST[group_kaddress]',NEXT_OF_KIN_PHONE='$_POST[group_kphone]',PEOPLE_CATEGORY='$_POST[group_category]',MINISTRY='$_POST[group_ministry]',LANGUAGES='$language',ETHNIC='$_POST[group_ethnic]',ACCESS='$access_',DEPARTMENT='$department',SUNDAY_SCHOOL_GRADE='$_POST[group_school_grade]',REPORT='$_POST[group_report]',VOLUNTEER='$_POST[volunteer]',SMS_SUBSCRIBE_SCHEDULES='$_POST[group_sms_schedule]',SMS_SUBSCRIBE='$_POST[group_sms]',EMAIL_UNSUBSCRIBE_SCHEDULES='$_POST[group_email_unsubscribes_schedule]',EMAIL_UNSUBSCRIBE='$_POST[group_email_unsubscribes]'";
-           $data="`GROUP_CODE`='$_POST[group_code]', `NAME`='$_POST[group_name]', `LEADER`='$_POST[group_leader]', `CATEGORIES`='$_POST[group_category]', `LOCATION`='$_POST[group_location]', `END_DATE`='$enddate', `START_DATE`='$startdate', `DAYS`='$days', `END_TIME`='$_POST[group_endtime]', `START_TIME`='$_POST[group_starttime]', `FREQUENCY`='$_POST[group_frequency]', `DEPARTMENTS`='$department', `DEMOGRAPHICS`='$demography', `ADDRESS`='$_POST[group_address]', `STATUS`='$_POST[group_status]'";
-           print_r( trim($data));
+            
+         
+            $defaultName = strip_tags($_POST[serviceTimeName]);
+            $defaultfrom = strip_tags($_POST[serviceTimeFrom]);
+            $defaultto = strip_tags($_POST[serviceTimeTo]);
+            
+            $othername=strip_tags($_POST[oServiceTimeName]);
+            $othertimefrom=strip_tags($_POST[oServiceTimeFrom]);
+            $othertimeto=strip_tags($_POST[oServiceTimeTo]);
+            
+            $code=$help->getCode('SERVICE');
+            
+            $datefrom=strip_tags($_POST[datefrom]);
+            $dateto=strip_tags($_POST[dateto]);
+            $session=strip_tags($_SESSION['ID']);
+          $data="code='$code',`type`='$type', `name`='$name', `theme`='$theme', `guests`='$guest', `venue`='$venue', `startDate`='$datefrom', `endDate`='$dateto', `startName`='$defaultName', `startTime`='$defaultfrom', `endTime`='$defaultto', `otherStartTimeName`='$othername', `otherStartTime`='$othertimefrom', `otherEndTime`='$othertimeto', `frequency`='$frequency', `attendants`='$members', `publish`='$publish',createdby='$session'";
+           print_r(trim($data));
              
-               if (empty($id)) {
-                    $query2 = $sql->Prepare("INSERT INTO perez_group  SET $data ");
+               if (empty($id)){
+                    $query2 = $sql->Prepare("INSERT INTO perez_services  SET $data ");
                      
                     $update = 1;
                     $_SESSION[in]=$update;
                 }
                 else{
-                $query2 = $sql->Prepare("UPDATE  perez_group  SET $data WHERE ID='$_POST[check]'");
+                $query2 = $sql->Prepare("UPDATE  perez_services  SET $data WHERE ID='$_POST[check]'");
                      
                 }
                 if ($sql->Execute($query2)) {
                    if($update==1){
-                        $help->UpdateGroupCode();
+                        $help->UpdateCode('SERVICE');
                    }
 
                     header("location:group?success=1&&group=$_SESSION[group]");
@@ -82,43 +68,38 @@
                 }
         }
 ?>  
-        <?php include("./_library_/_includes_/header.inc"); ?>
-<script src= "assets/ajax.googleapis.com_ajax_libs_angularjs_1.3.14_angular.min.js"></script>
-<body id="app" class="app off-canvas">
-     
-	<!-- header -->
+      <?php include("./_library_/_includes_/header.inc"); ?>
+          
+  <body id="app" class="app off-canvas">
+
+   <!-- header -->
 	<header class="site-head" id="site-head">
 		
             <?php include("./_library_/_includes_/top_bar.inc"); ?>
 	</header>
 	<!-- #end header -->
 
-	<!-- main-container -->
-	<div class="main-container clearfix">
-		<!-- main-navigation -->
-		<aside class="nav-wrap" id="site-nav" data-perfect-scrollbar>
-			
-                    <?php include("./_library_/_includes_/menu.inc"); ?>
-                    <link rel="stylesheet" href="assets/styles/plugins/select2.css">
-                    <link rel="stylesheet" type="text/css" href="assets/scripts/plugins/bootstrap-fileinput/bootstrap-fileinput.css"/>
-                    <link rel="stylesheet" href="assets/styles/plugins/bootstrap-datepicker.css">
-                    <link rel="stylesheet" href="assets/scripts/plugins/datetimepicker/bootstrap-datetimepicker.css">
-                   
-                </aside>
-		<!-- #end main-navigation -->
 
+    <!-- main-container -->
+    <div class="main-container clearfix">
 		<!-- content-here -->
 		<div class="content-container" id="content">
                         
 			<div class="page page-ui-tables">
 				<ol class="breadcrumb breadcrumb-small">
-					<li>Members</li>
-					<li class="active"><a href="#">Data</a></li>
+					<li>Services</li>
+					<li class="active"><a href="#">Create a Service</a></li>
 				</ol>
                             <div><?php $notify->Message(); ?></div>
                             <?php
                                     $config_file=$help->getConfig() ;
-                                    
+                                    if(isset($_GET[service])){
+                                        $serviceCat=$_GET[service];
+                                        $query = $sql->Prepare("SELECT * FROM perez_service_type WHERE   ID ='$serviceCat'  ");
+                                      
+                                        $stmt = $sql->Execute($query);
+                                        $rtmt = $stmt->FetchNextObject();
+                                    }
                                 
                                      if(isset($_GET[group])){
                                     $qt = $sql->Prepare("SELECT * FROM perez_group WHERE   GROUP_CODE ='$_SESSION[group]'  ");
@@ -160,24 +141,7 @@
                                 <div class="note note-success note-bordered">
 					<!-- row -->
                                         <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="alert alert-info">
-                                                    <button type="button" class="close" data-dismiss="alert">
-                                                        <span aria-hidden="true">×</span>
-                                                    </button>
-                                                    <div><strong>System Setup Procedures:</strong>
-                                                        <br/>
-                                                        
-                                                        
-
-                                                        To navigate through the guide, use the buttons in the bottom right-hand corner. Each step will take you to a different area of the system and give a quick explanation of its functions and features. We'll always regroup what step you're up to, so feel free to have a look around before moving forward! You can always come back if you need to clarify.
-
-                                                        If you'd like more information on any of the areas mentioned, you can always visit our 'Getting Started Page' for more information. We also have a How-To area, where you can find full setup instructions for each of the <?php echo $config_file->CHURCH_NAME;  ?> features. If there's anything we miss in this guide, or if you have any further questions, be sure to contact our support team for assistance..
-
-
-                                                    </div>
-                                                </div>
-                                            </div>	 
+                                            	 
 
 
                                         </div>
@@ -185,7 +149,7 @@
                                     <!-- Basic Table -->
                                     <!-- inline form -->
 <div class="row">
-<div class="col-sm-12">
+    <div class="col-sm-12" style="margin-left: -12px">
 <div class="panel panel-default panel-hovered panel-stacked mb30">
  
 <div class="panel-body">
@@ -197,7 +161,7 @@
     <div class="row">
         
  
-	<form action="/admin/services/add_service/" method="post">
+	<form action="" method="post">
 		<input type="hidden" name="save" value="1">
 
 			 
@@ -206,90 +170,122 @@
 
 			<p class="form-description">You can choose a predefined Service Type which will automatically fill in the name &amp; times.</p>
 
-			<div class="row"><div class="col-sm-6">
+			<div class="form-group">
+                   
+                    <div class="check-duplicates-popover-parent">
+                        <select onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?service='+escape(this.value);"  name="type" required="" style="width:130px" class=" ">
+                         <?php
+                        global $sql;
 
-			
-							<div class="form-group">
-					<label class="control-label">Type</label>
+                        $query2 = $sql->Prepare("SELECT * FROM `perez_service_type` ");
 
-					<div class="service-type-select"></div>
 
-				</div>
+                        $query = $sql->Execute($query2);
 
-			
-			</div></div>
+
+                        while ($row = $query->FetchRow()) {
+                            ?>
+                            <option value="<?php echo $row['ID']; ?>" <?php
+                            if ($row['ID']==$_SESSION[service]) {
+                                echo "selected='selected'";
+                            }
+                            ?>        ><?php echo $row['NAME']; ?></option>
+
+                        <?php } ?>
+                          
+                    </select>
+                        
+                    </div>
+                </div>
+           
 
 		
 		<h3 class="form-header">Name and Date(s)</h3>
-		<p class="form-description">The service name will automatically be filled in when you select a Service Type above. This can be changed to any name that you like. You can also add multiple services at once by choosing more than one date.</p>
+		<p class="form-description">The service name and date of service . If service between or more date then add start and end date</p>
 
 		<div class="form-group">
 			<label class="control-label">Publish</label>
 			<div class="checkbox">
-				<label><input type="checkbox" name="service_status" value="published" class="box" checked> Yes</label>
+				<label><input type="checkbox" name="publish" value="1" class="box" checked> Yes</label>
 			</div>
 		</div>
 
 		<div class="row"><div class="col-sm-6">
 
-			<div class="form-group">
-				<label class="control-label">Name</label>
-				<input name="service_name" type="text" value="" maxlength="255" class="form-control">
-			</div>
+                        <div class="form-group">
+                            <label class="">Service Name <span class="text-danger">*</span></label>
+                             
+                                <div class="check-duplicates-popover-parent">
+                                    <input type="text" name="name"   class="form-control check-duplicates" placeholder="name of service" value="<?php echo $rtmt->NAME ?>" autocomplete="off">
 
-			<div class="form-group">
-				<label class="control-label">Date</label>
-					<ul class="service-dates list-addremove">
-											<li data-id="1" class="form-inline">
-							<div class="form-group">
-								<div class="input-group date date-service">
-							    <input type="text" name="serviceDateValue[1]" value="02/29/2016" class="form-control field-date-value" placeholder="mm/dd/yyyy">
-							   <div class="input-group-btn"><button type="button" class="btn btn-action dropdown-toggle" tabindex="-1"><i class="fa fa-calendar-o"></i></button></div>
-								</div>
-							</div>
-							<div class="form-group">
-								<button type="button" class="btn btn-add add-service-date"><i class="fa fa-plus"></i></button>
-								<button type="button" class="btn btn-delete delete-service-date" style="display: none"><i class="fa fa-minus"></i></button>
-							</div>
-						</li>
-											</ul>
-				</div>
+                                </div>
+                             
+                        </div>
+</div></div>
+			<h3 class="form-header">Dates</h3>
+		<p class="form-description">Add the service dates here</p>
 
-			<div class="form-btn form-btn-left">
-				<a href="#" class="btn btn-add bulk-add" data-modal="bulk-add" data-target="#bulk-add"><i class="fa fa-plus"></i>Bulk Add</a>
-			</div>
+		<div class="form-group">
+			<ul data-form-list="times" class="list-addremove" >
+							<li data-sortable-id="1" class="form-inline">
+					 
+					<div class="form-group">
+						<div class="input-group time">
+							 <div class="input-group date" id="datepickerDemo1">
+                                                                <input name="datefrom" type="text" class="form-control" value="<?php echo date("m/d/Y",$rtmt->START_DATE); ?>"  name="member_baptist"/>
+                                                               <span class="input-group-addon">
+                                                                   <i class=" fa fa-calendar"></i>
+                                                               </span>
+                                                        </div>
+                                                         
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group time">
+		<div class="input-group date" id="datepickerDemo">
+                         <input name="dateto" type="text" class="form-control" value="<?php echo date("m/d/Y",$rtmt->START_DATE); ?>"  name="member_baptist"/>
+                        <span class="input-group-addon">
+                            <i class=" fa fa-calendar"></i>
+                        </span>
+                    </div>
+               
+						</div>
+					</div>
+					 
+				</li>
+							</ul>
+		</div>
 
-		</div></div>
+
+		
 
 		<h3 class="form-header">Times</h3>
-		<p class="form-description">Add the service meeting time here. If you have more than one service (e.g. an 8:30 AM and a 10:00 AM service) you can add them here as well. Giving times a name is optional, but might help your volunteers to understand.</p>
+		<p class="form-description">Add the service meeting time here. If you have more than one service (e.g. an 8:30 AM and a 10:00 AM service) you can add them here as well. Giving times a name is optional, but might help your member to understand.</p>
 
 		<div class="form-group">
 			<ul data-form-list="times" class="list-addremove" >
 							<li data-sortable-id="1" class="form-inline">
 					<div class="form-group">
-						<input type="text" name="serviceTimeName[1]" class="field-time-name form-control" value="" placeholder="Name">
+						<input type="text" name="serviceTimeName" class="field-time-name form-control" value="<?php echo $rtmt->DEFAULT_TIME_NAME; ?>" placeholder="Name">
 					</div>
 					<div class="form-group">
 						<div class="input-group time">
-							<input type="text" name="serviceTimeValue[1]" class="field-time-value form-control" value="" placeholder="hh:mm AM">
-							<div class="input-group-btn">
+							 <input type="text" name="serviceTimeFrom" class="form-control time-picker" value="<?php echo $rtmt->DEFAULT_TIME_FROM; ?>" placeholder="hh:mm AM">
+                      
+                                                        <div class="input-group-btn">
 								<button type="button" class="btn btn-action dropdown-toggle" data-toggle="dropdown" tabindex="-1"><i class="fa fa-clock-o"></i></button>
 							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="input-group time">
-							<input type="text" name="serviceTimeTo[1]" class="field-time-to form-control" value="" placeholder="hh:mm AM">
-							<div class="input-group-btn">
+		<input type="text" name="serviceTimeTo" class="form-control time-picker" value="<?php echo $rtmt->DEFAULT_TIME_TO; ?>" placeholder="hh:mm AM"/>
+                      <div class="input-group-btn">
 								<button type="button" class="btn btn-action dropdown-toggle" data-toggle="dropdown" tabindex="-1"><i class="fa fa-clock-o"></i></button>
 							</div>
 						</div>
 					</div>
-					<div class="form-group">
-						<button type="button" class="btn btn-add add"><i class="fa fa-plus"></i></button>
-						<button type="button" class="btn btn-delete delete"><i class="fa fa-minus"></i></button>
-					</div>
+					 
 				</li>
 							</ul>
 		</div>
@@ -297,46 +293,166 @@
 		<h3 class="form-header">Other Times</h3>
 		<p class="form-description">Here you can add other times (such as rehearsals) attached to this service. These will also show up on the roster, so make sure you give them names that are easy to understand by your volunteers.</p>
 
+		
 		<div class="form-group">
-			<ul data-form-list="other_times">
+			<ul data-form-list="times" class="list-addremove" >
 							<li data-sortable-id="1" class="form-inline">
 					<div class="form-group">
-						<input type="text" name="serviceOtherTimeName[1]" class="field-time-name form-control" value="" placeholder="Name">
-					</div>
-					<div class="form-group">
-						<span class="custom-select">
-							<select name="serviceOtherTimeType[1]" class="field-time-type form-control" data-default-value="rehearsal">
-								<option value="rehearsal">Rehearsal</option>
-								<option value="other">Other</option>
-							</select>
-						</span>
+						<input type="text" name="oServiceTimeName" class="field-time-name form-control" value="<?php echo $rtmt->OTHER_TIME_NAME; ?>" placeholder="Name">
 					</div>
 					<div class="form-group">
 						<div class="input-group time">
-							<input type="text" name="serviceOtherTimeValue[1]" class="field-time-value form-control" value="" placeholder="hh:mm AM">
-							<div class="input-group-btn">
+							 <input type="text" name="oServiceTimeFrom" class="form-control time-picker" value="<?php echo $rtmt->OTHER_TIME_FROM; ?>" placeholder="hh:mm AM">
+                      
+                                                        <div class="input-group-btn">
 								<button type="button" class="btn btn-action dropdown-toggle" data-toggle="dropdown" tabindex="-1"><i class="fa fa-clock-o"></i></button>
 							</div>
 						</div>
 					</div>
 					<div class="form-group">
 						<div class="input-group time">
-							<input type="text" name="serviceOtherTimeTo[1]" class="field-time-to form-control" value="" placeholder="hh:mm AM">
-							<div class="input-group-btn">
+		<input type="text" name="oServiceTimeTo" class="form-control time-picker" value="<?php echo $rtmt->OTHER_TIME_TO; ?>" placeholder="hh:mm AM">
+                      <div class="input-group-btn">
 								<button type="button" class="btn btn-action dropdown-toggle" data-toggle="dropdown" tabindex="-1"><i class="fa fa-clock-o"></i></button>
 							</div>
 						</div>
 					</div>
-					<div class="form-group">
-						<button type="button" class="btn btn-add add"><i class="fa fa-plus"></i></button>
-						<button type="button" class="btn btn-delete delete"><i class="fa fa-minus"></i></button>
-					</div>
+					 
 				</li>
 							</ul>
 		</div>
+                
+                <h3 class="form-header">Guest Speakers</h3>
+		<p class="form-description">Here you can add guest speakers for the service from various branches.</p>
 
-		<div class="form-btn form-btn-bottom"><button type="submit" class="btn btn-save"><i class="fa fa-check"></i>Save</button></div>
+		
+		<div class="form-group">
+                     
+                            <div class="form-group">
+                                <select id="" name="guest[]" required=""   data-placeholder="Select  Guests" multiple="" >
 
+                        <option value=''> Select leader</option>
+   
+                        <?php
+                        global $sql;
+
+                        $query2 = $sql->Prepare("SELECT ID,MEMBER_CODE,FIRSTNAME,LASTNAME FROM perez_members");
+
+
+                        $query = $sql->Execute($query2);
+
+
+                        while ($row = $query->FetchRow()) {
+                            ?>
+                            <option value="<?php echo $row['ID']; ?>" <?php
+                            if ($rtmt->LEADER== $row['ID']) {
+                                echo "selected='selected'";
+                            }
+                            ?>        ><?php echo $row['MEMBER_CODE']."-".$row['FIRSTNAME']." ".$row['LASTNAME']; ?></option>
+
+                        <?php } ?>
+                          
+                    </select>
+                            </div>
+
+
+
+                       
+		</div>
+                
+                
+                <h3 class="form-header">Attendants</h3>
+		<p class="form-description">Here you can invite members for service</p>
+
+		
+		<div class="form-group">
+                     
+                            <div class="form-group">
+                                <select id="" name="attendant[]" required=""   data-placeholder="Select  attendants" multiple="" >
+
+                        <option value=''> Select attendants</option>
+   
+                        <?php
+                        global $sql;
+
+                        $query2 = $sql->Prepare("SELECT ID,MEMBER_CODE,FIRSTNAME,LASTNAME,BRANCH FROM perez_members");
+
+
+                        $query = $sql->Execute($query2);
+
+
+                        while ($row = $query->FetchRow()) {
+                            ?>
+                            <option value="<?php echo $row['ID']; ?>" <?php
+                            if ($rtmt->LEADER== $row['ID']) {
+                                echo "selected='selected'";
+                            }
+                            ?>        ><?php echo $help->getLocation($row['BRANCH'])."".$row['MEMBER_CODE']."/".$row['FIRSTNAME']." ".$row['LASTNAME']; ?></option>
+
+                        <?php } ?>
+                          
+                    </select>
+                            </div>
+
+
+
+                       
+		</div>
+
+                <h3 class="form-header">Theme for The service</h3>
+		<p class="form-description">Here you create the theme for the service</p>
+
+		
+                <div class="form-group">
+                     <div class="check-duplicates-popover-parent">
+                         <input type="text" name="theme"   class="form-control check-duplicates" placeholder="theme of service" value="<?php echo $rtmt->THEME ?>" autocomplete="off">
+
+                      </div>
+                </div>
+                
+                
+                <h3 class="form-header">Venue for The service</h3>
+		<p class="form-description">Here you create venue for the service</p>
+
+		
+                <div class="form-group">
+                     <div class="check-duplicates-popover-parent">
+                         <input type="text" name="venue"   class="form-control check-duplicates" placeholder="venue of service" value="<?php echo $rtmt->NAME ?>" autocomplete="off">
+
+                      </div>
+                </div>
+                
+                
+                 <h3 class="form-header">Frequency of service</h3>
+		<p class="form-description">Here can choose the frequency of the service eg monthly, yearly, weekly,daily,quartely</p>
+
+		
+                <div class="form-group">
+                     <div class="check-duplicates-popover-parent">
+                         <select name="frequency"   id='marital' style="width:212px">
+                            <option value="">-- None --</option>
+                            <option <?php  if ($rtmt->FREQUENCY == "Daily") {
+                                echo "selected='selected'";
+                            } ?> value="Daily">Daily</option>
+                            <option <?php  if ($rtmt->FREQUENCY == "Weekly") {
+                                echo "selected='selected'";
+                            } ?> value="Weekly">Weekly</option>
+                            <option <?php  if ($rtmt->FREQUENCY == "Monthly") {
+                                echo "selected='selected'";
+                            } ?>value="Monthly">Monthly</option>
+                            
+                            <option value="Yearly" <?php  if ($rtmt->FREQUENCY == "Yearly") {
+                                echo "selected='selected'";
+                            } ?>>Yearly</option>
+                    </select>
+                      </div>
+                </div>
+                
+		<center>
+        <div class="form-btn form-btn-bottom">
+            <button type="submit" name="save" class="btn btn-success">
+                <i class="fa fa-save"></i>Save</button>
+        </div></center>
 	</form>
  
 
@@ -357,9 +473,19 @@
 	<?php include("./_library_/_includes_/theme.inc"); ?>
         
 	<?php include("./_library_/_includes_/js.php"); ?>
-        <script src="assets/scripts/plugins/moment.min.js"></script>
-
-        <script src="assets/scripts/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
+         
+       <script src="assets/scripts/vendors.js"></script>
+<script src="assets/scripts/plugins/screenfull.js"></script>
+	<script src="assets/scripts/plugins/perfect-scrollbar.min.js"></script>
+	<script src="assets/scripts/plugins/waves.min.js"></script>
+	<script src="assets/scripts/plugins/select2.min.js"></script>
+	<script src="assets/scripts/plugins/bootstrap-colorpicker.min.js"></script>
+	<script src="assets/scripts/plugins/bootstrap-slider.min.js"></script>
+	<script src="assets/scripts/plugins/summernote.min.js"></script>
+	<script src="assets/scripts/plugins/bootstrap-datepicker.min.js"></script>
+	<script src="assets/scripts/app.js"></script>
+	<script src="assets/scripts/form-elements.init.js"></script>
+         <script src="assets/scripts/plugins/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 
         <script>
             //Time
@@ -370,6 +496,7 @@
             }
         </script>
          
+     
          
 </body>
 

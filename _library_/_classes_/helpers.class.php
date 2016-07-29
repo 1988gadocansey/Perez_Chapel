@@ -67,6 +67,14 @@ public function UpdateMemo(){
             return $a;
       
         }
+         public function getServiceName($id){
+
+            $query= $this->connect->Prepare("SELECT name,startDate,endDate,venue FROM perez_services WHERE id='$id'");
+            $output= $this->connect->Execute($query);
+                 $a=$output->FetchNextObject();
+            return $a;
+      
+        }
         public function getCategory($category_id){
 
             $query= $this->connect->Prepare("SELECT * FROM perez_member_category WHERE ID='$category_id'");
@@ -82,6 +90,77 @@ public function UpdateMemo(){
                  $a=$output->FetchNextObject();
             return $a->NAME;
       
+        }
+        /*
+         * This method returns the district object given a district ID
+         */
+         public function getDistrict($district){
+
+            $query= $this->connect->Prepare("SELECT * FROM perez_districts WHERE ID='$district'");
+            $output= $this->connect->Execute($query);
+                $a= $output->FetchNextObject();
+            return $a;
+      
+        }
+        public function getCircuit($circuit){
+
+            $query= $this->connect->Prepare("SELECT * FROM perez_circuits WHERE ID='$circuit'");
+            $output= $this->connect->Execute($query);
+            $b=$output->FetchNextObject();
+            return $b;
+      
+        }
+        /*
+         * This function return the district a circuit belongs
+         * to given a circuit id
+         */
+         public function getDistrictName($circuit){
+
+            $query= $this->connect->Prepare("SELECT * FROM perez_circuits WHERE ID='$circuit'");
+            $output= $this->connect->Execute($query);
+                 $a=$output->FetchNextObject();
+                 $districtObject=  $this->getDistrict($a->DISTRICT);
+                
+             return $districtObject->NAME;
+   
+        }
+        /*
+         * This function gives the name of head of 
+         * a single church branch
+         */
+        public function getBranchHead($head){
+
+            $query= $this->connect->Prepare("SELECT  CONCAT(TITLE,' ',FIRSTNAME,' ',OTHERNAMES,' ',LASTNAME) AS NAME FROM perez_members WHERE ID='$head'");
+            
+            $output= $this->connect->Execute($query);
+            $result=$output->FetchNextObject();
+           
+             return $result->NAME;
+   
+        }
+        /*
+         * This function returns the total membership per branch
+         * given a branch instance ie branch ID
+         */
+         public function getBranchStatistics($branch){
+
+            $query= $this->connect->Prepare("SELECT COUNT(ID) AS TOTAL FROM perez_members WHERE BRANCH='$branch'");
+            $output= $this->connect->Execute($query);
+                 $a=$output->FetchNextObject();
+                 
+             return $a->TOTAL;
+   
+        }
+        /*
+         * This function gives the region a district belongs to
+         * @param circuit
+         */
+        public function getDistrictRegion($circuit) {
+            $circuitObject=  $this->getCircuit($circuit);
+            $district=$circuitObject->DISTRICT;
+            
+            $districtObject=  $this->getDistrict($district);
+            return $districtObject->REGION;
         }
         public function getDepartmentName($depart_id){
 
@@ -111,7 +190,18 @@ public function UpdateMemo(){
             return $output->RecordCount();
       
         }
-	   
+    /*
+     * Get a service type name given a service id
+     * @param int id
+     */
+     public function getServiceTypeName($id){
+
+            $query= $this->connect->Prepare("SELECT NAME FROM perez_service_type WHERE ID='$id'");
+            $output= $this->connect->Execute($query);
+                $a= $output->FetchNextObject();
+            return $a->NAME;
+      
+        }
     public function age($birthdate, $pattern = 'eu')
         {
             $patterns = array(
@@ -273,7 +363,7 @@ public function UpdateCode($item){
     
 }
 public function getCode($item){
-    $query=$this->connect->Prepare("SELECT    $item FROM perez_codes");
+    $query=$this->connect->Prepare("SELECT $item FROM perez_codes");
     $query2=$this->connect->Execute($query);
     $data=$query2->FetchNextObject();
     return $data->$item;

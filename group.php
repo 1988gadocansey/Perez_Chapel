@@ -145,7 +145,7 @@
                                                                         <?php
                                                                         global $sql;
 
-                                                                        $query2 = $sql->Prepare("SELECT DISTINCT ID,LOCATION,NAME FROM perez_branches");
+                                                                        $query2 = $sql->Prepare("SELECT DISTINCT ID, PLACE_WORSHIP NAME FROM perez_branches");
 
 
                                                                         $query = $sql->Execute($query2);
@@ -155,7 +155,7 @@
                                                                             ?>
                                                                             <option value="<?php echo $row['ID']; ?>"   <?php if ($_SESSION[location] == $row['ID']) {
                                                                             echo "selected='selected'";
-                                                                        } ?>      ><?php echo $row['NAME']."-".$row['LOCATION']; ?></option>
+                                                                        } ?>      ><?php echo $row['NAME']."-".$row['PLACE_WORSHIP']; ?></option>
 
                                                                         <?php } ?>
 
