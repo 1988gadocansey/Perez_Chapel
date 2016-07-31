@@ -6,4 +6,4 @@
 	<script type="text/javascript" src="assets/tableexport/jspdf/libs/sprintf.js"></script>
 	<script type="text/javascript" src="assets/tableexport/jspdf/jspdf.js"></script>
 	<script type="text/javascript" src="assets/tableexport/jspdf/libs/base64.js"></script>   
-        
+         <script src="assets/tables.init.js"></script>

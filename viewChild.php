@@ -98,7 +98,7 @@
                                          <td>&nbsp;</td>
                                            
                                         <form action="viewChild.php" method="post">
-                                                <td>
+<!--                                                <td>
                                                       
                                                     <input style="width:131px" type="search" placeholder="Search here" name="search" id="member_" class="form-control check-duplicates" >
 
@@ -115,7 +115,7 @@
                                                         </td>
                                                         <td width="25%">
                             <button type="submit" name="go" style="margin-left: 22px;width:   " class="btn btn-primary   btn-search">Search</button>
-                                                        </td> 
+                                                        </td> -->
                                                           <td width="20%">
 
                                     <select class='form-control select2_sample1'  id="title"   style=" width:215px " onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?person='+escape(this.value);" >
@@ -135,10 +135,9 @@
                                                     </select>
 
                             </td>
-                            <td>&nbsp;</td>
-                            <td>&nbsp;</td>
+                            
                                 <td width="25%">
-                                    <select class='form-control'       style="margin-left:12px;  width:288px " onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?gender='+escape(this.value);" >
+                                    <select class='form-control'       style="margin-left:12px;   " onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?gender='+escape(this.value);" >
                                          <option value=''>by gender</option>
                                         <option value='All gender'>All gender</option>
                                         <option value='Male'<?php if($_SESSION[gender]=='Male'){echo 'selected="selected"'; }?>>Male</option>
@@ -178,7 +177,7 @@
                                                            {
                                                
                                                     ?>
-                                                <table id="gad" class="table table-condensed  display" width='900px'>
+                                                <table id="gad" class="table table-condensed  display"  >
                                                     <caption>Children </caption>
                                                     <thead>
                                                         <tr>
@@ -186,9 +185,9 @@
                                                              <th>Photo</th>
                                                             <th>Child Code</th>
                                                             <th>Name</th>
-                                                            <th>Date of Birth</th>
+                                                            <th>Age</th>
                                                             
-                                                            <th colspan="5" style="text-align: center">Actions</th>
+                                                            <th colspan=" " style="text-align: center">Actions</th>
                                                         </tr>
                                                     </thead>
                                                     <p align="center"style="color:red">  <?php echo $recordsFound ?> Records </p>
@@ -208,7 +207,7 @@
                                                              <td style="text-align:"><?php echo $rtmt[CODE] ?></td>
                                                              <td style="text-align:"><?php echo $rtmt[NAME] ?></td>
                                                           
-                                                             <td style="text-align:"><?php echo $rtmt[DOB] ?></td>
+                                                             <td style="text-align:"><?php echo $help->age($rtmt[DOB],'eu' )?>yrs</td>
                                                                
                                                              <td style="text-align: center"><a onclick="return confirm('Are you sure you want to delete this person??')" href="viewChild?delete=<?php echo  $rtmt[ID] ?>"Delete<i class="fa fa-trash" title="click to delete"></i> </a></td>
                                                             
@@ -218,11 +217,7 @@
                                                 </table>
                                                     <br/>
                                                 <center><?php
-                                                    $GenericEasyPagination->setTotalRecords($recordsFound);
-
-                                                   echo $GenericEasyPagination->getNavigation();
-                                                   echo "<br>";
-                                                   echo $GenericEasyPagination->getCurrentPages();
+                                                    
                                                  ?></center>
                                          <?php }else{
                                                             echo "<div class='alert alert-danger alert-dismissible' role='alert'>
@@ -248,9 +243,33 @@
 
 	</div> <!-- #end main-container -->
 
-	<?php include("./_library_/_includes_/theme.inc"); ?>
+	<script src="assets/scripts/jquery-2.1.1.min.js"></script>
+       
+	<script src="assets/scripts/jquery.dataTables.min.js"></script>
+        <script src="assets/scripts/dataTables.bootstrap.min.js"></script>
+          
+        <script src="assets/scripts/dataTables.keyTable.min.js"></script>
+        
+     
+       <script>
+            $(document).ready(function() {
+                $('#gad').DataTable( {
+                    
+                } );
+            } );
+        </script>
+          
+        
+<script src="assets/scripts/select2.min.js"></script>
+       
+        <script>
+                 $(document).ready(function(){
+                    $('select').select2({ width: "resolve" });
 
- <?php include("./_library_/_includes_/js.php"); ?>
+
+                  });
+        </script>
+           <?php include("_library_/_includes_/export.php"); ?> 
         
         
 </body>

@@ -85,7 +85,7 @@
                                                 <div style="margin-top:-2.5%;float:right">
                                                     <a href="members"  class="btn btn-success  waves-effect waves-button dropdown-toggle" style="margin-top: -59px"><i class="fa fa-phone"></i> Contact group by sms</a>
                                                      
-                                                                        <button   class="btn btn-primary  waves-effect waves-button dropdown-toggle" style="margin-top: -59px" onClick ="$('#assesment').tableExport({type:'excel',escape:'false'});"><i class="fa fa-file-excel-o"></i> Export Data</button>
+                                                                        <button   class="btn btn-primary  waves-effect waves-button dropdown-toggle" style="margin-top: -59px" onClick ="$('#gad').tableExport({type:'excel',escape:'false'});"><i class="fa fa-file-excel-o"></i> Export Data</button>
                                               </div>
                              <div><?php $notify->Message(); ?></div>
 					</div>
@@ -249,7 +249,7 @@
                                                 
                                                     <td>&nbsp;</td>
                                                             <form>
-                                           <td width="25%">
+<!--                                           <td width="25%">
                                              <div class="input-group date" id="datepickerDemo" style="margin-left: -210%;width: 209%">
                                                  <input type="text" class="form-control" required="" name="member_dob" value="<?php echo date("m/d/Y", $_SESSION[start]); ?>" placeholder="group starts" onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?start='+escape(this.value);"   />
                                                  <span class="input-group-addon">
@@ -267,7 +267,7 @@
                                                 </span>
                                             </div>
 
-                                           </td>
+                                           </td>-->
                                            <td>&nbsp;</td>
                                            
                                           </form>
@@ -347,14 +347,15 @@
                                                            {
                                                
                                                     ?>
-                                                <table id="assesment" class="table   display" >
+                                                <table id="gad" class="table   display" >
                                                     <thead>
                                                         <tr>
                                                              <th>#</th>
-                                                             <th></th>
+                                                           
                                                                <th>Logo</th>
                                                             <th>Name</th>
                                                             <th>Category</th>
+                                                            <th>Leader</th>
                                                             <th>Branch</th>
                                                             <th>Days</th>
                                                              
@@ -363,10 +364,10 @@
                                                             <th>Start Date</th>
                                                             <th>End Date</th>
                                                             <th>Address</th>
-                                                            <th>Members</th>
+                                                            <th>Capacity</th>
                                                             <th>Active</th>
                                                              
-                                                            <th colspan="5"  >Actions</th>
+                                                            <th colspan="0"  >Actions</th>
                                                         </tr>
                                                     </thead>
                                                     <p align="center"style="color:red">  <?php echo $recordsFound ?> Records </p>
@@ -377,19 +378,15 @@
                                                            while($rtmt=$rs->FetchRow()){
                                                                                    $count++;
 
-
+                                                                                   $leader=$help->getMemberDetail($rtmt[LEADER]);
                                                               ?>
                                                            <tr>
                                                                <td><?php echo $count ?></td>
-                                                               <td>
-                                                                       <div class="ui-checkbox ui-checkbox-primary ml5">
-                                                                               <label><input type="checkbox"><span></span>
-                                                                               </label>
-                                                                       </div>
-                                                                </td>
+                                                               
                                                                 <td><a href="addGroup.php?group=<?php echo  $rtmt[GROUP_CODE] ?>&&update"><img   <?php   $pic=  $help->pictureid($rtmt[GROUP_CODE]); echo $help->picture("photos/groups/$pic.jpg",70)  ?>   src="<?php echo file_exists("photos/groups/$pic.jpg") ? "photos/groups/$pic.jpg":"photos/groups/users.jpg";?>" alt="group logo here"    /></a></td>
                                                                 <td style="text-align:"><?php echo $rtmt[NAME] ?></td>
                                                                 <td style="text-align:"><?php echo $groups->getGroupCategory($rtmt[CATEGORIES]) ?></td>
+                                                                  <td style="text-align:"><?php echo $leader->TITLE." ".$leader->FIRSTNAME." ".$leader->LASTNAME ?></td>
                                                                 <td style="text-align:"><?php echo $groups->getLocation($rtmt[LOCATION]) ?></td>
                                                                         <td style="text-align:"><?php echo $rtmt[DAYS] ?></td>
                                                                         <td style="text-align:"><?php echo $rtmt[START_TIME] ?></td>
@@ -399,7 +396,7 @@
 
                                                             
                                                              <td style="text-align:"><?php echo $rtmt[ADDRESS] ?></td>
-                                                             <td style="text-align:center"><?php echo $member->getTotalMember_byGroup($rtmt[ID]); ?></td>
+                                                             <td style="text-align:center"><?php echo $member->getTotalMember_byGroup($rtmt[ID]); ?> people</td>
                                                              <td style="text-align:center"><?php if($rtmt[STATUS]==1){echo "Active";}else{echo "Inactive";} ?></td>
                                                               
                                                              <td><a href="addGroup?group=<?php echo  $rtmt[GROUP_CODE] ?>&&update"> <i class="fa fa-edit" title="click to edit info"></i></a> 
@@ -412,13 +409,7 @@
                                                     </tbody>
                                                 </table>
                                                     <br/>
-                                                <center><?php
-                                                    $GenericEasyPagination->setTotalRecords($recordsFound);
-
-                                                   echo $GenericEasyPagination->getNavigation();
-                                                   echo "<br>";
-                                                   echo $GenericEasyPagination->getCurrentPages();
-                                                 ?></center>
+                                                 
                                          <?php }else{
                                                             echo "<div class='alert alert-danger alert-dismissible' role='alert'>
                                                                   <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
@@ -443,34 +434,24 @@
 
 	</div> <!-- #end main-container -->
 
-	<?php include("./_library_/_includes_/js.php"); ?>
-      
-<script src="assets/scripts/vendors.js"></script>
-<script src="assets/scripts/plugins/screenfull.js"></script>
-	<script src="assets/scripts/plugins/perfect-scrollbar.min.js"></script>
-	<script src="assets/scripts/plugins/waves.min.js"></script>
-	<script src="assets/scripts/plugins/select2.min.js"></script>
-	<script src="assets/scripts/plugins/bootstrap-colorpicker.min.js"></script>
-	<script src="assets/scripts/plugins/bootstrap-slider.min.js"></script>
-	<script src="assets/scripts/plugins/summernote.min.js"></script>
-	<script src="assets/scripts/plugins/bootstrap-datepicker.min.js"></script>
-	<script src="assets/scripts/app.js"></script>
-	<script src="assets/scripts/form-elements.init.js"></script>
-        <script src="assets/scripts/plugins/jquery.dataTables.min.js"></script>
-	<script src="assets/scripts/app.js"></script>
-	<script src="assets/scripts/tables.init.js"></script>
- <?php include("_library_/_includes_/export.php");  ?>
-        <script>
+	<script src="assets/scripts/jquery-2.1.1.min.js"></script>
+       
+	<script src="assets/scripts/jquery.dataTables.min.js"></script>
+        <script src="assets/scripts/dataTables.bootstrap.min.js"></script>
+          
+        <script src="assets/scripts/dataTables.keyTable.min.js"></script>
+        
+     
+       <script>
             $(document).ready(function() {
                 $('#gad').DataTable( {
-                    dom: 'Bfrtip',
-                    buttons: [
-                        'colvis'
-                    ]
+                    
                 } );
             } );
         </script>
-        <script src="assets/scripts/select2.min.js"></script>
+          
+        
+<script src="assets/scripts/select2.min.js"></script>
        
         <script>
                  $(document).ready(function(){
@@ -479,6 +460,9 @@
 
                   });
         </script>
+           <?php include("_library_/_includes_/export.php"); ?> 
+        
+        
 </body>
 
 </html>

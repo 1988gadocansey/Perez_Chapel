@@ -48,7 +48,7 @@ public function UpdateMemo(){
             $query= $this->connect->Prepare("SELECT * FROM perez_branches WHERE ID='$location'");
             $output= $this->connect->Execute($query);
                  $a=$output->FetchNextObject();
-            return $a->NAME." / ".$a->LOCATION;
+            return $a->NAME;
       
         }
         public function getAssetLocation($location){
@@ -62,6 +62,18 @@ public function UpdateMemo(){
         public function getNotes($person){
 
             $query= $this->connect->Prepare("SELECT * FROM perez_notes WHERE PERSON='$person'");
+            $output= $this->connect->Execute($query);
+                 $a=$output->FetchNextObject();
+            return $a;
+      
+        }
+        /*
+         * @param member_id
+         * return array of member details
+         */
+        public function getMemberDetail($id){
+
+            $query= $this->connect->Prepare("SELECT * FROM perez_members WHERE id='$id'");
             $output= $this->connect->Execute($query);
                  $a=$output->FetchNextObject();
             return $a;
@@ -108,6 +120,23 @@ public function UpdateMemo(){
             $output= $this->connect->Execute($query);
             $b=$output->FetchNextObject();
             return $b;
+      
+        }
+        public function getGeneralPaymentName($id){
+
+            $query= $this->connect->Prepare("SELECT * FROM `perez_church_payment_type_info`  WHERE payment_type_id='$id'");
+            $output= $this->connect->Execute($query);
+            $b=$output->FetchNextObject();
+            return $b->PAYMENT_TYPE_NAME;
+      
+        }
+        public function getIndividualPaymentName($id){
+
+            $query= $this->connect->Prepare("SELECT * FROM `perez_member_payment_type`
+  WHERE payment_type_id='$id'");
+            $output= $this->connect->Execute($query);
+            $b=$output->FetchNextObject();
+            return $b->PAYMENT_TYPE_NAME;
       
         }
         /*
@@ -415,9 +444,146 @@ public function finalize($applicant){
 	
 	
 	}
-public function copyright(){
-    return "&copy ".date("Y")." | Takoradi Polytechnic - All rights reserved";
-}
+public function convert_number($number) {
+
+		if (($number < 0) || ($number > 999999999)) {
+			return "$number";
+		}
+
+		$Gn = floor($number / 1000000); /* Millions (giga) */
+		$number -= $Gn * 1000000;
+		$kn = floor($number / 1000); /* Thousands (kilo) */
+		$number -= $kn * 1000;
+		$Hn = floor($number / 100); /* Hundreds (hecto) */
+		$number -= $Hn * 100;
+		$Dn = floor($number / 10); /* Tens (deca) */
+		$n = $number % 10; /* Ones */
+
+		$res = "";
+
+		if ($Gn) {
+			$res .= $this->convert_number($Gn) . " Million";
+		}
+
+		if ($kn) {
+			$res .= (empty($res) ? "" : " ") .
+			$this->convert_number($kn) . " Thousand";
+		}
+
+		if ($Hn) {
+			$res .= (empty($res) ? "" : " ") .
+			$this->convert_number($Hn) . " Hundred";
+		}
+
+		$ones = array(
+			"",
+			"One",
+			"Two",
+			"Three",
+			"Four",
+			"Five",
+			"Six",
+			"Seven",
+			"Eight",
+			"Nine",
+			"Ten",
+			"Eleven",
+			"Twelve",
+			"Thirteen",
+			"Fourteen",
+			"Fifteen",
+			"Sixteen",
+			"Seventeen",
+			"Eighteen",
+			"Nineteen");
+		$tens = array(
+			"",
+			"",
+			"Twenty",
+			"Thirty",
+			"Fourty",
+			"Fifty",
+			"Sixty",
+			"Seventy",
+			"Eighty",
+			"Ninety");
+
+		if ($Dn ||
+			$n) {
+			if (!empty($res)) {
+				$res .= " and ";
+			}
+
+			if ($Dn <
+				2) {
+				$res .= $ones[$Dn *
+					10 +
+					$n];
+			} else {
+				$res .= $tens[$Dn];
+
+				if ($n) {
+					$res .= "-" . $ones[$n];
+				}
+			}
+		}
+
+		if (empty($res)) {
+			$res = "zero";
+		}
+
+		return $res;
+
+//$thea=explode(".",$res);
+	}
+
+	public function convert($amt) {
+//$amt = "190120.09" ;
+
+		$amt = number_format($amt, 2, '.', '');
+		$thea = explode(".", $amt);
+
+//echo $thea[0];
+
+		$words = $this->convert_number($thea[0]) . " Ghana Cedis ";
+		if ($thea[1] >
+			0) {
+			$words .= $this->convert_number($thea[1]) . " Pesewas";
+		}
+
+		return $words;
+	}
+        
+        public function new_receiptno(){
+        $receiptno_query = Models\Receiptno::first();
+		$receiptno_query->increment("receiptno", 1);
+        $receiptno = str_pad($receiptno_query->receiptno, 12, "0", STR_PAD_LEFT);
+		
+        return $receiptno;
+        
+    }
+    
+    public function pad_receiptno($receiptno){
+       return str_pad($receiptno, 12, "0", STR_PAD_LEFT);
+       }
+        function formatMoney($number, $fractional=false) { 
+    if ($fractional) { 
+        $number = sprintf('%.2f', $number); 
+    } 
+    while (true) { 
+        $replaced = preg_replace('/(-?\d+)(\d\d\d)/', '$1,$2', $number); 
+        if ($replaced != $number) { 
+            $number = $replaced; 
+        } else { 
+            break; 
+        } 
+    } 
+    return $number; 
+    }
+    public function formatCurrency($amount) {
+       return number_format($amount,3);
+            
+    }
 
 }
 

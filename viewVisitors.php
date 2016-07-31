@@ -9,13 +9,16 @@
         $help=new _classes_\helpers();
         $notify=new _classes_\Notifications();
         $sms=new _classes_\smsgetway();
+         $config_file=$help->getConfig() ;
          if($_GET[branch]){
         $_SESSION[branch]=$_GET[branch];
         }
         if($_GET[gender]){
         $_SESSION[gender]=$_GET[gender];
         }
-         
+        if($_GET['languages']){
+         $_SESSION['languages']=$_GET['languages'];
+        }
         if($_GET[ministry]){
         $_SESSION[ministry]=$_GET[ministry];
         }
@@ -28,14 +31,14 @@
         if($_GET[team]){
         $_SESSION[team]=$_GET[team];
         }
-        if($_GET[service]){
-        $_SESSION[service]=$_GET[service];
+        if($_GET[department]){
+        $_SESSION[department]=$_GET[department];
         }
         if($_GET[demo]){
         $_SESSION[demo]=$_GET[demo];
         }
-        if($_GET[country]){
-        $_SESSION[nation]=$_GET[country];
+        if($_GET[ethnic]){
+        $_SESSION[ethnic]=$_GET[ethnic];
         }
          if($_POST[go]){
         $_SESSION[search]=$_POST[search];
@@ -119,10 +122,35 @@
                     }
                 }
              }
+ if (isset($_POST[mail])) {
+    if ($help->ping("www.google.com", 80, 20)) {
+        $message = $_POST['message'];
+        $headers = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+
+
+        $q = $_SESSION[last_query];
+        $query2 = $sql->Prepare($q);
+        $rt = $sql->Execute($query2);
+
+        While ($stmt = $rt->FetchRow()) {
+            $email = $stmt[email];
+
+
+            if (@mail($email, "$config_file->CHURCH_NAME - Ghana", $message, $headers)) {
+                $_SESSION[last_query] = "";
+                header("location:members?success=1");
+            }
+        }
+    } else {
+        header("location:members?no_internet=1");
+    }
+}
 ?>
 <?php include("./_library_/_includes_/header.inc"); ?>
 <body id="app" class="app off-canvas">
-     
+     <script src="assets/scripts/vendors.js"></script>
+       
 	<!-- header -->
 	<header class="site-head" id="site-head">
 		
@@ -170,6 +198,38 @@
                                   </div>
                                 </div>
                         </div>
+                    <div class="modal fade" id="mail" tabindex="-1" role="dialog" aria-hidden="true">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h4 class="modal-title">Send Email</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            
+                                            <form action="members?mail=1" method="POST" class="form-horizontal" role="form" enctype="multipart/form-data">
+                                                 <div class="card-body card-padding">
+                                                     <div class="form-group">
+                                                         <label for="inputPassworsd3" class="col-sm-2 control-label">Message</label>
+                                                         <div class="col-sm-10">
+
+                                                             <div class="fg-line">
+                                                                  
+                                                                 <textarea required="" class="form-control" name="message" rows="9" ></textarea>                                    
+                                                             </div>
+                                                         </div>
+                                                     </div>
+                                                <div class="modal-footer">
+                                                      
+                                                    <button type="submit" name="mail" class="btn btn-success">Send Email <i class="fa fa-forward"></i></button>
+                                                          <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
+                                                </div>
+                                                  
+                                                 </div>
+                                             </div>  
+                                            </form>
+                                  </div>
+                                </div>
+                        </div>
                         <div class="modal fade" id="mount" tabindex="-1" role="dialog" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
@@ -178,7 +238,7 @@
                                         </div>
                                         <div class="modal-body">
                                             
-                                            <form action="dashboard.php" method="POST" class="form-horizontal" role="form" enctype="multipart/form-data">
+                                            <form action="members.php" method="POST" class="form-horizontal" role="form" enctype="multipart/form-data">
                                                  <div class="card-body card-padding">
                                                      <div class="form-group">
                                                          <label for="inputPassworsd3" class="col-sm-2 control-label">select csv file</label>
@@ -203,34 +263,26 @@
                                 </div>
                         </div>
 			<div class="page page-ui-tables">
-				 
+				  <ol class="breadcrumb breadcrumb-small">
+					<li><?php echo $config_file->CHURCH_NAME;  ?></li>
+					<li class="active"><a href="#">Vistors</a></li>
+				</ol>
                             <div class="page-wrap">
                                 <div class="note note-success note-bordered">
 						 
                                                 <div style="margin-top:31px;float:right">
                                                      
-                                                     <button  style="margin-top: -59px" name="mail"  class="btn btn-success waves-effect">Mail<i class="fa fa-mail-forward"></i></button>
+                                                     <button  style="margin-top: -59px" name="mail"  class="btn btn-success waves-effect" data-target="#mail"  data-toggle="modal">Mail<i class="fa fa-mail-forward"></i></button>
                                                         <button  style="margin-top: -59px"  data-target="#mount" data-toggle="modal"  class="btn btn-success waves-effect">Import csv<i class="fa fa-upload"></i></button>
                                                           <button  style="margin-top: -59px"   class="btn btn-pink waves-effect" data-target="#sms"  data-toggle="modal">Send SMS<i class="fa fa-phone"></i></button>
-                                                        <button   class="btn btn-primary  waves-effect waves-button dropdown-toggle" style="margin-top: -59px" data-toggle="dropdown"><i class="fa fa-save"></i> Export Data</button>
-                                                        <ul class="dropdown-menu">
-                                            
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'csv',escape:'false'});"><img src='assets/icons/csv.png' width="24"/> CSV</a></li>
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'txt',escape:'false'});"><img src='assets/icons/txt.png' width="24"/> TXT</a></li>
-                                                            <li class="divider"></li>
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'excel',escape:'false'});"><img src='assets/icons/xls.png' width="24"/> XLS</a></li>
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'doc',escape:'false'});"><img src='assets/icons/word.png' width="24"/> Word</a></li>
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'powerpoint',escape:'false'});"><img src='assets/icons/ppt.png' width="24"/> PowerPoint</a></li>
-                                                            <li class="divider"></li>
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'png',escape:'false'});"><img src='assets/icons/png.png' width="24"/> PNG</a></li>
-                                                            <li><a href="#" onClick ="$('#gad').tableExport({type:'pdf',escape:'false'});"><img src='assets/icons/pdf.png' width="24"/> PDF</a></li>
-                                                         </ul>
+                                                        <button   class="btn btn-primary  waves-effect waves-button dropdown-toggle" style="margin-top: -59px" data-toggle="dropdown" onClick ="$('#gad').tableExport({type:'excel',escape:'false'});"><i class="fa fa-save"></i> Export Data</button>
+                                                        
                                               </div>
                              <div><?php $notify->Message(); ?></div>
 					</div>
                                 <div class="row">
                                     <!-- Basic Table -->
-                                    <div class="col-md-12" style="width:1200px;margin-left: -95px">
+                                    <div class="col-md-12" style="width:1300px;margin-left: -95px">
                                         <div class="panel panel-lined panel-hovered mb20 table-responsive basic-table">
                                             <div class="panel-heading panel-info">
                                                 <a href="addMember.php?new=1"  style="margin-top: -19px;margin-left: -25px"  title="Add new member"  class="btn btn-success waves-effect">Add Member<i class="fa fa-plus-circle"></i></a> 
@@ -337,14 +389,14 @@
                                                 </td>     
                                          <td>&nbsp;</td>
                                              <td width="25%">
-                                            <select class='form-control' style="  width:auto " id="service" onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?service='+escape(this.value);"     >
-                                            <option value=''>Filter by Service category</option>
-                                            <option value='All service'>All Service</option>
+                                            <select class='form-control' style="  width:auto " id="department" onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?department='+escape(this.value);"     >
+                                            <option value=''>Filter by departments</option>
+                                            <option value='All departments'>All departments</option>
                                                           
                                                       <?php 
                                                       global $sql;
 
-                                                      $query2=$sql->Prepare("SELECT * FROM perez_service_type");
+                                                      $query2=$sql->Prepare("SELECT * FROM perez_departments");
 
 
                                                         $query=$sql->Execute( $query2);
@@ -354,7 +406,7 @@
                                                        {
 
                                                        ?>
-                                                       <option value="<?php echo $row['ID']; ?>"   <?php if($_SESSION[service]==$row['ID']){echo "selected='selected'";} ?>      ><?php echo $row['SERVICE']; ?></option>
+                                                       <option value="<?php echo $row['ID']; ?>"   <?php if($_SESSION[department]==$row['ID']){echo "selected='selected'";} ?>      ><?php echo $row['NAME']; ?></option>
 
                                                     <?php }?>
                                                        
@@ -396,19 +448,45 @@
                                                        
                                                    </select>
 
-                                                </td>   
+                                                </td>  
+                                                
+                                                 <td width="25%">
+                                            <select class='form-control'   style=" margin-left: -3px; width:182px"  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?languages='+escape(this.value);"     >
+                                            <option value=''>by languages</option>
+                                            <option value='All languages'>All Languages</option>
+                                                          
+                                                      <?php 
+                                                      global $sql;
+
+                                                      $query2=$sql->Prepare("SELECT * FROM `perez_languages`  ");
+
+
+                                                        $query=$sql->Execute( $query2);
+
+
+                                                     while( $row = $query->FetchRow())
+                                                       {
+
+                                                       ?>
+                                                       <option value="<?php echo $row['NAME']; ?>"   <?php if($_SESSION[languages]==$row['NAME']){echo "selected='selected'";} ?>      ><?php echo $row['NAME']; ?></option>
+
+                                                    <?php }?>
+                                                       
+                                                   </select>
+
+                                                </td>  
                                                 
                                                     <td>&nbsp;</td>
                                           
                                            <td width="25%">
                                             <select class='form-control gad' id="marital"  style="margin-left:  px;  width:149px"  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?team='+escape(this.value);"     >
-                                            <option value=''>filter by team</option>
-                                            <option value='All team'>All Teams</option>
+                                            <option value=''>filter by group</option>
+                                            <option value='All team'>All Groups</option>
                                                           
                                                       <?php 
                                                       global $sql;
 
-                                                      $query2=$sql->Prepare("SELECT * FROM perez_team");
+                                                      $query2=$sql->Prepare("SELECT * FROM `perez_group` ");
 
 
                                                         $query=$sql->Execute( $query2);
@@ -428,14 +506,14 @@
                                                      <td>&nbsp;</td>
                                           
                                            <td width="25%">
-                                            <select class='form-control' style="margin-left: 2px;   width:149px " id="country"  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?country='+escape(this.value);"     >
-                                            <option value=''>filter by country</option>
-                                            <option value='All country'>All Countries</option>
+                                            <select class='form-control' style="margin-left: 2px;   width:149px " id="ethnic"  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?ethnic='+escape(this.value);"     >
+                                            <option value=''>filter by ethnic</option>
+                                            <option value='All ethnic'>All ethnic groups</option>
                                                           
                                                       <?php 
                                                       global $sql;
 
-                                                      $query2=$sql->Prepare("SELECT * FROM perez_country");
+                                                      $query2=$sql->Prepare("SELECT * FROM perez_ethnic");
 
 
                                                         $query=$sql->Execute( $query2);
@@ -445,14 +523,14 @@
                                                        {
 
                                                        ?>
-                                                       <option value="<?php echo $row['Code']; ?>"   <?php if($_SESSION[nation]==$row['Code']){echo "selected='selected'";} ?>      ><?php echo $row['Name']; ?></option>
+                                                       <option value="<?php echo $row['NAME']; ?>"   <?php if($_SESSION[ethnic]==$row['NAME']){echo "selected='selected'";} ?>      ><?php echo $row['Name']; ?></option>
 
                                                     <?php }?>
                                                        
                                                    </select>
 
                                                 </td>
-                                                        <form action="viewVisitors.php" method="post">
+                                                        <form action="members.php" method="post">
                                                 <td>
                                                       
                                                     <input style="margin-left: -47px;width:131px" type="search" placeholder="Search here" name="search" id="member_" class="form-control check-duplicates" >
@@ -477,37 +555,109 @@
                                                     </table>
                                                  </form>
                                                 </div>
-                                                
+                                                <!-- end filters   -->
+                                                <div class="row">
+<!--                                                    <div class="panel panel-collapse">
+                                                        <div class="panel-heading" role="tab" id="headingTwo">
+                                                            <h4 class="panel-title">
+                                                                <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                                                    <center>Click to Send SMS</center>
+                                                                </a>
+                                                            </h4>
+                                                        </div>
+                                                        <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                                            <div class="panel-body">
+                                                                <form id="form2" name="form2" method="post" action="dashboard?send=1">
+                                                                    <label></label>
+                                                                    <table width="640" border="0" align="center">
+                                                                        <tr>
+                                                                            <td colspan="2" bgcolor="#91B7D9">Select members to send sms</td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td colspan="2" bgcolor="#2D5982">
+                                                                                autocomplete goes here
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td bgcolor="#91B7D9"><div align="center"><strong>Text Message</strong></div></td>
+                                                                            <td valign="top" bgcolor="#91B7D9"><div align="center"><strong>Fields Available</strong></div></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td width="419" height="110" bgcolor="#2D5983"><div align="center">
+                                                                                    <textarea name="sms" id="sms" cols="45" rows="5" required=""></textarea>
+                                                                                </div></td>
+                                                                            <td width="211" valign="top" bgcolor="#2D5983"><div align="center">
+                                                                                    <script>
+                                                                                                        function inse(inco){
+                                                                                                        var curr=document.getElementById('sms');
+                                                                                                        curr.value=curr.value+"["+inco+"]"
+                                                                                                        }
+                                                                                    </script>
+                                                                                    <select name="select"  ondblclick="inse(this.value)" size="6" id="select" required="">
+                                                                                        <option value="MEMBER_CODE"> Student ID</option>
+                                                                                        <option value="SURNAME">Surname</option>
+                                                                                        <option value="OTHERNAMES">Other Names</option>
+                                                                                        <option value="CLASS">Class</option>
+                                                                                        <option value="BILLS">Total Bills</option>
+                                                                                        <option value="PTA_OWING">PTA</option>
+                                                                                        <option value="BILLS_PAID">Bills paid</option>
+                                                                                        <option value="ACADEMIC_OWING">Academic Owing</option>
+                                                                                        <option value="OTHERS_OWING">Other Bills</option>
+
+                                                                                    </select>
+                                                                                </div></td>
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td colspan="" style="text-align: center"> 
+                                                                                <div align="center" style="margin-left: 32%">
+                                                                                    <p></p>
+                                                                                        <center>   <button type="submit" class="btn btn-success waves-effect" name="send"   />Send SMS <i class="md md-sms"></i></button></center>
+                                                                                    </div>
+                                                                                 </td>
+                                                                        </tr>
+                                                                    </table>
+                                                                    <label> </label>
+                                                                    <label></label>
+                                                                </form>
+
+
+                                                            </div>
+                                                        </div>
+
+                                                    </div>-->
+                                                </div>
                                                  <hr>
                                                 <div class="table-responsive">
                                                     <?php
-                                                                                               
+                                                            $language=$_SESSION['languages'];                                  
                                                             $branch=$_SESSION[branch];
                                                             $gender=$_SESSION[gender];
                                                             $ministry=$_SESSION[ministry];
                                                             $status=$_SESSION[deceased];
-                                                            $nation=$_SESSION[nation];
+                                                            $ethnic=$_SESSION[ethnic];
                                                             $team=$_SESSION[team];
                                                             $demo=$_SESSION[demo];
-                                                            $service=$_SESSION[service];
+                                                            $department=$_SESSION[department];
                                                             $category=$_SESSION[category];
                                                             $search=$_POST[search];
                                                             $content=$_POST[content];
-                                            
+                                                            
+                                                            if($language=="All languages" or $language==""){ $language=""; }else {$language_=" and  LANGUAGES LIKE  '%$language%' "  ;}
+                                                           
 
                                                             if($branch=="All branch" or $branch==""){ $branch=""; }else {$branch_=" and  BRANCH = '$branch' "  ;}
                                                             if($ministry=="All ministry" or $ministry==""){ $ministry=""; }else {$ministry_="and MINISTRY = '$ministry' "  ;}
                                                             if($gender=="All gender" or $gender=="" ){ $gender=""; }else {$gender_=" and GENDER = '$gender' "  ;}
                                                             if($status=="All status" or $status=="" ){ $status=""; }else {$status_=" and DECEASED = '$status' "  ;}
-                                                            if($nation=="All country" or $nation=="" ){ $nation=""; }else {$nation_=" and COUNTRY = '$nation' "  ;}
-                                                             if($team=="All team" or $team=="" ){ $team=""; }else {$team_=" and MUSIC_TEAM = '$team' "  ;}
+                                                            if($ethnic=="All ethnic" or $ethnic=="" ){ $ethnic=""; }else {$ethnic_=" and ETHNIC = '$ethnic' "  ;}
+                                                             if($team=="All team" or $team=="" ){ $team=""; }else {$team_=" and GROUPS = '$team' "  ;}
                                                            if($demo=="All demographics" or $demo=="" ){ $demo=""; }else {$demo_=" and DEMOGRAPHICS = '$demo' "  ;}
-                                                           if($service=="All service" or $service=="" ){ $service=""; }else {$service_=" and SERVICE_TYPE = '$service' "  ;}
+                                                           if($department=="All departments" or $department=="" ){ $department=""; }else {$department_=" and DEPARTMENT = '$department' "  ;}
                                                             if($category=="All category" or $category=="" ){ $category=""; }else {$category_=" and PEOPLE_CATEGORY = '$category' "  ;}
-                                                            if($search=="" ){ $search=""; }else {$search_="AND $content LIKE '$search' "  ;}
+                                                            if($search=="" ){ $search=""; }else {$search_="AND $content LIKE '%$search%' "  ;}
 
-                                                            $query="SELECT  * FROM  perez_members  where 1 and PEOPLE_CATEGORY='2' $branch_  $ministry_  $search_ $gender_ $nation_ $status_ $team_ $category_ $demo_ $service_" ;
-                                                            $_SESSION[last_query]=$query; 
+                                                           $query="SELECT  * FROM  perez_members  where 1 and PEOPLE_CATEGORY='2' $branch_  $ministry_  $search_ $gender_ $nation_ $status_ $team_ $category_ $demo_ $service_" ;
+                                                              $_SESSION[last_query]=$query; 
 
                                                             $rs = $sql->PageExecute($query,RECORDS_BY_PAGE,CURRENT_PAGE);
                                                             $recordsFound = $rs->_maxRecordCount;    // total record found
@@ -517,25 +667,25 @@
                                                
                                                     ?>
                                                 <table id="gad" class="table   display" >
-                                                    <center> <caption>Guest / Vistors</caption></center>
+                                                    
                                                     <thead>
                                                         <tr>
                                                              <th>#</th>
-                                                            <th class="col-lg-1"><button type="button"  onclick="return confirm('Are you sure you want to delete this members??')" class="btn btn-default btn-sm md md-delete"></th>
-                                                            <th>Photo</th>
-                                                            <th>Member Code</th>
+                                                             <th>Member Code</th>
+                                                             <th>Photo</th>
+                                                            
                                                             <th>Name</th>
                                                             <th>Gender</th>
                                                             <th>Date Joined</th>
                                                             <th>Date Baptised</th>
                                                              
                                                             <th>Phone</th>
-                                                            <th>Location</th>
+                                                            <th>Branch</th>
                                                             <th>Ministry</th>
                                                             <th>Demographic</th>
                                                             <th>Occupation</th>
                                                             <th>Category</th>
-                                                            <th colspan="5" style="text-align: center">Actions</th>
+                                                            <th colspan="" style="text-align: center">Actions</th>
                                                         </tr>
                                                     </thead>
                                                     <p align="center"style="color:red">  <?php echo $recordsFound ?> Records </p>
@@ -550,31 +700,25 @@
                                                               ?>
                                                            <tr>
                                                                <td><?php echo $count ?></td>
-                                                               <td>
-                                                                       <div class="ui-checkbox ui-checkbox-primary ml5">
-                                                                               <label><input type="checkbox"><span></span>
-                                                                               </label>
-                                                                       </div>
-                                                                </td>
-                                                             <td><a href="addMember.php?member=<?php echo  $rtmt[MEMBER_CODE] ?>&&update"><img  width="80" height="60"<?php   $pic=  $help->pictureid($rtmt[MEMBER_CODE]);  $help->picture("photos/members/$pic.JPG")  ?>   src="<?php echo file_exists("photos/members/$pic.JPG") ? "photos/members/$pic.JPG":"photos/members/user.jpg";?>" alt=" Picture of Student Here"    /></a></td>
-                                                             <td style="text-align:"><?php echo $rtmt[MEMBER_CODE] ?></td>
+                                                                
+                                                              <td style="text-align:"><?php echo $rtmt[MEMBER_CODE] ?></td>
+                                                              <td><a href="addMember.php?member=<?php echo  $rtmt[MEMBER_CODE] ?>&&update"><img  <?php   $pic=  $help->pictureid($rtmt[MEMBER_CODE]);  echo$help->picture("photos/members/$pic.JPG",'90')  ?>   src="<?php echo file_exists("photos/members/$pic.JPG") ? "photos/members/$pic.JPG":"photos/members/user.jpg";?>" alt=" Picture of Student Here"    /></a></td>
+                                                            
                                                              <td style="text-align:"><?php echo $rtmt[TITLE]." ". $rtmt[LASTNAME]." ,".$rtmt[FIRSTNAME]." ".$rtmt[OTHERNAMES] ?></td>
                                                              <td style="text-align:"><?php echo $rtmt[GENDER] ?></td>
                                                              <td style="text-align:"><?php echo date("d/m/Y",$rtmt[DATE_JOINED]); ?></td>
                                                              <td style="text-align:"><?php echo date("d/m/Y",$rtmt[DATE_BAPTISTED]); ?></td>
                                                               
                                                              <td style="text-align:"><?php echo $rtmt[PHONE] ?></td>
-                                                             <td style="text-align:"><?php echo $rtmt[LOCATION] ?></td>
+                                                             <td style="text-align:"><?php echo $help->getLocation($rtmt[LOCATION]) ?></td>
                                                              <td style="text-align:"><?php echo $member->getMinistry($rtmt[MINISTRY]) ?></td>
                                                              <td style="text-align:"><?php echo $rtmt[DEMOGRAPHICS] ?></td>
                                                              <td style="text-align:"><?php echo $rtmt[OCCUPATION] ?></td>
-                                                             <td style="text-align:"><?php echo $rtmt[PEOPLE_CATEGORY] ?></td>
-                                                             <td><a href="addMember?member=<?php echo  $rtmt[MEMBER_CODE] ?>&&update">Edit <i class="md md-edit" title="click to edit info"></i></a></td>
-                                                             <td>Mail<i class="md md-email" title="click to send email"></i> </td>
-                                                             <td>SMS<i class="md md-sms" title="click to send  sms"></i> </td>
-                                                             <td>vcard<i class="md md-contacts" title="click to view vcard"></i> </td>
-                                                             <td>Print<i class="md md-print" title="click to print"></i> </td>
-                                                             <td><a onclick="return confirm('Are you sure you want to delete this person??')" href="members?delete=<?php echo  $rtmt[MEMBER_CODE] ?>"Delete<i class="md md-delete" title="click to delete"></i> </a></td>
+                                                             <td style="text-align:"><?php echo $help->getCategory($rtmt[PEOPLE_CATEGORY] )?></td>
+                                                             <td><a href="addMember?member=<?php echo  $rtmt[MEMBER_CODE] ?>&&update"><i class="fa fa-edit" title="click to edit info"></i></a> 
+                                                             
+                                                                 <a href=""><i class="fa fa-print" title="click to print"></i></a>  
+                                                              <a onclick="return confirm('Are you sure you want to delete this person??')" href="members?delete=<?php echo  $rtmt[MEMBER_CODE] ?>"><i class="fa fa-trash" title="click to delete"></i> </a></td>
                                                             
                                                         </tr>
                                                          <?php }?>
@@ -582,12 +726,12 @@
                                                 </table>
                                                     <br/>
                                                 <center><?php
-                                                    $GenericEasyPagination->setTotalRecords($recordsFound);
-
-                                                   echo $GenericEasyPagination->getNavigation();
-                                                   echo "<br>";
-                                                   echo $GenericEasyPagination->getCurrentPages();
-                                                 ?></center>
+//                                                    $GenericEasyPagination->setTotalRecords($recordsFound);
+//
+//                                                   echo $GenericEasyPagination->getNavigation();
+//                                                   echo "<br>";
+//                                                   echo $GenericEasyPagination->getCurrentPages();
+//                                                 ?></center>
                                          <?php }else{
                                                             echo "<div class='alert alert-danger alert-dismissible' role='alert'>
                                                                   <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
@@ -612,20 +756,36 @@
 
 	</div> <!-- #end main-container -->
 
-	<?php include("./_library_/_includes_/theme.inc"); ?>
+	 
 
- <?php include("./_library_/_includes_/js.php"); ?>
+   <script src="assets/scripts/jquery-2.1.1.min.js"></script>
+       
+	<script src="assets/scripts/jquery.dataTables.min.js"></script>
+        <script src="assets/scripts/dataTables.bootstrap.min.js"></script>
+          
+        <script src="assets/scripts/dataTables.keyTable.min.js"></script>
         
-         <script>
+     
+       <script>
             $(document).ready(function() {
                 $('#gad').DataTable( {
-                    dom: 'Bfrtip',
-                    buttons: [
-                        'colvis'
-                    ]
+                    
                 } );
             } );
         </script>
+          
+        
+<script src="assets/scripts/select2.min.js"></script>
+       
+        <script>
+                 $(document).ready(function(){
+                    $('select').select2({ width: "resolve" });
+
+
+                  });
+        </script>       
+         <?php include("_library_/_includes_/export.php"); ?> 
+         
 </body>
 
 </html>

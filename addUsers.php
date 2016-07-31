@@ -130,8 +130,7 @@ if (isset($_POST[submit])) {
                                                                 <option value=''>select role</option>
                                                                 <option value='Head Pastor'>Head Pastor</option>
                                                                 <option value='Assistant Pastor'>Assistant Pastor</option>
-                                                                <option value='Deacon'>Deacon</option>
-                                                                <option value='System Admin'>Systems Administrator</option>
+                                                                 <option value='Administrator'>Systems Administrator</option>
                                                                 <option value='Data Entry Clerk'>Data Entry Clerk</option>
                                                                <option value='Accountant'>Accountant</option>
                                                                <option value='Elder'>Elder</option>

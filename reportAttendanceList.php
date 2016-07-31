@@ -10,27 +10,6 @@
         $notify=new _classes_\Notifications();
         $sms=new _classes_\smsgetway();
         
-        if(isset($_POST['save'])){
-            $service=$_POST['service'];
-            
-            $member=$_POST['member'];
-            $status=$_POST['status'];
-            $counts=$_POST["count"]; 
-            $actor=$_SESSION[ID];
-            for($i=0;$i<count($_POST['member']);$i++){
-                
-                $memberArr=$member[$i];
-                $serviceArr=$service;
-                
-                $statusArr=$status[$i];
-                $query=$sql->Prepare("INSERT INTO perez_service_attendance (service,member,status,actor) VALUES('$serviceArr','$memberArr','$statusArr','$actor')");
-                if($sql->Execute($query)){
-                    
-                }
-                
-            }
-             header("location:attendance?success=1");
-        }
         
 ?>
        
@@ -38,13 +17,17 @@
 <p>&nbsp;</p>
 <?php
     if(isset($_GET[service])){
-    $qt = $sql->Prepare("SELECT attendants FROM `perez_services` WHERE  ID ='$_GET[service]'  ");
+    $qt = $sql->Prepare("SELECT distinct member FROM `perez_service_attendance` WHERE  service ='$_GET[service]' and status='Present' ");
 
     $stmt = $sql->Execute($qt);
-    $rtmt = $stmt->FetchNextObject();
-    $attendant=$rtmt->ATTENDANTS;
+    while($rtmt=$stmt->FetchRow()){
+    $attendant[]=$rtmt['member'];
+   
+    }
      $serviceObject=$help->getServiceName($_GET[service]);
-
+     
+     $realMembers=  implode(",", $attendant);
+      
 }
 
 ?>
@@ -53,15 +36,18 @@
 
  <div class="content-container" id="content">
 <div class="page page-ui-tables">
-				 
+				  <div style="margin-top:31px;float:right">
+                                                     
+                                                             <button   class="btn btn-primary  waves-effect waves-button dropdown-toggle" style="margin-top: -59px" onClick ="$('#gad').tableExport({type:'excel',escape:'false'});" title="Export data to excel file"><i class="fa fa-file-excel-o"></i> Export to Excel</button>
+                                                             <button   class="btn btn-success  waves-effect waves-button dropdown-toggle" style="margin-top: -59px" onClick ="javascript:printDiv('print')" title="click to print"><i class="fa fa-print"></i>Print</button>
+                                                     
+                                              </div>
                             <div class="page-wrap">
                             <div class="col-md-12" >
-                                        <div class="panel panel-lined panel-hovered mb20 table-responsive basic-table">
+                                        <div id='print' class="panel panel-lined panel-hovered mb20 table-responsive basic-table">
                                     
                         
-<form action="" method="POST" class="form-horizontal" role="form" enctype="multipart/form-data">
-    <input type="hidden" name="service" value="<?php echo $_GET[service];  ?>"/>
-    <center><p class="text-bold">Attendance Sheet for <?php echo $serviceObject->NAME;  ?> , <?php echo $serviceObject->STARTDATE ." - " . $serviceObject->ENDDATE ." At ".$serviceObject->VENUE;  ?> </p></center>
+     <center><p class="text-bold">Attendance Sheet for <?php echo $serviceObject->NAME;  ?> , <?php echo $serviceObject->STARTDATE ." - " . $serviceObject->ENDDATE ." At ".$serviceObject->VENUE;  ?> </p></center>
     <hr>                                          
     <div class="card-body card-padding">
                                                       
@@ -69,7 +55,7 @@
                                                         <?php
                                                         
                                                         
-                                                             $query="SELECT  * FROM  perez_members  where 1 AND ID IN ($attendant)" ;
+                                                             $query="SELECT  * FROM  perez_members  where 1 AND ID IN ($realMembers)" ;
                                                             $_SESSION[last_query]=$query; 
                                                            // print_r($query);
                                                             $rs = $sql->PageExecute($query,RECORDS_BY_PAGE,CURRENT_PAGE);
@@ -80,13 +66,13 @@
                                                
                                                     ?>
                                                 <table id="gad" class="table   display" >
-                                                      <input type="hidden" name="count" value="<?php echo $recordsFound;?>" id="upper" />
-                                
+                                                     
                                                     <thead>
                                                         <tr>
                                                              <th>#</th>
-                                                             <th>Photo</th>
+                                                            
                                                             <th>Member Code</th>
+                                                             <th>Photo</th>
                                                             <th>Name</th>
                                                             
                                                             <th style="text-align: ">Actions</th>
@@ -104,17 +90,17 @@
                                                               ?>
                                                            <tr>
                                                                <td><?php echo $count ?></td>
-                                                    <input type="hidden" name="member[]" value="<?php echo $rtmt[ID] ?>"/>
-                                                             <td><a><img  width="80" height="60"<?php   $pic=  $help->pictureid($rtmt[MEMBER_CODE]);  $help->picture("photos/members/$pic.JPG")  ?>   src="<?php echo file_exists("photos/members/$pic.JPG") ? "photos/members/$pic.JPG":"photos/members/user.jpg";?>" alt=" Picture of Student Here"    /></a></td>
-                                                             <td style="text-align:"><?php echo $rtmt[MEMBER_CODE] ?></td>
+                                                                 <td style="text-align:"><?php echo $rtmt[MEMBER_CODE] ?></td>
+                                                           
+                                                               <td><a><img  <?php   $pic=  $help->pictureid($rtmt[MEMBER_CODE]); echo $help->picture("photos/members/$pic.JPG",'90')  ?>   src="photos/members/<?php echo $pic;?>.jpg" alt=" Picture of member Here"    /></a></td>
                                                              <td style="text-align:"><?php echo $rtmt[TITLE]." ". $rtmt[LASTNAME]." ,".$rtmt[FIRSTNAME]." ".$rtmt[OTHERNAMES] ?></td>
                                                               
                                                              <td style="text-align:">
                                                                  
                                                                  <div class="item checkbox ui-checkbox ui-checkbox-info">
                                                                      <label>
-                                                                     <input type="checkbox" checked="" name="status[]" value="Present" 
-                                                                                    ><span>Tick to mark presence</span></label>
+                                                                         <input readonly="" type="checkbox" checked="" name="status[]" value="Present" 
+                                                                                    ><span>Present</span></label>
                                                                          </div>
                                                              </td>
                                                             
@@ -135,15 +121,11 @@
                                                         
                                                          
                                                     </div>
-                                                <div align="center">
-                                                      
-                                                    <button type="submit" name="save" class="btn btn-success">Save <i class="fa fa-save"></i></button>
-                                                          <button type="button" data-dismiss="modal" class="btn btn-default">Close</button>
-                                                </div>
+                                                
                                                   
                                                  </div>
                                               
-                                            </form>
+                                          
                                                             
  </div>
 </div>
@@ -159,15 +141,15 @@
           
         <script src="assets/scripts/dataTables.keyTable.min.js"></script>
         
-     
-       <script>
+      
+            <script>
             $(document).ready(function() {
-                $('#gad').DataTable( {
+                $('#gads').DataTable( {
                     
                 } );
             } );
+             
         </script>
-          
         
 <script src="assets/scripts/select2.min.js"></script>
        

@@ -97,7 +97,7 @@ if (isset($_GET[id])) {
                                                 <td width="210" class="uppercase" align="right"><strong>Church N<u>O</u></strong></td>
                                                 <td width="408" class="capitalize"><?php echo $row1->MEMBER_CODE ?></td>
                                                 <td width="260" rowspan="5" > <img   <?php $pic = $help->pictureid($row1->MEMBER_CODE);
-                                    echo $help->picture("photos/members/$pic.jpg", 280) ?>   src="<?php echo file_exists("photos/members/$pic.jpg") ? "photos/members/$pic.jpg" : "photos/members/user.jpg"; ?>" alt=" Picture of Member Here"  style="margin-top:-5px;margin-left: -70px"   /></td>
+                                    echo $help->picture("photos/members/$pic.jpg", 180) ?>   src="<?php echo file_exists("photos/members/$pic.jpg") ? "photos/members/$pic.jpg" : "photos/members/user.jpg"; ?>" alt=" Picture of Member Here"  style="margin-top:-5px;margin-left: -70px"   /></td>
                                             </tr>
                                             <tr>
                                                 <td class="uppercase" align="right"><strong>Branch:</strong></td>
@@ -120,10 +120,7 @@ if (isset($_GET[id])) {
                                                 <td class="uppercase" align="right"><strong>Giving Number</strong>:</td>
                                                 <td class="capitalize"><?php echo $row1->GIVING_NUMBER ?></td>
                                             </tr>
-                                            <tr>
-                                                <td class="uppercase" align="right"><strong>Demography:</strong></td>
-                                                <td class="capitalize"><?php echo $row1->DEMOGRAPHICS; ?></td>
-                                            </tr>
+                                             
                                             <tr>
                                                 <td class="uppercase" align="right"><strong>Ministry</strong>:</td>
                                                 <td class="capitalize"><?php echo $member1->getMinistry($row1->MINISTRY) ?></td>
@@ -151,15 +148,17 @@ if (isset($_GET[id])) {
 
 <div style=" " id="payment_div">
 
-          <form method="post" name="new_payment_individual_form" action="new_payment_individual_action.php" id="new_payment_individual_form" class="form-horizontal">
-
+          <form method="post" name="new_payment_individual_form"   id="new_payment_individual_form" class="form-horizontal">
+                 <input type="hidden" name="giving_number" value="<?php echo $row1->GIVING_NUMBER;?>"/>
+          
           <input type="hidden" name="m_id" id="m_id" value="<?php  echo $row1->ID ?>">
+          <input type="hidden" name="phone" id="m_id" value="<?php  echo $row1->PHONE ?>">
           <input type="hidden" name="name" id="name" value="<?php  echo $row1->TITLE . ' ' . $row1->FIRSTNAME . ' ' . $row1->LASTNAME . ' ' . $row1->OTHERNAMES ?>">
              
   <table id="paymentTable" class="table"border="0" style="font-weight:bold" style="cellpadding:0;">
 	  <tr id="paymentRow" payment_row="payment_row"><td valign="top"><strong>Payment Type</strong></td>
 	  <td >
-	  <select name="paymentType[]" style="width:auto;" class="pay_type form-control" >
+              <select name="paymentType[]" required="" style="width:auto;" class="pay_type form-control" >
 	  <option selected="selected" value="not_selected">Please Select</option>
                                                            
                       <?php 
@@ -185,7 +184,7 @@ if (isset($_GET[id])) {
 
     <?php $current_month=date('F');?>
 	  <td valign="top">Month</td><td>
-              <select name="month[]" style="width:auto;" id="title" class="form-control">
+              <select name="month[]" style="width:auto;" id="title" class="form-control" required="">
       <option <?php if($current_month=='January'){echo 'selected'." ";}?>  value="January">January</option>
 	  <option <?php if($current_month=='February'){echo 'selected'." ";}?> value="February">February</option>
 	  <option <?php if($current_month=='March'){echo 'selected'." ";}?> value="March">March</option>
@@ -208,7 +207,7 @@ if (isset($_GET[id])) {
 	  ?>
 
 	  <td valign="top">Year</td><td>
-              <select name="year[]" style="width:auto;" class="form-control">
+              <select name="year[]" style="width:auto;" class="form-control" required="">
 	  <option value="<?php echo $nextyear; ?>"><?php echo $nextyear; ?></option>
 	  <option selected value="<?php echo $thisyear?>"><?php echo $thisyear?></option>
 	  <?php
@@ -239,32 +238,7 @@ if (isset($_GET[id])) {
 </div>
                                     </div>
                                     
-                                    <!--<div>
-                                        <p>&nbsp;</p>
-                                        <center><h4 class="text-success">Current Payments</h4></center>
-                                        <table class="table table-striped display" id="mem">
-                                            <thead>
-                                            <th>No</th>
-                                            <th>Payment Type</th>
-                                            <th>Amount</th>
-                                            <th>Month</th>
-                                            <th>Year</th>
-                                           
-                                            <th>Action</th>
-                                            </thead>
-                                             
-                                            <tbody>
-                                                
-                                                
-                                                 </tbody>
-                                            
-                                        </table>
-                                         
                                     
-
-
-                                </div>-->
-                        <!-- #end row -->
                     </div> <!-- #end page-wrap -->
                 </div>
 
@@ -274,7 +248,7 @@ if (isset($_GET[id])) {
 
          
 	 
-          <script>
+         <script>
 function checkFormElements(){
 var checked=true;
        $('#paymentTable .pay_type  :selected').parent().each(function(){
@@ -356,7 +330,7 @@ $("#insertPaymentRow").bind('click',function(){
     var numOrgs=$(" table#paymentTable tr[payment_row]").length+1;
 	  var newOrg=$("table#paymentTable tr:first ").clone(true);
 
-   $(newOrg).children(' td#insertPaymentCell ').html('<button  type="button" id="removePaymentRow_'+numOrgs+'" class="btn btn-danger btn-small" ><i class="fa fa-minus"></i>  Remove</button>');
+   $(newOrg).children(' td#insertPaymentCell ').html('<button  type="button" id="removePaymentRow_'+numOrgs+'" class="btn btn-danger" ><i class="fa fa-minus"></i>  Remove</button>');
 
     var amountLine=$(newOrg).children('td')[2];
     $(amountLine).children(':last-child').prop('value','');
@@ -372,9 +346,9 @@ $("#insertPaymentRow").bind('click',function(){
    $('#removePaymentRow_'+numOrgs).bind("click",function(){
    // $(amountInput).trigger('keyup');
     $('#paymentRow_'+numOrgs).remove();
-    var count=0;(){
-
-   $("table#paymentTable tr[payment_row] :text").each(function          var inputNumber=$(this).val();
+    var count=0;
+   $("table#paymentTable tr[payment_row] :text").each(function(){
+          var inputNumber=$(this).val();
           if(isNaN(inputNumber) || inputNumber==null || inputNumber==""  || inputNumber==0 ) {
             $('#totalSum').html(count.toFixed(2));
           }
@@ -386,12 +360,7 @@ $("#insertPaymentRow").bind('click',function(){
    });
 
   });
-
-  // $('#amt_'+numOrgs).bind('focus',function(){
-  //   console.log('hello from here');
-  // });
-
-//});
+ 
 
 
   $('#paymentTable .pay_type  :selected').parent().each(function(){
@@ -429,10 +398,44 @@ var options = {
             requestType : "ajax"
           },
           success : function(msg) {
+
+
+            var msg = $.parseJSON(msg);
+            if (msg.status == 'error') {
+              alert("Error!!\n" + msg.message);
+              $('#alertInfo').css('display', 'block');
+              $('#alertInfo').html(msg.message);
+              $('html, body').animate({
+                scrollTop : $("#container").offset().top
+              }, 2000);
+            } else if (msg.status == 'success') {
+
+              $('#new_payment_individual_form').resetForm();
+              $('#new_payment_individual_form').clearForm();
+              $('#alertInfo').css('display', 'block').html(msg.message);
+              $('html, body').animate({
+                scrollTop : $("#container").offset().top
+              }, 2000);
+              if($(document).find('#basic_info')){
+
+                     $('#totalSum').html("0.00");
+                     $('#paymentRow + tr[payment_row]').remove();
+                     $('#new_payment_individual_form').clearForm();
+                     $('#new_payment_individual_form').resetForm();
+                      
+               alert("Success!!\n" + msg.message);
+              }
+
+                    }
+          },
+          success : function(msg) {
               alert('Payment successful')
             
           },
           failure : function() {
+              $('#paymentRow + tr[payment_row]').remove();
+                     $('#new_payment_individual_form').clearForm();
+                     $('#new_payment_individual_form').resetForm();
             alert('Sorry...failure occurred');
           }
         };
@@ -443,21 +446,7 @@ var options = {
 
 });
 </script>
- <script src="assets/scripts/jquery.dataTables.min.js"></script>
-        <!-- <script src="js/dataTables.bootstrap.min.js"></script> -->
-          
-        <script src="assets/scripts/dataTables.keyTable.min.js"></script>
-         
- <script type="text/javascript">
-            $(document).ready(function() {
-            $('#mem').DataTable( {
-                "processing": true,
-                "serverSide": true,
-                "ajax": "datatables/memPay.php"
-            } );
-        } );
-        
-        </script> 
+  
        
  </body>
  </html>

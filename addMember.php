@@ -74,8 +74,8 @@
                }
                if (empty($id)) {
                     $query2 = $sql->Prepare("INSERT INTO perez_members  SET $data ");
-                    $query = $sql->Prepare("INSERT INTO perez_members_auth(USER,USERNAME,PASSWORD)VALUES('$_POST[member_code]','$_POST[member_username]','$password')");
-                     $query3 =$sql->Prepare("INSERT INTO tbl_accounts(ACCOUNT_NAME,PARENT_ACCOUNT,ACCOUNT_DESCRIPTION,AFFECTS,ACCOUNT_BALANCE,ACCOUNT_CODE,BALANCE_TYPE,BUSINESS_PERSON,BANK_ACCOUNT_NUM)VALUES ('$member_code','2','created ledger account for member','Balance Sheet','0','$code','Debit','$business_person','$account_number')");
+                    //$query = $sql->Prepare("INSERT INTO perez_members_auth(USER,USERNAME,PASSWORD)VALUES('$_POST[member_code]','$_POST[member_username]','$password')");
+                    // $query3 =$sql->Prepare("INSERT INTO tbl_accounts(ACCOUNT_NAME,PARENT_ACCOUNT,ACCOUNT_DESCRIPTION,AFFECTS,ACCOUNT_BALANCE,ACCOUNT_CODE,BALANCE_TYPE,BUSINESS_PERSON,BANK_ACCOUNT_NUM)VALUES ('$member_code','2','created ledger account for member','Balance Sheet','0','$code','Debit','$business_person','$account_number')");
 
                     $update = 1;
                 }
@@ -84,7 +84,7 @@
                     $query = $sql->Prepare("UPDATE perez_members_auth SET USER='$_POST[member_code]',USERNAME='$_POST[member_username]',PASSWORD='$password' WHERE USER='$_POST[member_code]'");
                     //print_r($query2);
                 }
-                if ($sql->Execute($query) &&  $sql->Execute($query2) &&  $sql->Execute($query3)) {
+                if ($sql->Execute($query2) ) {
                    if($update==1){
                         $help->UpdateIndexno();
                           $help->UpdateCode("ACCOUNT");
@@ -748,7 +748,7 @@ echo $help->picture("photos/members/$person.jpg", 199) ?>  src="<?php echo file_
              
             
              
-        
+<!--        
             <div class="form-group">
                 <label class="col-lg-4 control-label">Service Type</label>
                 <div class="col-lg-8">
@@ -778,7 +778,7 @@ echo $help->picture("photos/members/$person.jpg", 199) ?>  src="<?php echo file_
                     </select>
                     
                 </div>
-            </div>
+            </div>-->
              
             
              
@@ -1088,7 +1088,7 @@ echo $help->picture("photos/members/$person.jpg", 199) ?>  src="<?php echo file_
 	<script src="asset/summernote.min.js"></script>
 	<script src="asset/bootstrap-datepicker.min.js"></script>
   <script src="assets/scripts/form-elements.init.js"></script>
-           
+  <script src="assets/scripts/plugins/bootstrap-fileinput/bootstrap-fileinput.js"></script>
          
          
 </body>

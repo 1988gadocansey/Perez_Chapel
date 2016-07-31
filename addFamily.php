@@ -411,31 +411,7 @@
                                          <td>&nbsp;</td>
                                                            
                                           
-                                           <td width="25%">
-                                            <select id="title"  class='form-control' style="margin-left:-33%;  width:145% "  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?nation='+escape(this.value);"     >
-                                            <option value=''>Filter by country</option>
-                                            <option value='All country'>All Countries</option>
-                                                          
-                                                      <?php 
-                                                      global $sql;
-
-                                                      $query2=$sql->Prepare("SELECT * FROM perez_country");
-
-
-                                                        $query=$sql->Execute( $query2);
-
-
-                                                     while( $row = $query->FetchRow())
-                                                       {
-
-                                                       ?>
-                                                       <option value="<?php echo $row['Name']; ?>"   <?php if($_SESSION[nation]==$row['Name']){echo "selected='selected'";} ?>      ><?php echo $row['Name']; ?></option>
-
-                                                    <?php }?>
-                                                       
-                                                   </select>
-
-                                                </td>
+                                          
                                         </tr>
                                        </table>
                                                 
@@ -470,7 +446,7 @@
                                                
                                                     ?>
                                                               <p>&nbsp;</p>
-                                                <table id="assesment" class="table" >
+                                                <table id="gad" class="table" >
                                                     <thead>
                                                         <tr>
                                                              <th>#</th>
@@ -486,7 +462,7 @@
                                                             <th>Region</th>
                                                             <th>Country</th>
                                                              
-                                                            <th style='text-align:center;' colspan='2'>Actions</th>
+                                                            <th style='text-align:center;' colspan=' '>Actions</th>
                                                         </tr>
                                                     </thead>
                                                     <p align="center"style="color:red">  <?php echo $recordsFound ?> Records </p>
@@ -530,11 +506,7 @@
                                                 </table>
                                                     <br/>
                                                 <center><?php
-                                                    $GenericEasyPagination->setTotalRecords($recordsFound);
-
-                                                   echo $GenericEasyPagination->getNavigation();
-                                                   echo "<br>";
-                                                   echo $GenericEasyPagination->getCurrentPages();
+                                                    
                                                  ?></center>
                                          <?php }else{
                                                             echo "<div class='alert alert-danger alert-dismissible' role='alert'>
@@ -558,19 +530,36 @@
 
 	</div> <!-- #end main-container -->
 
-	<?php include("./_library_/_includes_/js.php"); ?>
+	<script src="assets/scripts/jquery-2.1.1.min.js"></script>
+       
+	<script src="assets/scripts/jquery.dataTables.min.js"></script>
+        <script src="assets/scripts/dataTables.bootstrap.min.js"></script>
+          
+        <script src="assets/scripts/dataTables.keyTable.min.js"></script>
         
-         <script>
+     
+       <script>
             $(document).ready(function() {
                 $('#gad').DataTable( {
-                    dom: 'Bfrtip',
-                    buttons: [
-                        'colvis'
-                    ]
+                    
                 } );
             } );
         </script>
           
+        
+<script src="assets/scripts/select2.min.js"></script>
+       
+        <script>
+                 $(document).ready(function(){
+                    $('select').select2({ width: "resolve" });
+
+
+                  });
+        </script>
+           <?php include("_library_/_includes_/export.php"); ?> 
+        
+        
+ 
          
 </body>
 

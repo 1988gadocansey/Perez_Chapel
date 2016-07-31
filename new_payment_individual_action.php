@@ -1,30 +1,24 @@
 <?php
-error_reporting(1);
+
 session_start();
 require 'vendor/autoload.php';
  require '_library_/_includes_/config.php';
   $login=new _classes_\Login();
-
-// 	$str = 'ministers_appreciation_retirement_amount';
-// 	$chars = explode('_', $str,-1);
-// 	echo "<pre>";
-// 	print_r($chars);
-// 	print_r($payment_types);
-// 	echo "</pre>";
+ $sms=new _classes_\smsgetway();
+ $help = new _classes_\helpers();
 
 $payment_type_input=$_POST['paymentType'];
 $amt_input=$_POST['amt'];
 $month_input=$_POST['month'];
 $year_input=$_POST['year'];
- 
+ $giving_number=$_POST['giving_number'];
+ $phone=$_POST['phone'];
 $m_id=!empty($_POST['m_id']) ? trim($_POST['m_id']) :"";
 
 $entered_by_username=$_SESSION[ID] ;
 $entered_by_real_name=$_SESSION['USERNAME'];
 
-
-
-
+ 
 
 if(count($payment_type_input)!=count($amt_input) && count($payment_type_input)!=count($year_input)){
   $payment_request['status']="error";
@@ -56,8 +50,8 @@ $sessionId = session_id();
 $stmt = $sql->Prepare("INSERT INTO `perez_system_log` ( `USERNAME`, `EVENT_TYPE`, `ACTIVITIES`, `HOSTNAME`, `IP`, `BROWSER_VERSION`,MAC_ADDRESS,SESSION_ID) VALUES ('".$_SESSION[ID]."', '$event','$activity', '".$hashkey."','".$remoteip."','".$useragent."','".$mac."','".$sessionId."')");
                 $sql->Execute($stmt);
 
-  $insert_new_payment_individual=$sql->Prepare("INSERT INTO perez_member_payments(payment_status,system_id,amount,month,year,entered_by_username,entered_by_real_name,payment_type_name,date_of_payment) VALUES('enabled','$m_id','$amt_input[$i]','$month_input[$i]','$year_input[$i]','$entered_by_username','$entered_by_real_name','$payment_type_input[$i]',CURDATE()) ");
-  print_r($insert_new_payment_individual);   
+  $insert_new_payment_individual=$sql->Prepare("INSERT INTO perez_member_payments(payment_status,member,amount,month,year,entered_by_username,entered_by_real_name,payment_type_name,giving_number) VALUES('enabled','$m_id','$amt_input[$i]','$month_input[$i]','$year_input[$i]','$entered_by_username','$entered_by_real_name','$payment_type_input[$i]','$giving_number') ");
+  //print_r($insert_new_payment_individual);   
   $insert_new_payment_result= $sql->Execute($insert_new_payment_individual);
      if(!$insert_new_payment_result){
         $insert_new_payment_errors['payment_type'][]=$payment_type_input[$i];
@@ -76,6 +70,11 @@ $stmt = $sql->Prepare("INSERT INTO `perez_system_log` ( `USERNAME`, `EVENT_TYPE`
         $insert_new_payment_success['payment_month'][]=$month_input[$i];
         //$query_list[]= $insert_new_payment_individual;
      }
+     $paymentName=$help->getIndividualPaymentName($payment_type_input[$i]);
+     $message="Hi $_POST[name] you have paid $amt_input[$i] as $paymentName  for $month_input[$i] $year_input[$i] . Thanks and God bless you ";
+     // $sms->sendSMS1($phone, $message);
+
+
 }
 
 if(isset($insert_new_payment_errors) && !empty($insert_new_payment_errors)){

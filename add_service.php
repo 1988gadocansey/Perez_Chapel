@@ -232,7 +232,7 @@
 					<div class="form-group">
 						<div class="input-group time">
 							 <div class="input-group date" id="datepickerDemo1">
-                                                                <input name="datefrom" type="text" class="form-control" value="<?php echo date("m/d/Y",$rtmt->START_DATE); ?>"  name="member_baptist"/>
+                                                                <input name="datefrom" type="text" class="form-control" value="<?php echo date("m/d/Y",$rtmt->START_DATE); ?>"   />
                                                                <span class="input-group-addon">
                                                                    <i class=" fa fa-calendar"></i>
                                                                </span>

@@ -60,29 +60,25 @@ class smsgetway{
         // tpoly sms
         public function sendSMS1($phone,$message){
             $phone="+233".\substr($phone,1,9);
-            $url = 'http://txtconnect.co/api/send/'; 
-            $fields = array( 
-            'token' => \urlencode('a166902c2f552bfd59de3914bd9864088cd7ac77'), 
-            'msg' => \urlencode($message), 
-            'from' => \urlencode("Tpoly"), 
-            'to' => \urlencode($phone), 
-            );
-            $fields_string = ""; 
-                    foreach ($fields as $key => $value) { 
-                    $fields_string .= $key . '=' . $value . '&'; 
-                    } 
-                    \rtrim($fields_string, '&'); 
-                    $ch = \curl_init(); 
-                    \curl_setopt($ch, \CURLOPT_URL, $url); 
-                    \curl_setopt($ch, \CURLOPT_RETURNTRANSFER, true); 
-                    \curl_setopt($ch, \CURLOPT_FOLLOWLOCATION, true); 
-                    \curl_setopt($ch, \CURLOPT_POST, count($fields)); 
-                    \curl_setopt($ch, \CURLOPT_POSTFIELDS, $fields_string); 
-                    \curl_setopt($ch, \CURLOPT_SSL_VERIFYPEER, 0); 
-                    $result = \curl_exec($ch); 
-                    \curl_close($ch); 
-                    $data = \json_decode($result); 
-                    if($data->error == "0"){ 
+            $phone = str_replace(' ', '', $phone);
+                 $phone = str_replace('-', '', $phone);
+                 if (!empty($message) && !empty($phone)) {
+            $key = "83f76e13c92d33e27895"; //your unique API key;
+            //$message=urlencode($message); //encode url;
+        $sender_id="PerezChapel";
+
+        $url = "https://apps.mnotify.net/smsapi?key=$key&to=$phone&msg=$message&sender_id=$sender_id";
+        //print_r($url);
+        $result = file_get_contents($url); //call url and store result;
+
+        if ($result = 1000) {
+
+
+            $result = "Message  sent. ";
+        } else {
+            $result = "Message not sent";
+        }
+        if($result=1000){ 
                    $info="Message was successfully sent"; 
                    $date=time();
                     $insertor=$this->connect->Prepare("insert into perez_sms_sent set number='$phone',type='$type',name='$_SESSION[ID]',message='$message',dates='$date',status='Delivered'");
@@ -97,7 +93,8 @@ class smsgetway{
                     $info="Message failed to send. Error: " . $data->error; 
                     return $info;
                     } 
-                            
+                     
+                 }
                   
                  }
                  

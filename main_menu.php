@@ -119,15 +119,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
       ================================================== -->
 
    <?php 
-   if(!empty($_SESSION['ID']) ){
-   
-
-  }
-  else {
-    header('Location: logout.php');
-        echo '<script>Window.location.href="index.php " </script>';
-      exit;
-  }
+    
 
   ?>
 
@@ -260,7 +252,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
 			
              <div class="md-card-content">
                  <p>&nbsp;</p>
-                 
+                   <?php  if($_SESSION['level']=='Assistant Pastor' || $_SESSION['level']=='Head Pastor' ){?>
                 <div class="panel-success panel">
                         <div class="panel-heading">
                             <h4 class="panel-title">
@@ -295,7 +287,10 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                                        
                          </div> <!-- accordion-inner -->
                      </div> <!-- collapseTen-->
+               <?php }?>
                      &nbsp;
+                      <?php  if($_SESSION['level']=='Assistant Pastor' || $_SESSION['level']=='Head Pastor' ){?>
+             
                       <div class="panel-success panel">
                         <div class="panel-heading">
                             <h4 class="panel-title">
@@ -335,7 +330,7 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                         </div>
                         </div>
                     </div>
-            
+                      <?php }?>
   &nbsp; 
                     <div class="panel-success panel">
                         <div class="panel-heading">
@@ -378,6 +373,8 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                         </div>
                     </div>
   &nbsp;
+   <?php  if($_SESSION['level']=='Assistant Pastor' || $_SESSION['level']=='Head Pastor' || $_SESSION['level']=='Accountant'){?>
+             
                     <div class="panel-success panel">
                         <div class="panel-heading">
                             <h4 class="panel-title">
@@ -388,36 +385,34 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                         </div>
                         <div class="panel-collapse collapse" id="collapseThrees">
                             <div class="panel-body">
-                                <p class=''><a target="content_frame"  href="create_church_payment.php"  ><i class='fa fa-plus-circle'></i>  Create Church Payments </a></p>
-                                <p class=''><a target="content_frame"  href="view_church_payment_types.php"  ><i class='fa fa-folder-open'></i>  Church payment Types</a></p>
+                                <p class=''><a target="content_frame"  href="create_church_payment.php"  ><i class='fa fa-plus-circle'></i>  Create general Payments </a></p>
+                                <p class=''><a target="content_frame"  href="view_church_payment_types.php"  ><i class='fa fa-folder-open'></i>  General payment Types</a></p>
                               
-                                <p class=''><a target="content_frame"  href="member_payment.php"  ><i class='fa fa-folder-open'></i> Make Church payments </a></p>
-                                <p class="">
-                                    <p><a target='content_frame'  href="create_member_payment.php" ><i class='fa fa-plus-circle'></i>Create Member Payments </a> 
+                                <p class=''><a target="content_frame"  href="make_general_payment.php"  ><i class='fa fa-folder-open'></i> Make general payments </a></p>
+                                 <p class="">
+                                    <p><a target='content_frame'  href="viewChurchPayments.php" > <i class='fa fa-folder-open'></i> General Payments Reports</a> 
                                 </p>
                                 <p class="">
-                                    <p><a target='content_frame'  href="viewChurchPayments.php" > <i class='fa fa-folder-open'></i> View Church Payments </a> 
-                                </p> 
-                                <p class="">
-                                    <p><a target='content_frame'  href="member_payment.php" > <i class='fa fa-folder-open'></i> Make Member Payments </a> 
+                                    <p><a target='content_frame'  href="create_member_payment.php" ><i class='fa fa-plus-circle'></i>Create Individual Payments Types</a> 
                                 </p>
+                                
                                 <p class="">
-                                    <p><a target='content_frame'  href="create_member_payment.php" ><i class='fa fa-plus-circle'></i>Create Fund Raising </a> 
+                                <p><a target='content_frame'  href="individual_payment_types.php" > <i class='fa fa-folder-open'></i>Individual Payments Types </a> 
                                 </p>
+                                 
                                 <p class="">
-                                    <p><a target='content_frame'  href="member_payment.php" > <i class='fa fa-folder-open'></i> Make Member Payments </a> 
+                                    <p><a target='content_frame'  href="member_payment.php" > <i class='fa fa-folder-open'></i> Make Individual Payments </a> 
                                 </p>
                             
                                  <p class="">
-                                    <p><a target='content_frame'  href="viewMembersPayment.php" > <i class='fa fa-folder-open'></i> View Member Payments </a> 
+                                    <p><a target='content_frame'  href="viewMembersPayment.php" > <i class='fa fa-folder-open'></i>Member Payments Reports </a> 
                                 </p>
                                  
-                                 <p class="">
-                                    <p><a target='content_frame'  href="viewFundRaisings.php" > <i class='fa fa-folder-open'></i> View Fund Raising </a> 
-                                </p> 
+                                  
                             </div>
                         </div>
                     </div>
+   <?php }?>
   &nbsp;
                      <div class="panel-success panel">
                         <div class="panel-heading">
@@ -429,9 +424,9 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                         </div>
                         <div class="panel-collapse collapse" id="collapseT">
                             <div class="panel-body">
-                                 
+                                    <?php  if($_SESSION['level']=='Assistant Pastor' || $_SESSION['level']=='Head Pastor' || $_SESSION['level']=='Elder'){?>
                                 <p class=''><a target="content_frame"  href="group_category.php"  ><i class='fa fa-folder-open'></i> Group Categories </a></p>
-                               
+                                    <?php }?>
                                 <p class=''><a target="content_frame"  href="addGroup.php"  ><i class='fa fa-plus-circle'></i>  Create Groups </a></p>
                                 <p class=''><a target="content_frame"  href="group.php"  ><i class='fa fa-folder-open'></i> View Groups </a></p>
                                  
@@ -449,20 +444,25 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                         </div>
                         <div class="panel-collapse collapse" id="collapseTT">
                             <div class="panel-body">
+                                   <?php  if($_SESSION['level']=='Assistant Pastor' || $_SESSION['level']=='Head Pastor' || $_SESSION['level']=='Elder'){?>
                                 <p class=''><a target="content_frame"  href="add_service_type.php"  ><i class='fa fa-plus-circle'></i>  Add Service Categories </a></p>
                                 <p class=''><a target="content_frame"  href="service_types.php"  ><i class='fa fa-folder-open'></i> Service Categories </a></p>
+                                   <?php }?>
                                 <p class=''><a target="content_frame"  href="add_service.php"  ><i class='fa fa-plus-circle'></i>  Add Services </a></p>
                                  <p class=''><a target="content_frame"  href="upservice.php"  ><i class='fa fa-folder-open'></i> View upcoming services </a></p>
                                 <p class=''><a target="content_frame"  href="pservice.php"  ><i class='fa fa-folder-open'></i> View past services </a></p>
                                    <p class=''><a target="content_frame"  href="allservice.php"  ><i class='fa fa-folder-open'></i> View all services </a></p>
-                         
+                            <?php  if($_SESSION['level']=='Assistant Pastor' || $_SESSION['level']=='Church Admin' || $_SESSION['level']=='Elder'){?>
                                     <p class=''><a target="content_frame"  href="attendance.php"  ><i class='fa fa-plus-circle'></i> Mark Service Attendance </a></p
-                             
+                             <p class=''><a target="content_frame"  href="reportAttendance.php"  ><i class='fa fa-plus-circle'></i> Generate Attendance Report</a></p
+                            <?php }?>
                                    </div>
                         </div>
                     </div>
    
    &nbsp;
+   <?php  if($_SESSION['level']=='Assistant Pastor' || $_SESSION['level']=='Head Pastor' || $_SESSION['level']=='Church Admin' || $_SESSION['level']=='Elder'){?>
+                            
                      <div class="panel-success panel">
                         <div class="panel-heading">
                             <h4 class="panel-title">
@@ -479,8 +479,10 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                             </div>
                         </div>
                     </div>
+   <?php }?>
   &nbsp;
-   
+   <?php  if($_SESSION['level']=='Assistant Pastor' || $_SESSION['level']=='Church Admin' || $_SESSION['level']=='Elder'){?>
+                            
                      <div class="panel-success panel">
                         <div class="panel-heading">
                             <h4 class="panel-title">
@@ -496,8 +498,9 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                             </div>
                         </div>
                     </div>
-   
+   <?php }?>
    &nbsp;
+   
                      <div class="panel-success panel">
                         <div class="panel-heading">
                             <h4 class="panel-title">
@@ -508,10 +511,13 @@ function MM_openBrWindow(theURL,winName,features) { //v2.0
                         </div>
                         <div class="panel-collapse collapse" id="collapseT21">
                             <div class="panel-body">
+                                <?php  if($_SESSION['level']=='Assistant Pastor' || $_SESSION['level']=='Church Admin' || $_SESSION['level']=='Elder'){?>
+                            
                                 <p class=''><a target="content_frame"  href="addUsers.php"  ><i class='fa fa-plus-circle'></i>  Add Users </a></p>
                                 <p class=''><a target="content_frame"  href="viewUsers.php"  ><i class='fa fa-folder-open'></i> View Users </a></p>
                                 <p class=''><a target="content_frame"  href="backupDBMysqli.php"  ><i class='fa fa-database'></i> Backup Database </a></p>
                                 <p class=''><a target="content_frame"  href="view_log.php"  ><i class='fa fa-folder-open'></i> View Systems Log </a></p>
+                                <?php }?>
                                 <p class=''><a href="javascript://" onclick="self.parent.location='logout.php'" ><i class='fa fa-lock'></i> Logout </a></p>
                                 
                             </div>

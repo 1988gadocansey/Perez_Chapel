@@ -76,8 +76,8 @@
                             <div class="page-wrap">
                                 <div class="note note-success note-bordered">
 						        
-                                                <div style="margin-top:-2.5%;margin-left:1022px">
-                                                       <button   class="btn btn-success  waves-effect waves-button dropdown-toggle btn-sm" style="margin-top: -59px" onClick ="$('#assesment').tableExport({type:'excel',escape:'false'});" title="Export data to excel file"><i class="fa fa-file-excel-o"></i> Export Data</button>
+                                                <div style="margin-top:-2.5%;margin-left:900px">
+                                                       <button   class="btn btn-success  waves-effect waves-button dropdown-toggle btn-sm" style="margin-top: -59px" onClick ="$('#gad').tableExport({type:'excel',escape:'false'});" title="Export data to excel file"><i class="fa fa-file-excel-o"></i> Export Data</button>
                                                         
                                               </div>
                              <div><?php $notify->Message(); ?></div>
@@ -103,7 +103,7 @@
                                            <td>&nbsp;</td>
                                                       
                                             </form>
-                                                <form action="" method="POST">
+<!--                                                <form action="" method="POST">
                                                        <td>
                                                             
                                                       
@@ -116,7 +116,7 @@
                            
                                                        </td>
                                                      
-                                                </form>
+                                                </form>-->
                                                 <td>&nbsp;</td>
                                            <td>&nbsp;</td>
                                            <td>&nbsp;</td>
@@ -158,7 +158,7 @@ $query ="SELECT * FROM `perez_member_category` WHERE 1  $search_ ORDER BY CATEGO
                   
                           ?> 
             <div id="print">
-                  <table id='assesment' class='table table-striped table-hover' >
+                  <table id='gad' class='table table-striped table-hover' >
                       <center><h5 class="text-success"><?php echo $recordsFound?> Records</h5></center>
                   <thead>
                         <tr>
@@ -206,13 +206,8 @@ $query ="SELECT * FROM `perez_member_category` WHERE 1  $search_ ORDER BY CATEGO
                    
                                                 echo "</table>   </div>
                                                 <br/>
-                                                <center>";
-                                                    $GenericEasyPagination->setTotalRecords($recordsFound);
-
-                                                   echo $GenericEasyPagination->getNavigation();
-                                                   echo "<br>";
-                                                   echo $GenericEasyPagination->getCurrentPages();
-                                                  echo"</center>";
+                                                ";
+                                                  
                                             } 
                                             
                           else{
@@ -243,7 +238,33 @@ $query ="SELECT * FROM `perez_member_category` WHERE 1  $search_ ORDER BY CATEGO
 
 		</div>
 
-	<?php include("./_library_/_includes_/js.php"); ?>
+	<script src="assets/scripts/jquery-2.1.1.min.js"></script>
+       
+	<script src="assets/scripts/jquery.dataTables.min.js"></script>
+        <script src="assets/scripts/dataTables.bootstrap.min.js"></script>
+          
+        <script src="assets/scripts/dataTables.keyTable.min.js"></script>
+        
+     
+       <script>
+            $(document).ready(function() {
+                $('#gad').DataTable( {
+                    
+                } );
+            } );
+        </script>
+          
+        
+<script src="assets/scripts/select2.min.js"></script>
+       
+        <script>
+                 $(document).ready(function(){
+                    $('select').select2({ width: "resolve" });
+
+
+                  });
+        </script>
+           <?php include("_library_/_includes_/export.php"); ?> 
         
          
 </body>

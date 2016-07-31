@@ -175,7 +175,7 @@
         }
 ?>
 <?php include("./_library_/_includes_/header.inc"); ?>
-<script src= "assets/ajax.googleapis.com_ajax_libs_angularjs_1.3.14_angular.min.js"></script>
+ <link rel="stylesheet" href="assets/styles/plugins/bootstrap-datepicker.css">
 <body id="app" class="app off-canvas">
      
 	<!-- header -->
@@ -185,19 +185,15 @@
 	</header>
 	<!-- #end header -->
 
-	<!-- main-container -->
-	<div class="main-container clearfix">
-		<!-- main-navigation -->
-		<aside class="nav-wrap" id="site-nav" data-perfect-scrollbar>
-			
-                    <?php include("./_library_/_includes_/menu.inc"); ?>
-                    <link rel="stylesheet" href="assets/styles/plugins/select2.css">
-                    <link rel="stylesheet" type="text/css" href="assets/scripts/plugins/bootstrap-fileinput/bootstrap-fileinput.css"/>
-		</aside>
-		<!-- #end main-navigation -->
 
-		<!-- content-here -->
-		<div class="content-container" id="content">
+    <!-- main-container -->
+    <div class="main-container clearfix">
+        <!-- main-navigation -->
+       
+        <!-- #end main-navigation -->
+
+        <!-- content-here -->
+        <div class="content-container" id="content">
                         
 			<div class="page page-ui-tables">
 				<ol class="breadcrumb breadcrumb-small">
@@ -217,28 +213,7 @@
                             <div class="page-wrap">
                                 <div class="note note-success note-bordered">
 					<!-- row -->
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="alert alert-info">
-                                                    <button type="button" class="close" data-dismiss="alert">
-                                                        <span aria-hidden="true">×</span>
-                                                    </button>
-                                                    <div><strong>System Setup Procedures:</strong>
-                                                        <br/>
-                                                        
-                                                        
-
-                                                        To navigate through the guide, use the buttons in the bottom right-hand corner. Each step will take you to a different area of the system and give a quick explanation of its functions and features. We'll always remember what step you're up to, so feel free to have a look around before moving forward! You can always come back if you need to clarify.
-
-                                                        If you'd like more information on any of the areas mentioned, you can always visit our 'Getting Started Page' for more information. We also have a How-To area, where you can find full setup instructions for each of the App features. If there's anything we miss in this guide, or if you have any further questions, be sure to contact our support team for assistance..
-
-
-                                                    </div>
-                                                </div>
-                                            </div>	 
-
-
-                                        </div>
+                                         
                                 <div class="row">
                                     <!-- Basic Table -->
                                     <div class="col-md-12">
@@ -250,7 +225,7 @@
                                                     <div class="clearfix tabs-vertical">
                                                         <ul class="nav nav-tabs">
                                                             <li class="active"><a href="#tab-vertical-info" data-toggle="tab">Church Information</a></li>
-                                                            <li><a href="#tab-vertical-branch" data-toggle="tab">Add Branches</a></li>
+                                                            
                                                             <li><a href="#tab-vertical-demo" data-toggle="tab">Add Demographics</a></li>
                                                         </ul>
                                                         <div class="tab-content">
@@ -565,164 +540,7 @@
                                                                     </form>
                                                                 </div>
                                                             </div>
-                                                            <div class="tab-pane" id="tab-vertical-branch">
-                                                                <?php
-                                                                   /* $query = $sql->Prepare("SELECT * FROM perez_branches  ");
-
-                                                                    $stmt = $sql->Execute($query);
-                                                                    $rows = $stmt->FetchNextObject();
-                                                                */
-                                                                ?>
-                                                                <h5 class="mt0">Create your some branches here</h5>
-                                                                <form action="setup.php" method="post">
-                                                                <div class="clearfix">
-                                                                    <div class="row">
-                                                                        <div class="col-md-5">
-                                                                            <div class="form-group">
-                                                                                <label class="control-label col-md-3">Branch Code</label>
-                                                                                <div class="col-md-9">
-                                                                                    <input type="text" required="" class="form-control" name="bcode" value="<?php echo $rows->CODE ?>">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                        
-                                                                            <div class="col-md-5">
-                                                                                  <div class="form-group">
-                                                                                      <label class="control-label col-md-3">Branch Name</label>
-                                                                                      <div class="col-md-9">
-                                                                                          <input type="text" class="form-control"   name="bname" value="<?php echo $rows->NAME ?>">
-                                                                                      </div>
-                                                                                  </div>
-                                                                              </div>
-                                         
-                                                                    </div>
-                                                                    <div class="row">
-                                                                        <div class="col-md-5">
-                                                                            <div class="form-group">
-                                                                                <label class="control-label col-md-3">Branch Location</label>
-                                                                                <div class="col-md-9">
-                                                                                    <input type="text" required="" class="form-control" name="blocation" value="<?php echo $rows->LOCATION ?>">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-5">
-                                                                            <div class="form-group">
-                                                                                <label class="control-label col-md-3">Branch Address</label>
-                                                                                <div class="col-md-9">
-                                                                                    <input type="text" required="" class="form-control" name="baddress" value="<?php echo $rows->ADDRESS ?>">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                     </div>
-                                                                    <div class="row">
-                                                                        <div class="col-md-5">
-                                                                            <div class="form-group">
-                                                                                <label class="control-label col-md-3">Branch Circuit</label>
-                                                                                <div class="col-md-9">
-                                                                                    <input type="text" class="form-control"   name="bcircuit" value="<?php echo $rows->Circuit ?>">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-5">
-                                                                            <div class="form-group">
-                                                                                <label class="control-label col-md-3">Branch District</label>
-                                                                                <div class="col-md-9">
-                                                                                    <input type="text" class="form-control"   name="bdistrict" value="<?php echo $rows->DISTRICT ?>">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>    
-                                                                       <div class="row">
-                                                                        <div class="col-md-5">
-                                                                            <div class="form-group">
-                                                                                <label class="control-label col-md-3">Region</label>
-                                                                                <div class="col-md-9">
-                                                                                    <select id="personSelect" name="region" required="" style="width: 100%" data-placeholder="Select a person" class="form-control">
-													 
-                                                                                                            <option value=''>Choose region</option>
-
-                                                                                                            <?php
-                                                                                                            global $sql;
-
-                                                                                                            $query2 = $sql->Prepare("SELECT * FROM perez_regions");
-
-
-                                                                                                            $query = $sql->Execute($query2);
-
-
-                                                                                                            while ($row = $query->FetchRow()) {
-                                                                                                                ?>
-                                                                                                                <option value="<?php echo $row['NAME']; ?>" <?php
-                                                                                                                if ($rows->REGION == $row['NAME']) {
-                                                                                                                    echo "selected='selected'";
-                                                                                                                }
-                                                                                                                ?>        ><?php echo $row['NAME']; ?></option>
-
-                                                                                                        <?php } ?>
-
-                                                                                                        </select>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="col-md-5">
-                                                                            <div class="form-group">
-                                                                                <label class="control-label col-md-3">Branch Phone</label>
-                                                                                <div class="col-md-9">
-                                                                                    <input type="text" class="form-control"   name="bphone" value="<?php echo $rows->PHONE ?>">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>    
-                                                                    <p></p>
-                                                                    
-                                                                    <center>  <div class="clearfix leftm">
-                                                                            <button class="btn btn-primary mr5" name="sub_branch" type="submit">Submit</button>
-                                                                            <button  type="reset"class="btn btn-default">Cancel</button>
-                                                                        </div></center>
-                                                                    
-                                                                </form>
-                                                                <p>&nbsp;</p>
-                                                                <p>BRANCHES</p>
-                                                                     <div class="table-responsive">
-                                                                         <div ng-app="myApp" ng-controller="customersCtrl"> 
-
-                                                                             <table  id="data-table-command" class="table table-striped table-hover">
-                                                                                 <tr>
-                                                                                 <thead>
-
-                                                                                 <th style="text-align:">CODE</th>
-                                                                                 <th>NAME</th>
-                                                                                 <th>LOCATION</th>
-                                                                                 <th>ADDRESS</th>
-                                                                                 <th>CIRCUIT</th>
-                                                                                 <th>DISTRICT</th>
-                                                                                 <th>REGION</th>
-                                                                                 <th>PHONE</th>
-
-
-                                                                                 <th colspan="3" style="text-align: center">ACTION</th>
-                                                                                 </thead>
-                                                                                 </tr>
-                                                                                 <tr ng-repeat="x in names">
-                                                                                     <td>{{x.CODE}}</td>
-                                                                                     <td>{{x.NAME}}</td>
-                                                                                     <td style="text-align:">{{x.LOCATION}}</td>
-                                                                                     <td>{{x.ADDRESS}}</td>
-                                                                                     <td>{{x.CIRCUIT}}</td>
-                                                                                     <td>{{x.DISTRICT}}</td>
-                                                                                     <td>{{x.REGION}}</td>
-                                                                                     <td>{{x.PHONE}}</td>
-                                                                                     <td style="text-align: center"><a href="setup?delete={{x.CODE}}" onclick="return confirm(confirm('Are you sure you want to delete this account??'))"><i class="fa fa-trash"  title="Delete this account"></i></a></td>
-                                                                                     
-                                                                                 </tr>
-                                                                             </table>
-
-                                                                         </div>
-
-
-                                                                     </div>
-                                                                </div>
-                                                            </div>
+                                                            
                                                             
                                                         </div>
                                                     </div>

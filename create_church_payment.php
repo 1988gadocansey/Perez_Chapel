@@ -13,10 +13,18 @@ $ledger = new _classes_\Ledger();
 $login = new _classes_\Login();
 
 if (isset($_POST[submit])) {
-
+    $id=$_POST['id'];
     $name = strip_tags($_POST['name']);
     // check if member exist ...//
+    if(empty($id)){
     $query1 = $sql->Prepare("INSERT INTO perez_church_payment_type_info SET payment_type_name='$name',status='enabled'");
+    }
+    else{
+      $query1 = $sql->Prepare("UPDATE perez_church_payment_type_info SET payment_type_name='$name',status='enabled' WHERE payment_type_id='$id'");
+     
+    }
+    
+    
     $query = $sql->Execute($query1);
      
     if ($query) {
@@ -65,17 +73,30 @@ if (isset($_POST[submit])) {
                             <div class="panel panel-lined panel-hovered mb20 table-responsive basic-table">
 
                                 <div class="panel-body">
-
+                                    <?php
+                                        
+                                            if(isset($_GET[type])){
+                                                $type=$_GET[type];
+                                                
+                                                $query=$sql->Prepare("SELECT * FROM perez_church_payment_type_info WHERE payment_type_id ='$type'");
+                                                 // print_r($query);
+                                                $query_=$sql->Execute($query);
+                                                $rows=$query_->FetchNextObject();
+                                               
+                                            }
+                                        
+                                        
+                                        ?>
                                     <div>
 
                                         <form  action="create_church_payment.php?submit=1" method="post"class="person-form form-horizontal form-horizontal-custom" autocomplete="off" role="form" novalidate="" name="applicationForm"  v-form>
                                             <p>&nbsp;</p>
 
                                             <div class="form-group">
-
+                                                <input type="hidden"value="<?php echo $rows->PAYMENT_TYPE_ID ?>"name="id"/>
                                                 <label for="fieldname" class="col-md-3 control-label">Payment Name</label>
                                                 <div class="col-md-6">
-                                                    <input type="text" name="name"   class="form-control" required="required"  v-model="name"  v-form-ctrl autocomplete="off">
+                                                    <input type="text" name="name" value="<?php echo $rows->PAYMENT_TYPE_NAME ?>"  class="form-control" required="required"  v-model="name"  v-form-ctrl autocomplete="off">
                  
                                                      <p  class=" text-danger text-small  "   v-if="applicationForm.name.$error.required">Name  is required</p>  
                                                 </div>

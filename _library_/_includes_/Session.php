@@ -69,7 +69,7 @@ function logOut(){
     }  
 } 
 // Run Session logout check 
- sessionX(); 
+ //sessionX(); 
  
  
  

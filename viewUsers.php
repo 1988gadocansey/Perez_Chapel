@@ -65,7 +65,7 @@
                                 <div class="note note-success note-bordered">
 						        
                                                 <div style="margin-top:-2.5%;float:right">
-                                                       <button   class="btn btn-success  waves-effect waves-button dropdown-toggle btn-sm" style="margin-top: -59px" onClick ="$('#assesment').tableExport({type:'excel',escape:'false'});" title="Export data to excel file"><i class="fa fa-file-excel-o"></i> Export Data</button>
+                                                       <button   class="btn btn-success  waves-effect waves-button dropdown-toggle btn-sm" style="margin-top: -59px" onClick ="$('#gad').tableExport({type:'excel',escape:'false'});" title="Export data to excel file"><i class="fa fa-file-excel-o"></i> Export Data</button>
                                                         
                                               </div>
                              <div><?php $notify->Message(); ?></div>
@@ -120,7 +120,7 @@
                                                         </select>
                                                    </td>
                                                    <td></td>
-                                                    <td>
+<!--                                                    <td>
                                                 <select class="form-control" name='username'  style="margin-left: 12px" onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?user='+escape(this.value);"   >
                                                     <option value=''>Select user account</option>
                                                     <option value="All users">All users</option>
@@ -140,7 +140,7 @@
                                                                     </select>
                                                                </td>
                                                        <td>&nbsp;</td>
-                                                       <td>&nbsp;</td>
+                                                       <td>&nbsp;</td>-->
                                                        <td>&nbsp;</td>
                                                        <td>
                                                           <img src="assets/images/printer.png"onclick="javascript:printDiv('print')" title="Click to print repo "/>                                                           
@@ -191,7 +191,7 @@ $query ="SELECT * FROM `perez_auth` WHERE 1 $user_ $roles_ $type_ ";
                     {
 
 
-                 echo " <table id='assesment' class='table  table-hover'>"//start table
+                 echo " <table id='gad' class='table  table-hover'>"//start table
 
                           ?> <thead>
                         <tr>
@@ -257,12 +257,7 @@ $query ="SELECT * FROM `perez_auth` WHERE 1 $user_ $roles_ $type_ ";
             echo "</table> 
             <br/>
                                                 <center>";
-                                                    $GenericEasyPagination->setTotalRecords($recordsFound);
-
-                                                   echo $GenericEasyPagination->getNavigation();
-                                                   echo "<br>";
-                                                   echo $GenericEasyPagination->getCurrentPages();
-                                                  echo"</center>";
+                                                    
                         } else{
                                      echo "<div class='alert alert-danger alert-dismissible' role='alert'>
                                            <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
@@ -273,7 +268,7 @@ $query ="SELECT * FROM `perez_auth` WHERE 1 $user_ $roles_ $type_ ";
  
      
     
-            <small>  Generated on <?php echo gmdate("D, d M Y H:i:s") . " GMT";?></small>
+             
  
         </div>
         </div>
@@ -292,7 +287,33 @@ $query ="SELECT * FROM `perez_auth` WHERE 1 $user_ $roles_ $type_ ";
 
 		</div>
 
-	<?php include("./_library_/_includes_/js.php"); ?>
+	<script src="assets/scripts/jquery-2.1.1.min.js"></script>
+       
+	<script src="assets/scripts/jquery.dataTables.min.js"></script>
+        <script src="assets/scripts/dataTables.bootstrap.min.js"></script>
+          
+        <script src="assets/scripts/dataTables.keyTable.min.js"></script>
+        
+     
+       <script>
+            $(document).ready(function() {
+                $('#gad').DataTable( {
+                    
+                } );
+            } );
+        </script>
+          
+        
+<script src="assets/scripts/select2.min.js"></script>
+       
+        <script>
+                 $(document).ready(function(){
+                    $('select').select2({ width: "resolve" });
+
+
+                  });
+        </script>
+           <?php include("_library_/_includes_/export.php"); ?> 
         
          
 </body>

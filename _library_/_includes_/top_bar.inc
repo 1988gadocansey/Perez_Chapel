@@ -104,12 +104,14 @@
 				</div>
 
 			</li>	<!-- #end notification drop -->
-
+                        
 		</ul>
 
 		<ul class="list-unstyled right-elems">
+                   
 			<!-- profile drop -->
 			<li class="profile-drop hidden-xs dropdown">
+                            <span style="color:white"><?php echo $_SESSION['USERNAME'] ?> | <?php echo $_SESSION['level'] ?></span> 
 				<a href="javascript:;" data-toggle="dropdown">
                                     <img src="photos/avatars/<?php echo $_SESSION[USERNAME]?>.jpg" alt="profile-pic">
 				</a>
