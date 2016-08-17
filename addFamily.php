@@ -44,8 +44,10 @@
              
             $id=$_POST[check];
              
-             
-            $data = "CODE='$_POST[code]',LASTNAME='$_POST[lastname]',PHONE='$_POST[phone]',EMAIL='$_POST[email]',ADDRESS='$_POST[address]',REGION='$_POST[region]',COUNTRY='$_POST[country]',CITY='$_POST[city]'";
+             //$help->getCode("FAMILY");
+            $code=substr(strtoupper($config_file->CHURCH_NAME),0,3)."/FAM/".date("Y")."/".$help->getCode("FAMILY");
+             $_SESSION[family]=$code;
+            $data = "CODE='$code',LASTNAME='$_POST[lastname]',PHONE='$_POST[phone]',EMAIL='$_POST[email]',ADDRESS='$_POST[address]',REGION='$_POST[region]',COUNTRY='$_POST[country]',CITY='$_POST[city]'";
             trim($data);
              
                if (empty($id)) {
@@ -59,7 +61,7 @@
                 }
                 if (  $sql->Execute($query2)) {
                    if($update==1){
-                        $help->UpdateIndexno();
+                        $help->UpdateCode('FAMILY');
                    }
 
                      header("location:addFamily?success=1&&member=$_SESSION[family]");
@@ -112,7 +114,8 @@
 
 <?php include("./_library_/_includes_/header.inc"); ?>
 <body id="app" class="app off-canvas">
-     
+     <script src="assets/scripts/vendors.js"></script>
+       
 	<!-- header -->
 	<header class="site-head" id="site-head">
 		
@@ -149,15 +152,7 @@
                                                             <form action="addFamily?" method="post" class="person-form form-horizontal form-horizontal-custom" autocomplete="off" role="form">
                                                                 <input type="hidden" value="<?php echo $rtmt->ID ?>" name="check"/>
 
-                                                            <div class="form-group">
-                                                                <label class="col-lg-4 control-label">Family Code <span class="text-danger">*</span></label>
-                                                                <div class="col-lg-8">
-                                                                    <div class="check-duplicates-popover-parent">
-                                                                        <input type="text" name="code" readonly=""  class="form-control check-duplicates" value="<?php echo $_SESSION[family_] ?>" autocomplete="off">
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
+                                                             
                                                             <div class="form-group">
                                                                 <label class="col-lg-4 control-label">Last Name <span class="text-danger">*</span></label>
                                                                 <div class="col-lg-8">
@@ -450,8 +445,7 @@
                                                     <thead>
                                                         <tr>
                                                              <th>#</th>
-                                                            <th class="col-lg-1"><button type="button"  onclick="return confirm('Are you sure you want to delete this members??')" class="btn btn-default btn-sm md md-delete"></th>
-                                                             
+                                                              
                                                             <th>Family Code</th>
                                                             <th>Name</th>
                                                             <th>Address</th>
@@ -477,12 +471,7 @@
                                                               ?>
                                                            <tr>
                                                                <td><?php echo $count ?></td>
-                                                               <td>
-                                                                       <div class="ui-checkbox ui-checkbox-success ml5">
-                                                                               <label><input type="checkbox"><span></span>
-                                                                               </label>
-                                                                       </div>
-                                                                </td>
+                                                               
                                                              
                                                              <td style="text-align:"><?php echo $rtmt[CODE] ?></td>
                                                              <td style="text-align:"><?php echo $rtmt[LASTNAME] ?></td>

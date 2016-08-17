@@ -47,7 +47,7 @@
          
     // 
       if(isset($_POST[save])){
-           $code=$help->getCode("ACCOUNT");
+          // $code=$help->getCode("ACCOUNT");
            $member_code=$_POST[member_code];
             $age = $help->age($_POST[member_dob], "us");
             $id=$_POST[check];
@@ -70,30 +70,30 @@
             trim($data);
             if($_POST[member_send_login]=="yes"){
                    $message="Here is your member portal login details Username='$_POST[member_username]',Password=$_POST[member_password1]";
-                     $sms->sendSMS1($_POST[member_phone], $message); 
+                    // $sms->sendSMS1($_POST[member_phone], $message); 
                }
                if (empty($id)) {
                     $query2 = $sql->Prepare("INSERT INTO perez_members  SET $data ");
                     //$query = $sql->Prepare("INSERT INTO perez_members_auth(USER,USERNAME,PASSWORD)VALUES('$_POST[member_code]','$_POST[member_username]','$password')");
                     // $query3 =$sql->Prepare("INSERT INTO tbl_accounts(ACCOUNT_NAME,PARENT_ACCOUNT,ACCOUNT_DESCRIPTION,AFFECTS,ACCOUNT_BALANCE,ACCOUNT_CODE,BALANCE_TYPE,BUSINESS_PERSON,BANK_ACCOUNT_NUM)VALUES ('$member_code','2','created ledger account for member','Balance Sheet','0','$code','Debit','$business_person','$account_number')");
-
+                    print_r($query2);
                     $update = 1;
                 }
                 else{
                 $query2 = $sql->Prepare("UPDATE  perez_members  SET $data WHERE ID='$_POST[check]'");
-                    $query = $sql->Prepare("UPDATE perez_members_auth SET USER='$_POST[member_code]',USERNAME='$_POST[member_username]',PASSWORD='$password' WHERE USER='$_POST[member_code]'");
-                    //print_r($query2);
+                   // $query = $sql->Prepare("UPDATE perez_members_auth SET USER='$_POST[member_code]',USERNAME='$_POST[member_username]',PASSWORD='$password' WHERE USER='$_POST[member_code]'");
+                     //print_r($query2);
                 }
                 if ($sql->Execute($query2) ) {
                    if($update==1){
                         $help->UpdateIndexno();
-                          $help->UpdateCode("ACCOUNT");
+                          //$help->UpdateCode("ACCOUNT");
                    }
 
-                     header("location:members?success=1&&member=$_SESSION[member]");
+                      header("location:addmember?success=1&&member=$_SESSION[member]");
                 } 
                 else {
-                      header("location:members?error=1&&member=$_SESSION[member]");
+                      header("location:addmember?error=1&&member=$_SESSION[member]");
                 }
         }
 ?>  
@@ -423,7 +423,7 @@ echo $help->picture("photos/members/$person.jpg", 199) ?>  src="<?php echo file_
             <div class="form-group">
                 <label class="col-lg-4 control-label">Ministry Assigned</label>
                 <div class="col-lg-8">
-                    <select id="ministry" name="member_ministry" required=""   data-placeholder="Select a Member category" class="form-control">
+                    <select id="ministry" name="member_ministry"     data-placeholder="Select a Member category" class="form-control">
 
                         <option value=''> Ministries</option>
    
@@ -662,7 +662,7 @@ echo $help->picture("photos/members/$person.jpg", 199) ?>  src="<?php echo file_
             </div>
             <p>&nbsp;</p>
             <div class="form-group">
-                <label class="col-lg-4 control-label">Giving Number <i class="fa fa-question-circle fa-fw" title="A unique privacy number for tax deductible giving." data-toggle="tooltip"></i></label>
+                <label class="col-lg-4 control-label">Giving Number <i class="fa fa-question-circle fa-fw" title="A unique privacy number for payments in the church such as tithe, pledges..." data-toggle="tooltip"></i></label>
                 <div class="col-lg-8">
                     <input type="text" name="member_giving_number" value="<?php echo $rtmt->GIVING_NUMBER; ?>" class="form-control"   autocomplete="off">
                 </div>

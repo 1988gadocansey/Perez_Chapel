@@ -637,7 +637,7 @@
                                                                <td><?php echo $count ?></td>
                                                                 
                                                               <td style="text-align:"><?php echo $rtmt[MEMBER_CODE] ?></td>
-                                                              <td><a href="addMember.php?member=<?php echo  $rtmt[MEMBER_CODE] ?>&&update"><img  <?php   $pic=  $help->pictureid($rtmt[MEMBER_CODE]);  echo$help->picture("photos/members/$pic.JPG",'90')  ?>   src="<?php echo file_exists("photos/members/$pic.JPG") ? "photos/members/$pic.JPG":"photos/members/user.jpg";?>" alt=" Picture of Student Here"    /></a></td>
+                                                              <td><a href="addMember.php?member=<?php echo  $rtmt[MEMBER_CODE] ?>&&update"><img  <?php   $pic=  $help->pictureid($rtmt[MEMBER_CODE]);  echo$help->picture("photos/members/$pic.jpg",'90')  ?>   src="<?php echo file_exists("photos/members/$pic.jpg") ? "photos/members/$pic.jpg":"photos/members/user.jpg";?>" alt=" Picture of Student Here"    /></a></td>
                                                             
                                                              <td style="text-align:"><?php echo $rtmt[TITLE]." ". $rtmt[LASTNAME]." ,".$rtmt[FIRSTNAME]." ".$rtmt[OTHERNAMES] ?></td>
                                                              <td style="text-align:"><?php echo $rtmt[GENDER] ?></td>
