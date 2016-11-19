@@ -297,13 +297,7 @@ var options = {
         }
 
       else {
-        if (confirm("Do you want to make add more?")) {
-           $('#alertInfo').css('display','none').html("");
-          return true;
-         }
-      else {
-          return false;
-      }
+        //
        }
              },
           url : 'processChild.php',
@@ -311,7 +305,8 @@ var options = {
             requestType : "ajax"
           },
           success : function(msg) {
-
+             // window.href.location="viewChild.php";
+            alert("Child added successfully");
                  },
           failure : function() {
             alert('Sorry...failure occurred');

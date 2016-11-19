@@ -424,8 +424,7 @@
                                                     <table>
                                                         <tr>
 
-                                         <td>&nbsp;</td>
-                                          
+                                           
                                           <td width="25%">
                                             <select class='form-control'  id="familsy" style=" margin-left: -3px; width:182px"  onchange="document.location.href='<?php echo $_SERVER['PHP_SELF'] ?>?demo='+escape(this.value);"     >
                                             <option value=''>by demographics</option>
@@ -661,12 +660,12 @@
                                                 </table>
                                                     <br/>
                                                 <center><?php
-//                                                    $GenericEasyPagination->setTotalRecords($recordsFound);
-//
-//                                                   echo $GenericEasyPagination->getNavigation();
-//                                                   echo "<br>";
-//                                                   echo $GenericEasyPagination->getCurrentPages();
-//                                                 ?></center>
+                                                    $GenericEasyPagination->setTotalRecords($recordsFound);
+
+                                                   echo $GenericEasyPagination->getNavigation();
+                                                   echo "<br>";
+                                                   echo $GenericEasyPagination->getCurrentPages();
+                                                 ?></center>
                                          <?php }else{
                                                             echo "<div class='alert alert-danger alert-dismissible' role='alert'>
                                                                   <button type='button' class='close' data-dismiss='alert' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
@@ -703,7 +702,7 @@
      
        <script>
             $(document).ready(function() {
-                $('#gad').DataTable( {
+                $('#gads').DataTable( {
                     
                 } );
             } );

@@ -76,7 +76,7 @@
                     $query2 = $sql->Prepare("INSERT INTO perez_members  SET $data ");
                     //$query = $sql->Prepare("INSERT INTO perez_members_auth(USER,USERNAME,PASSWORD)VALUES('$_POST[member_code]','$_POST[member_username]','$password')");
                     // $query3 =$sql->Prepare("INSERT INTO tbl_accounts(ACCOUNT_NAME,PARENT_ACCOUNT,ACCOUNT_DESCRIPTION,AFFECTS,ACCOUNT_BALANCE,ACCOUNT_CODE,BALANCE_TYPE,BUSINESS_PERSON,BANK_ACCOUNT_NUM)VALUES ('$member_code','2','created ledger account for member','Balance Sheet','0','$code','Debit','$business_person','$account_number')");
-                    print_r($query2);
+                    //print_r($query2);
                     $update = 1;
                 }
                 else{
@@ -90,10 +90,10 @@
                           //$help->UpdateCode("ACCOUNT");
                    }
 
-                      header("location:addmember?success=1&&member=$_SESSION[member]");
+                      header("location:addMember.php?success=1&&member=$_SESSION[member]");
                 } 
                 else {
-                      header("location:addmember?error=1&&member=$_SESSION[member]");
+                      header("location:addMember.php?error=1&&member=$_SESSION[member]");
                 }
         }
 ?>  
@@ -146,7 +146,7 @@
 
                                    }
                                      
-                                     elseif (isset ($_GET["new"])){
+                                     elseif (isset ($_GET["new"])||  $_SERVER["REQUEST_URL"] ="/addMember"){
                                          if($config_file->MEMBER_ID_GEN==1){
                                              $_SESSION[member]="";
                                                $_SESSION[member_]=substr(strtoupper($config_file->CHURCH_NAME),0,3).date("Y").$help->getindexno();
@@ -172,22 +172,7 @@
 					<!-- row -->
                                         <div class="row">
                                               <div class="col-md-12" style="width:1200px;margin-left: -95px">
-                                                <div class="alert alert-info">
-                                                    <button type="button" class="close" data-dismiss="alert">
-                                                        <span aria-hidden="true">×</span>
-                                                    </button>
-                                                    <div><strong>System Setup Procedures:</strong>
-                                                        <br/>
-                                                        
-                                                        
-
-                                                        To navigate through the guide, use the buttons in the bottom right-hand corner. Each step will take you to a different area of the system and give a quick explanation of its functions and features. We'll always remember what step you're up to, so feel free to have a look around before moving forward! You can always come back if you need to clarify.
-
-                                                        If you'd like more information on any of the areas mentioned, you can always visit our 'Getting Started Page' for more information. We also have a How-To area, where you can find full setup instructions for each of the <?php echo $config_file->CHURCH_NAME;  ?> features. If there's anything we miss in this guide, or if you have any further questions, be sure to contact our support team for assistance..
-
-
-                                                    </div>
-                                                </div>
+                                                 
                                             </div>	 
 
 

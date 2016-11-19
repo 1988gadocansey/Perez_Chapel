@@ -160,7 +160,7 @@ ob_start();
                                         
                                          
                                             <div class="panel-body">
-                                                <div class="table-responsive">
+<!--                                                <div class="table-responsive">
                                                         
                                            <form action="" method="post">
                                                     <table  width=" " border="0">
@@ -207,7 +207,7 @@ ob_start();
                                              </form>
                                        <br/>
                                      
-                                </div>
+                                </div>-->
                                                
                                                
                                                 <!-- end filters   -->
@@ -219,10 +219,10 @@ ob_start();
                                                        if($_POST[start]=="" ){ $startDate_=""; }else {$startDate_="AND startDate BETWEEN '$_POST[start]' AND '$_POST[end]' "  ;}
                                                        if($search=="" ){ $search=""; }else {$search_="AND name LIKE '%$search%' "  ;}
 
-                                                            $query="SELECT  * FROM perez_services  where 1 AND startDate=NOW() ";
+                                                            $query="SELECT  * FROM perez_services  where 1 AND startDate=CURDATE() ";
 
                                                             $_SESSION[last_query]=$query; 
-                                                           print_r($query);
+                                                          // print_r($query);
                                                             $rs = $sql->PageExecute($query,RECORDS_BY_PAGE,CURRENT_PAGE);
                                                             $recordsFound = $rs->_maxRecordCount;    // total record found
                                                            if (!$rs->EOF) 

@@ -203,7 +203,7 @@
                                                            <tr>
                                                                <td><?php echo $count ?></td>
                                                                
-                                                             <td><a href="updateChild.php?child=<?php echo  $rtmt[ID] ?>&&update"><img  <?php   $pic=  $help->pictureid($rtmt[CODE]); echo $help->picture("photos/children/$pic.jpg",90)  ?>   src="<?php echo 'photos/children/'.$pic.jpg ? "photos/children/$pic.jpg":"photos/members/user.jpg";?>" alt=" Picture of Student Here"    /></a></td>
+                                                             <td><a href="updateChild.php?child=<?php echo  $rtmt[ID] ?>&&update"><img  <?php   $pic=  $help->pictureid($rtmt[CODE]); echo $help->picture("photos/children/$pic.jpg",90)  ?>   src="<?php echo 'photos/children/'.$pic.jpg ? "photos/children/$pic.jpg":"photos/members/user.jpg";?>" alt=" Picture of child Here"    /></a></td>
                                                              <td style="text-align:"><?php echo $rtmt[CODE] ?></td>
                                                              <td style="text-align:"><?php echo $rtmt[NAME] ?></td>
                                                           

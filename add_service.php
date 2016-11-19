@@ -44,7 +44,7 @@
             $dateto=strip_tags($_POST[dateto]);
             $session=strip_tags($_SESSION['ID']);
           $data="code='$code',`type`='$type', `name`='$name', `theme`='$theme', `guests`='$guest', `venue`='$venue', `startDate`='$datefrom', `endDate`='$dateto', `startName`='$defaultName', `startTime`='$defaultfrom', `endTime`='$defaultto', `otherStartTimeName`='$othername', `otherStartTime`='$othertimefrom', `otherEndTime`='$othertimeto', `frequency`='$frequency', `attendants`='$members', `publish`='$publish',createdby='$session'";
-           print_r(trim($data));
+           //print_r(trim($data));
              
                if (empty($id)){
                     $query2 = $sql->Prepare("INSERT INTO perez_services  SET $data ");
@@ -61,10 +61,10 @@
                         $help->UpdateCode('SERVICE');
                    }
 
-                    header("location:group?success=1&&group=$_SESSION[group]");
+                    header("location:allservice?success=1");
                 } 
                 else {
-                    header("location:group?error=1&&group=$_SESSION[group]");
+                    header("location:add_service");
                 }
         }
 ?>  

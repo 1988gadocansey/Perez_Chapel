@@ -30,6 +30,6 @@ if(!isset($_SESSION[USERNAME]) || $newip!=$_SESSION["IP"]){
         exit;
    }*/
 if ($_GET["page"]!=""):		$page	= $_GET["page"];	else:	$page	= 1;		endif;
-        define ('RECORDS_BY_PAGE',10);
+        define ('RECORDS_BY_PAGE',100);
         define ('CURRENT_PAGE',$page);
          $GenericEasyPagination =new _classes_\GenericEasyPagination(CURRENT_PAGE,RECORDS_BY_PAGE,"eng");
