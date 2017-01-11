@@ -9,6 +9,9 @@
         $help=new _classes_\helpers();
         $notify=new _classes_\Notifications();
         $sms=new _classes_\smsgetway();
+        $config_file=$help->getConfig() ;
+                                    
+                                
         if(isset($_GET[member])){
            $_SESSION[member]=$_GET[member];
         }
@@ -66,18 +69,20 @@
             $service= implode(",",$_POST["member_service"]);
             $language= implode(",",$_POST["member_language"]);
             $group= implode(",",$_POST["group"]);
-            $data = "MEMBER_CODE='$_POST[member_code]',BARCODE='',DATE_JOINED='$joined',DATE_BAPTISTED='$baptised',TITLE='$_POST[member_title]',FIRSTNAME='$_POST[member_firstname]',LASTNAME='$_POST[member_lastname]',OTHERNAMES='$_POST[member_othernames]',ARCHIVED='',CONTACT='',DECEASED='$_POST[member_deceased]',GENDER='$_POST[member_gender]',DOB='$dob',AGE='$age',MARITAL_STATUS='$_POST[member_marital_status]',ANNIVERSARY='',EMAIL='$_POST[member_email]',PHONE='$_POST[member_phone]',TELEPHONE='$_POST[member_telephone]', RESIDENTIAL_ADDRESS='$_POST[member_residential]',CONTACT_ADDRESS='$_POST[member_address]',HOMETOWN='$_POST[member_hometown]',REGION='$_POST[member_region]',COUNTRY='$_POST[member_country]',SECURITY_CODE='',RECEIPT='$_POST[member_receipt]',GIVING_NUMBER='$_POST[member_giving_number]',FAMILY_RELATIONSHIP='$_POST[member_relationship]',MUSIC_TEAM='$_POST[member_team]',DEMOGRAPHICS='$demography',SERVICE_TYPE='$service',LOCATION='$_POST[member_location]',OCCUPATION='$_POST[member_occupation]',PLACE_OF_WORK='$_POST[member_workplace]',NEXT_OF_KIN='$_POST[member_kname]',NEXT_OF_KIN_ADDRESS='$_POST[member_kaddress]',NEXT_OF_KIN_PHONE='$_POST[member_kphone]',PEOPLE_CATEGORY='$_POST[member_category]',MINISTRY='$_POST[member_ministry]',LANGUAGES='$language',ETHNIC='$_POST[member_ethnic]',ACCESS='$access_',DEPARTMENT='$department',SUNDAY_SCHOOL_GRADE='$_POST[member_school_grade]',REPORT='$_POST[member_report]',VOLUNTEER='$_POST[volunteer]',SMS_SUBSCRIBE_SCHEDULES='$_POST[member_sms_schedule]',SMS_SUBSCRIBE='$_POST[member_sms]',EMAIL_UNSUBSCRIBE_SCHEDULES='$_POST[member_email_unsubscribes_schedule]',EMAIL_UNSUBSCRIBE='$_POST[member_email_unsubscribes]',FAMILY='$_POST[family]',GROUPS='$group'";
+             $code=substr(strtoupper($config_file->CHURCH_NAME),0,3).date("Y").$help->getindexno();
+                                         
+            $data = "BRANCH='$_POST[member_location]',MEMBER_CODE='$code',BARCODE='',DATE_JOINED='$joined',DATE_BAPTISTED='$baptised',TITLE='$_POST[member_title]',FIRSTNAME='$_POST[member_firstname]',LASTNAME='$_POST[member_lastname]',OTHERNAMES='$_POST[member_othernames]',ARCHIVED='',CONTACT='',DECEASED='$_POST[member_deceased]',GENDER='$_POST[member_gender]',DOB='$dob',AGE='$age',MARITAL_STATUS='$_POST[member_marital_status]',ANNIVERSARY='',EMAIL='$_POST[member_email]',PHONE='$_POST[member_phone]',TELEPHONE='$_POST[member_telephone]', RESIDENTIAL_ADDRESS='$_POST[member_residential]',CONTACT_ADDRESS='$_POST[member_address]',HOMETOWN='$_POST[member_hometown]',REGION='$_POST[member_region]',COUNTRY='$_POST[member_country]',SECURITY_CODE='',RECEIPT='$_POST[member_receipt]',GIVING_NUMBER='$_POST[member_giving_number]',FAMILY_RELATIONSHIP='$_POST[member_relationship]',MUSIC_TEAM='$_POST[member_team]',DEMOGRAPHICS='$demography',SERVICE_TYPE='$service',LOCATION='$_POST[member_location]',OCCUPATION='$_POST[member_occupation]',PLACE_OF_WORK='$_POST[member_workplace]',NEXT_OF_KIN='$_POST[member_kname]',NEXT_OF_KIN_ADDRESS='$_POST[member_kaddress]',NEXT_OF_KIN_PHONE='$_POST[member_kphone]',PEOPLE_CATEGORY='$_POST[member_category]',MINISTRY='$_POST[member_ministry]',LANGUAGES='$language',ETHNIC='$_POST[member_ethnic]',ACCESS='$access_',DEPARTMENT='$department',SUNDAY_SCHOOL_GRADE='$_POST[member_school_grade]',REPORT='$_POST[member_report]',VOLUNTEER='$_POST[volunteer]',SMS_SUBSCRIBE_SCHEDULES='$_POST[member_sms_schedule]',SMS_SUBSCRIBE='$_POST[member_sms]',EMAIL_UNSUBSCRIBE_SCHEDULES='$_POST[member_email_unsubscribes_schedule]',EMAIL_UNSUBSCRIBE='$_POST[member_email_unsubscribes]',FAMILY='$_POST[family]',GROUPS='$group'";
             trim($data);
             if($_POST[member_send_login]=="yes"){
                    $message="Here is your member portal login details Username='$_POST[member_username]',Password=$_POST[member_password1]";
                     // $sms->sendSMS1($_POST[member_phone], $message); 
                }
                if (empty($id)) {
+               
                     $query2 = $sql->Prepare("INSERT INTO perez_members  SET $data ");
-                    //$query = $sql->Prepare("INSERT INTO perez_members_auth(USER,USERNAME,PASSWORD)VALUES('$_POST[member_code]','$_POST[member_username]','$password')");
-                    // $query3 =$sql->Prepare("INSERT INTO tbl_accounts(ACCOUNT_NAME,PARENT_ACCOUNT,ACCOUNT_DESCRIPTION,AFFECTS,ACCOUNT_BALANCE,ACCOUNT_CODE,BALANCE_TYPE,BUSINESS_PERSON,BANK_ACCOUNT_NUM)VALUES ('$member_code','2','created ledger account for member','Balance Sheet','0','$code','Debit','$business_person','$account_number')");
-                    //print_r($query2);
-                    $update = 1;
+                      $update = 1;
+                       $queryUpdate=$sql->Prepare("UPDATE perez_code_gen SET no=no + 1");
+                        $sql->Execute($queryUpdate) ;
                 }
                 else{
                 $query2 = $sql->Prepare("UPDATE  perez_members  SET $data WHERE ID='$_POST[check]'");
@@ -85,10 +90,7 @@
                      //print_r($query2);
                 }
                 if ($sql->Execute($query2) ) {
-                   if($update==1){
-                        $help->UpdateIndexno();
-                          //$help->UpdateCode("ACCOUNT");
-                   }
+                    
 
                       header("location:addMember.php?success=1&&member=$_SESSION[member]");
                 } 
@@ -128,9 +130,7 @@
                             <div><?php $notify->Message(); ?></div>
                             <?php
                                    
-                                   $config_file=$help->getConfig() ;
-                                    
-                                
+                                  
                                      if(isset($_GET[member])){
                                     $qt = $sql->Prepare("SELECT * FROM perez_members WHERE   MEMBER_CODE ='$_SESSION[member]'  ");
 
@@ -143,15 +143,15 @@
                                     $service_array = explode(",",$rtmt->SERVICE_TYPE);
                                     $language_array = explode(",",$rtmt->LANGUAGES);
                                      $group_array = explode(",",$rtmt->GROUPS);
-
+                                     $_SESSION[member]=$rtmt->MEMBER_CODE;
+                                     $_SESSION[member_]=$rtmt->MEMBER_CODE;
                                    }
                                      
                                      elseif (isset ($_GET["new"])||  $_SERVER["REQUEST_URL"] ="/addMember"){
                                          if($config_file->MEMBER_ID_GEN==1){
-                                             $_SESSION[member]="";
-                                               $_SESSION[member_]=substr(strtoupper($config_file->CHURCH_NAME),0,3).date("Y").$help->getindexno();
-                                         
-                                               $_SESSION[member]=$_SESSION[member_];
+                                            // $_SESSION[member]="";
+                                              
+                                              // $_SESSION[member]=$_SESSION[member_];
                                          }
                                          else{
                                              
@@ -195,7 +195,7 @@
             <center> <span class="label label-success">Only jpg file accept and maximum should be 2MB</span></center>
                                     <p></p>
                                     <div class="col-md-9" style="margin-left: 12%">
-                                        <form action="addMember?upload=1" method="POST" enctype="multipart/form-data">
+                                        <form action="addMember.php?upload=1" method="POST" enctype="multipart/form-data">
                                             <div class="fileinput fileinput-new" data-provides="fileinput">
                                                 <div class="fileinput-new thumbnail" style="width: 200px; height: 186px;">
                                                     <img <?php 
@@ -226,7 +226,7 @@ echo $help->picture("photos/members/$person.jpg", 199) ?>  src="<?php echo file_
 
                                 </div>
         <div class="col-sm-6">
-            <form action="addMember?" method="post" class="person-form form-horizontal form-horizontal-custom" autocomplete="off" role="form">
+            <form action="addMember.php?" method="post" class="person-form form-horizontal form-horizontal-custom" autocomplete="off" role="form">
                 <input type="hidden" value="<?php echo $rtmt->ID ?>" name="check"/>
             <div class="form-group">
                 <label class="col-lg-4 control-label">Title <span class="text-danger">*</span></label>
@@ -331,7 +331,7 @@ echo $help->picture("photos/members/$person.jpg", 199) ?>  src="<?php echo file_
                         </div>
                 </div>
             </div>
-            <div class="form-group"><label class="col-lg-4 control-label">Gender</label>
+            <div class="form-group"><label class="col-lg-4 control-label">Gender <span class="text-danger">*</span></label>
                 <div class="col-lg-8">
                     <select name="member_gender" class="form-control" id="gender" required="">
                         <option value=""></option>
@@ -375,7 +375,7 @@ echo $help->picture("photos/members/$person.jpg", 199) ?>  src="<?php echo file_
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-4 control-label">Member Category</label>
+                <label class="col-lg-4 control-label">Member Category <span class="text-danger">*</span></label>
                 <div class="col-lg-8">
                     <select id="category" name="member_category" required=""   data-placeholder="Select a Member category" class="form-control">
 
@@ -509,16 +509,7 @@ echo $help->picture("photos/members/$person.jpg", 199) ?>  src="<?php echo file_
                 </div>
             </div>
             <p>&nbsp;</p>
-            <div class="form-group">
-                <label class="col-lg-4 control-label">Member Code <span class="text-danger">*</span></label>
-                <div class="col-lg-8">
-                    <div class="check-duplicates-popover-parent">
-                        <input type="text" name="member_code"  required="" class="form-control check-duplicates" value="<?php echo $_SESSION[member_] ?>" readonly="" autocomplete="off">
-                        
-                    </div>
-                </div>
-            </div>
-            <p>&nbsp;</p>
+             
             <div class="form-group">
                 <label class="col-lg-4 control-label">Ethnic group</label>
                 <div class="col-lg-8">
@@ -579,7 +570,7 @@ echo $help->picture("photos/members/$person.jpg", 199) ?>  src="<?php echo file_
             <p>&nbsp;</p>
             <div class="form-group">
                 <div class="input-field">
-                    <label class="col-lg-4 control-label">Family Relationship</label>
+                    <label class="col-lg-4 control-label">Family Relationship <span class="text-danger">*</span></label>
                     <div class="col-lg-8"> 
                         <select name="member_relationship" class="form-control" required="" id="personSelect">
                             <option value="">-- None --</option>
@@ -627,17 +618,8 @@ echo $help->picture("photos/members/$person.jpg", 199) ?>  src="<?php echo file_
                     </select>
                 </div>
             </div>
-            <p>&nbsp;</p>
-            <div class="form-group">
-                <label class="col-lg-4 control-label">Anniversary</label>
-                <div class="col-lg-8">
-                    <div class="input-group date" id="datepickerDemo1">
-                        <input type="text" class="form-control" name="member_anniversary" value="NEW"/>
-                         
-                    </div>
-                </div>
-            </div>
-            <p>&nbsp;</p>
+            
+<!--            <p>&nbsp;</p>
              
             <div class="form-group">
                 <label class="col-lg-4 control-label">Receipt Name <i class="fa fa-question-circle fa-fw" title="The name this person requires on their tax receipt." data-toggle="tooltip"></i></label>
@@ -651,7 +633,7 @@ echo $help->picture("photos/members/$person.jpg", 199) ?>  src="<?php echo file_
                 <div class="col-lg-8">
                     <input type="text" name="member_giving_number" value="<?php echo $rtmt->GIVING_NUMBER; ?>" class="form-control"   autocomplete="off">
                 </div>
-            </div>
+            </div>-->
             <p>&nbsp;</p>
             <div class="form-group">
                 <label class="col-lg-4 control-label">Access Permissions <i class="fa fa-question-circle fa-fw" title="This determines what access this person has." data-toggle="tooltip"></i></label>
@@ -714,7 +696,7 @@ echo $help->picture("photos/members/$person.jpg", 199) ?>  src="<?php echo file_
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-4 control-label">Next of Kin Phone  </label>
+                <label class="col-lg-4 control-label">Next of Kin Phone <span class="text-danger">*</span> </label>
                 <div class="col-lg-8">
                     <input type="text" required="" name="member_kphone" id="member_" class="form-control check-duplicates" value="<?PHP echo $rtmt->NEXT_OF_KIN_PHONE ?>" autocomplete="off">
                    
@@ -723,7 +705,7 @@ echo $help->picture("photos/members/$person.jpg", 199) ?>  src="<?php echo file_
            
              
             <div class="form-group">
-                <label class="col-lg-4 control-label">Next of Kin Address</label>
+                <label class="col-lg-4 control-label">Next of Kin Address <span class="text-danger">*</span></label>
                 <div class="col-lg-8">
                     <input type="text" name="member_kaddress" required=""class="form-control" value="<?PHP echo $rtmt->NEXT_OF_KIN_ADDRESS ?>" autocomplete="off">
                 </div>
@@ -849,7 +831,7 @@ echo $help->picture("photos/members/$person.jpg", 199) ?>  src="<?php echo file_
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-lg-4 control-label">Home Town  </label>
+                <label class="col-lg-4 control-label">Home Town <span class="text-danger">*</span> </label>
                 <div class="col-lg-8">
                     <input type="text" name="member_hometown" id="member_" required="" class="form-control check-duplicates" value="<?php echo $rtmt->HOMETOWN ?>" autocomplete="off">
                    
@@ -950,7 +932,7 @@ echo $help->picture("photos/members/$person.jpg", 199) ?>  src="<?php echo file_
                     </div>
                 </div>
             </div>
-            <div class="form-group">
+<!--            <div class="form-group">
                 <label class="col-lg-4 control-label">Username</label>
                 <div class="col-lg-8">
                     <input type="text" name="member_username" id="member_username" class="form-control"  autocomplete="off" autocapitalize="none" autocapitalize="off" autocorrect="off" maxlength="30">
@@ -972,7 +954,7 @@ echo $help->picture("photos/members/$person.jpg", 199) ?>  src="<?php echo file_
                             <input type="checkbox" name="member_send_login" value="yes" checked=""><span> Send these login details to the new user via sms?</span></label>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <div class="form-group">
                 <label class="col-lg-4 control-label">Reports To</label>
                 <div class="col-lg-8">

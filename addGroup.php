@@ -56,8 +56,10 @@
             $department= implode(",",$_POST["group_department"]);
              $days= implode(",",$_POST["days"]);
             $id=$_POST[check];
+             $code=substr(strtoupper($config_file->CHURCH_NAME),0,3).date("Y")."/G/".$help->getGroupCode();
+                                         
             //$data = "GROUP_CODE='$_POST[group_code]',LEADER='$_POST[group_leader]',NAME='$_POST[group_name]',DAYS='$days',TITLE='$_POST[group_title]',FIRSTNAME='$_POST[group_firstname]',LASTNAME='$_POST[group_lastname]',OTHERNAMES='$_POST[group_othernames]',ARCHIVED='',CONTACT='',DECEASED='$_POST[group_deceased]',GENDER='$_POST[group_gender]',DOB='$dob',AGE='$age',MARITAL_STATUS='$_POST[group_marital_status]',ANNIVERSARY='',EMAIL='$_POST[group_email]',PHONE='$_POST[group_phone]',TELEPHONE='$_POST[group_telephone]', RESIDENTIAL_ADDRESS='$_POST[group_residential]',CONTACT_ADDRESS='$_POST[group_address]',HOMETOWN='$_POST[group_hometown]',REGION='$_POST[group_region]',COUNTRY='$_POST[group_country]',SECURITY_CODE='',RECEIPT='$_POST[group_receipt]',GIVING_NUMBER='$_POST[group_giving_number]',FAMILY_RELATIONSHIP='$_POST[group_relationship]',MUSIC_TEAM='$_POST[group_team]',DEMOGRAPHICS='$demography',SERVICE_TYPE='$service',LOCATION='$_POST[group_location]',OCCUPATION='$_POST[group_occupation]',PLACE_OF_WORK='$_POST[group_workplace]',NEXT_OF_KIN='$_POST[group_kname]',NEXT_OF_KIN_ADDRESS='$_POST[group_kaddress]',NEXT_OF_KIN_PHONE='$_POST[group_kphone]',PEOPLE_CATEGORY='$_POST[group_category]',MINISTRY='$_POST[group_ministry]',LANGUAGES='$language',ETHNIC='$_POST[group_ethnic]',ACCESS='$access_',DEPARTMENT='$department',SUNDAY_SCHOOL_GRADE='$_POST[group_school_grade]',REPORT='$_POST[group_report]',VOLUNTEER='$_POST[volunteer]',SMS_SUBSCRIBE_SCHEDULES='$_POST[group_sms_schedule]',SMS_SUBSCRIBE='$_POST[group_sms]',EMAIL_UNSUBSCRIBE_SCHEDULES='$_POST[group_email_unsubscribes_schedule]',EMAIL_UNSUBSCRIBE='$_POST[group_email_unsubscribes]'";
-           $data="`GROUP_CODE`='$_POST[group_code]', `NAME`='$_POST[group_name]', `LEADER`='$_POST[group_leader]', `CATEGORIES`='$_POST[group_category]', `LOCATION`='$_POST[group_location]', `END_DATE`='$enddate', `START_DATE`='$startdate', `DAYS`='$days', `END_TIME`='$_POST[group_endtime]', `START_TIME`='$_POST[group_starttime]', `FREQUENCY`='$_POST[group_frequency]', `DEPARTMENTS`='$department', `DEMOGRAPHICS`='$demography', `ADDRESS`='$_POST[group_address]', `STATUS`='$_POST[group_status]'";
+           $data="`GROUP_CODE`='$code', `NAME`='$_POST[group_name]', `LEADER`='$_POST[group_leader]', `CATEGORIES`='$_POST[group_category]', `LOCATION`='$_POST[group_location]', `END_DATE`='$enddate', `START_DATE`='$startdate', `DAYS`='$days', `END_TIME`='$_POST[group_endtime]', `START_TIME`='$_POST[group_starttime]', `FREQUENCY`='$_POST[group_frequency]', `DEPARTMENTS`='$department', `DEMOGRAPHICS`='$demography', `ADDRESS`='$_POST[group_address]', `STATUS`='$_POST[group_status]'";
            print_r( trim($data));
              
                if (empty($id)) {
@@ -71,9 +73,10 @@
                      
                 }
                 if ($sql->Execute($query2)) {
-                   if($update==1){
-                        $help->UpdateGroupCode();
-                   }
+                      $help->UpdateGroupCode();
+//                   if($update==1){
+//                      
+//                   }
 
                     header("location:group?success=1&&group=$_SESSION[group]");
                 } 
@@ -132,15 +135,15 @@
                                      
                                     $department_array = explode(",",$rtmt->DEPARTMENTS);
                                       $days_array = explode(",",$rtmt->DAYS);
-                                    
+                                     $_SESSION[group]=$rtmt->GROUP_CODE;
+                                     $_SESSION[group_]=$rtmt->GROUP_CODE;
 
                                    }
                                      
                                      elseif (isset ($_GET["new"])){
                                          if($config_file->GROUP_ID_GEN==1){
                                              $_SESSION[group]="";
-                                               $_SESSION[group_]=substr(strtoupper($config_file->CHURCH_NAME),0,3).date("Y")."/G/".$help->getGroupCode();
-                                         
+                                             
                                                $_SESSION[group]=$_SESSION[group_];
                                                $person=$_SESSION[group_];
                                          }
@@ -399,16 +402,7 @@ echo $help->picture("photos/groups/$person.jpg", 199) ?>  src="<?php echo file_e
         </div>
         <div class="col-sm-6">
             
-            <div class="form-group">
-                <label class="col-lg-4 control-label">Group Code <span class="text-danger">*</span></label>
-                <div class="col-lg-8">
-                    <div class="check-duplicates-popover-parent">
-                        <input type="text" name="group_code"  required="" class="form-control check-duplicates" value="<?php echo $_SESSION[group_] ?>" readonly="" autocomplete="off">
-                        
-                    </div>
-                </div>
-            </div>
-            <p>&nbsp;</p>
+           
              
              
             <div class="form-group date-picker-member_birthday-age">
